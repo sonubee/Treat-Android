@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#000">
+
+    <TextView
+        android:textColor="#FFF"
+        android:text="First Choose Your Activity"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp"
+        android:id="@+id/headerText" />
+
+    <TextView
+        android:gravity="center"
+        android:textColor="#FFF"
+        android:text="(e.g. Hike, Movie, Bowling, Walk, Coffee)"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headerText"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/subheaderText" />
+
+    <Button
+        android:text="Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nextActivity"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp" />
+
+    <Spinner
+        android:background="#FFF"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:id="@+id/chooseActivity"
+        android:layout_below="@+id/subheaderText"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:textColor="#FFF"
+        android:visibility="invisible"
+        android:hint="Enter Other Activity"
+        android:textColorHint="#FFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/otherField"
+        android:layout_below="@+id/chooseActivity"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:visibility="invisible"
+        android:textColor="#FFF"
+        android:hint="Enter Specific Activity"
+        android:textColorHint="#FFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/enterLocation"
+        android:layout_below="@+id/otherField"
+        android:layout_alignStart="@+id/otherField" />
+
+    <EditText
+        android:textColor="#FFF"
+        android:visibility="invisible"
+        android:textColorHint="#FFF"
+        android:hint="Find Address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/enterAddress"
+        android:layout_below="@+id/enterLocation"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:visibility="invisible"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="#FFF"
+        android:text="Start Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enterAddress"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/startTime" />
+
+    <TextView
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="#FFF"
+        android:text="End Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startTime"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/endTime" />
+
+    <ProgressBar
+        android:minWidth="300dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/nextActivity"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/progressBar2" />
+
+
+</RelativeLayout>

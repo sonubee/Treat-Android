@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#000"
+    android:id="@+id/messaging">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_margin="10dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:srcCompat="@color/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/youImage" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_margin="10dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:srcCompat="@color/colorPrimary"
+        android:id="@+id/otherImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:textColor="#FFF"
+        android:textColorHint="#FFF"
+        android:hint="Enter Message Here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/otherImage"
+        android:layout_alignStart="@+id/youImage"
+        android:id="@+id/messageToSend" />
+
+    <Button
+        android:text="Send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/otherImage"
+        android:layout_alignEnd="@+id/otherImage"
+        android:id="@+id/sendButton" />
+
+    <ListView
+        android:id="@+id/listviewMessaging"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sendButton"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

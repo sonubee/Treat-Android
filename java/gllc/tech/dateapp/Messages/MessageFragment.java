@@ -1,0 +1,150 @@
+package gllc.tech.dateapp.Messages;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import gllc.tech.dateapp.MainActivity;
+import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Objects.Message;
+import gllc.tech.dateapp.Objects.User;
+import gllc.tech.dateapp.R;
+import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
+import gllc.tech.dateapp.UpComingDates.ReviewProfileFragment;
+import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
+
+/**
+ * Created by bhangoo on 12/6/2016.
+ */
+
+public class MessageFragment extends Fragment {
+
+    Button sendButton;
+    EditText messageToSend;
+    CircleImageView youImage, otherImage;
+    public static MessageAdapter adapter;
+    public static ListView messageListview;
+    public static ArrayList<Message> messageArrayList = new ArrayList<>();
+    public static String messageKey = "";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE222"+MyApplication.otherPerson.getProfilePic());
+
+        MyApplication.visitedMessages=true;
+
+        for (int i =0; i <MyApplication.agreedChats.size(); i++){
+            if (MyApplication.agreedChats.get(i).getDateKey().equals(MyApplication.dateSelectedKey)){
+                messageKey = MyApplication.agreedChats.get(i).getPoster() + MyApplication.agreedChats.get(i).getRequester();
+            }
+        }
+
+
+        //MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.chat_screen, container, false);
+
+        sendButton = (Button)view.findViewById(R.id.sendButton);
+        messageToSend = (EditText)view.findViewById(R.id.messageToSend);
+        youImage = (CircleImageView) view.findViewById(R.id.youImage);
+        otherImage = (CircleImageView) view.findViewById(R.id.otherImage);
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                //DatabaseReference myRef = database.getReference("Messages/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                DatabaseReference myRef = database.getReference("Messages/" + MyApplication.dateSelectedKey + "/" + messageKey);
+
+                Message sendMessage = new Message(messageToSend.getText().toString(), MyApplication.currentUser.getId(), MyApplication.otherPerson.getId());
+
+                myRef.push().setValue(sendMessage);
+
+                messageToSend.setText("");
+            }
+        });
+
+        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE8888" + MyApplication.otherPersonHolder.getProfilePic());
+        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+MyApplication.otherPerson.getProfilePic());
+
+        User temp = ((MainActivity)getActivity()).geteUser();
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE9999" + temp.getProfilePic());
+        Picasso.with(getContext()).load(MyApplication.currentUser.getProfilePic()).into(youImage);
+        Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(otherImage);
+
+
+
+        adapter = new MessageAdapter(getContext(), R.id.listviewMessaging, messageArrayList);
+
+        messageListview = (ListView) getActivity().findViewById(R.id.listviewMessaging);
+        messageListview.setAdapter(adapter);
+
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        if (MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId())) {
+            inflater.inflate(R.menu.select_date, menu);
+        } else {
+            inflater.inflate(R.menu.empty_menu, menu);
+        }
+        //Log.i("--All", "Create Menu in Messaging");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i("--All", "Selected Options Messaging");
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i("--All", "On Stop");
+        MessageAdapter.myRef.removeEventListener(MessageAdapter.childEventListener);
+        MessageAdapter.messageArrayList.clear();
+
+        if (!MyApplication.cameFromDateReview){
+            MyApplication.otherPerson=null;
+            Log.i("--All", "Set to null");
+        }
+
+        MyApplication.cameFromDateReview=false;
+    }
+}

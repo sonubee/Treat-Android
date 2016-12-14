@@ -1,0 +1,97 @@
+package gllc.tech.dateapp.Objects;
+
+/**
+ * Created by bhangoo on 12/1/2016.
+ */
+public class EventsOfDate {
+
+
+    String specific;
+    String activity;
+    String address;
+    String beginTime;
+    String endTime;
+    String placeName;
+    double latitude;
+    double longitude;
+
+    public EventsOfDate() {
+    }
+
+    public EventsOfDate(String specific, String activity, String address, String beginTime, String endTime, String placeName, double latitude, double longitude) {
+        this.specific = specific;
+        this.activity = activity;
+        this.address = address;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.placeName = placeName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+
+    public String getSpecific() {
+        return specific;
+    }
+
+    public void setSpecific(String specific) {
+        this.specific = specific;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+}

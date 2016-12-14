@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <ImageView
+        android:layout_margin="10dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:srcCompat="@color/com_facebook_button_like_background_color_selected"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/eventImage" />
+
+    <TextView
+        android:textColor="#FFF"
+        android:text="Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/eventImage"
+        android:layout_toEndOf="@+id/eventImage"
+        android:id="@+id/timeTextview" />
+
+    <TextView
+        android:textColor="#FFF"
+        android:text="Where"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/timeTextview"
+        android:layout_toEndOf="@+id/eventImage"
+        android:id="@+id/whereTextView" />
+
+</RelativeLayout>

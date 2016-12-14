@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:id="@+id/postDateLayout">
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post Date"
+        android:id="@+id/postDate"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:gravity="center"
+        android:textColor="#FFF"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Enter the Date and Click the Plus (+) Button"
+        android:id="@+id/headerDate"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:gravity="center"
+        android:textColor="#619cc9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/enterDate"
+        android:hint="Enter Date"
+        android:textColorHint="#619cc9"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/headerDate"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:gravity="center"
+        android:visibility="invisible"
+        android:textColor="#619cc9"
+        android:textColorHint="#619cc9"
+        android:hint="Enter Short Description of Date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_below="@+id/enterDate"
+        android:id="@+id/titleDate"
+        android:layout_alignParentStart="true" />
+
+    <View
+        android:id="@+id/separatorLine"
+        android:layout_below="@+id/titleDate"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <ListView
+        android:divider="#37ca44"
+        android:dividerHeight="4px"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/eventListView"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/separatorLine"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

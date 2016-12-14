@@ -1,0 +1,70 @@
+package gllc.tech.dateapp.UpComingDates;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
+import gllc.tech.dateapp.MainActivity;
+import gllc.tech.dateapp.MapsActivity;
+import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.R;
+
+/**
+ * Created by bhangoo on 12/5/2016.
+ */
+
+public class YourDatesFragment extends Fragment {
+
+    ListView listView;
+    public static YourDatesAdapter adapter;
+    public static int selectedMap;
+    //public static int chosenDateToReview;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.your_dates, container, false);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        adapter = new YourDatesAdapter(getContext());
+
+        listView = (ListView) getActivity().findViewById(R.id.yourDatesListview);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MyApplication.dateSelected = MyApplication.combinedDates.get(position);
+                MyApplication.dateSelectedKey = MyApplication.combinedDates.get(position).getKey();
+
+                selectedMap = position;
+
+
+                ((MainActivity)getActivity()).addFragments(DateReviewFragment.class, R.id.yourDates, "YourDates");
+
+            }
+        });
+    }
+
+}

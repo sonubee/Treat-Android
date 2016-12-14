@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#000"
+    android:id="@+id/dateReview">
+
+
+    <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textColor="#FFF"
+        android:text="Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:id="@+id/showDate" />
+
+    <ListView
+        android:divider="#FFF"
+        android:dividerHeight="4px"
+        android:id="@+id/dateReviewListView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@+id/showDate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp" />
+
+    <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textColor="#FFF"
+        android:text="Requests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateReviewListView"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/requests" />
+
+    <HorizontalScrollView
+        android:id="@+id/requestsScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/requests"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:id="@+id/requestsLinear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/matchPhoto"
+        android:visibility="invisible"
+        android:layout_below="@+id/requests"
+        android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>

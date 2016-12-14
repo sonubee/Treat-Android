@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <TextView
+
+
+        android:textColor="#FFF"
+        android:text="Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:id="@+id/dateOfDate" />
+
+
+    <TextView
+        android:layout_marginBottom="5dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:textColor="#FFF"
+        android:text="Status: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateStatus"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="#FFF"
+        android:text="Title of Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleHereTextview"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:textColor="#FFF"
+        android:text="Created By:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/createdBy"
+        android:layout_below="@+id/titleHereTextview"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

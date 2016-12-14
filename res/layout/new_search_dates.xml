@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#000">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_margin="10dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait"
+        android:layout_marginStart="25dp"
+        android:id="@+id/imageViewSearch"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_margin="10dp"
+        android:textColor="#38ac70"
+        android:text="Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageViewSearch"
+        android:id="@+id/nameTextView" />
+
+    <ListView
+        android:id="@+id/newSearchDatesListview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateTitle"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp"
+        android:layout_above="@+id/noImageView"
+     />
+
+    <TextView
+        android:layout_margin="10dp"
+        android:textColor="#38ac70"
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameTextView"
+        android:layout_toEndOf="@+id/imageViewSearch"
+        android:id="@+id/shortBioSearch" />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#6ba2b1"
+        android:text="Title of Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewSearch"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/dateTitle" />
+
+    <ImageView
+        android:src="@drawable/no"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/back"
+        android:id="@+id/noImageView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="125dp" />
+
+    <ImageView
+        android:src="@drawable/yes"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/back"
+        android:id="@+id/yesImageView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="125dp"/>
+
+
+</RelativeLayout>
