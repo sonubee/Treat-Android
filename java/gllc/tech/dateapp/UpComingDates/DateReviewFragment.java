@@ -46,6 +46,8 @@ public class DateReviewFragment extends Fragment{
     LinearLayout layout;
     CircleImageView matchImage;
     HorizontalScrollView horizontalScrollView;
+    ChildEventListener childEventListener;
+    DatabaseReference populateRequestsReference;
 
     //public static String requestSelectedToReview;
     public static ArrayList<String> profileUrl = new ArrayList<>();
@@ -105,12 +107,10 @@ public class DateReviewFragment extends Fragment{
     }
 
     public void setupDate() {
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE66666");
         requestsOrMatch.setText("Your Date!");
 
         for (int  i =0; i<MyApplication.allUsers.size(); i++){
             if ((MyApplication.allUsers.get(i).getId().equals(MyApplication.dateSelected.getTheDate())) && !(MyApplication.dateSelected.getTheDate().equals(MyApplication.currentUser.getId()))){
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE234234" + MyApplication.allUsers.get(i).getProfilePic());
                 MyApplication.otherPerson = MyApplication.allUsers.get(i);
 
                 Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
@@ -118,7 +118,6 @@ public class DateReviewFragment extends Fragment{
                 matchImage.setVisibility(View.VISIBLE);
 
                 ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE345345" + MyApplication.otherPerson.getProfilePic());
                 matchImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -156,9 +155,9 @@ public class DateReviewFragment extends Fragment{
     public void populateRequests(){
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Requests/" + MyApplication.dateSelectedKey);
+        populateRequestsReference = database.getReference("Requests/" + MyApplication.dateSelectedKey);
 
-        myRef.addChildEventListener(new ChildEventListener() {
+        populateRequestsReference.addChildEventListener(childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //ImageView imageView = new ImageView(getContext());
@@ -245,8 +244,10 @@ public class DateReviewFragment extends Fragment{
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
 
-        if (MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId())) {
+        if (MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId()) && !MyApplication.dateSelected.getTheDate().equals("NA")) {
             inflater.inflate(R.menu.date_review, menu);
+        } else if (MyApplication.dateSelected.getTheDate().equals("NA") && MyApplication.currentUser.getId().equals(MyApplication.dateSelected.getPoster())) {
+            inflater.inflate(R.menu.date_review_cancel_only, menu);
         } else {
             inflater.inflate(R.menu.date_review_as_date, menu);
         }
@@ -371,6 +372,7 @@ public class DateReviewFragment extends Fragment{
         MyApplication.dateSelectedKey="";
         MyApplication.cameFromDateReview = false;
         MyApplication.cameFromYourDates=false;
+        populateRequestsReference.removeEventListener(childEventListener);
     }
 
 

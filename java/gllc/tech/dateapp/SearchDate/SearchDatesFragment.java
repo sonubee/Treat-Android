@@ -138,8 +138,6 @@ public class SearchDatesFragment extends Fragment {
                 dateCounter++;
                 showDate();
             }
-
-
         }
 
         else {
@@ -149,6 +147,7 @@ public class SearchDatesFragment extends Fragment {
             name.setVisibility(View.INVISIBLE);
             shortBioSearch.setVisibility(View.INVISIBLE);
             dateTitle.setVisibility(View.INVISIBLE);
+            listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
             listView.setAdapter(null);
         }
 
