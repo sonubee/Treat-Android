@@ -25,24 +25,6 @@
         android:layout_alignTop="@id/profileImage"
         android:id="@+id/nameProfileReview" />
 
-    <Button
-        android:layout_margin="10dp"
-        android:text="Chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/chatButton" />
-
-    <Button
-        android:layout_margin="10dp"
-        android:text="Remove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/chatButton"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/removeButton" />
-
     <TextView
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:textColor="#FFF"
@@ -93,7 +75,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:srcCompat="@drawable/chat"
-        android:id="@+id/imageView5"
+        android:id="@+id/chatImage"
         android:layout_below="@+id/imageView2"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="60dp"
@@ -105,7 +87,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:srcCompat="@drawable/no"
-        android:id="@+id/imageView6"
+        android:id="@+id/removeImage"
         android:layout_below="@+id/imageView4"
         android:layout_alignParentEnd="true" />
 

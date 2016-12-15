@@ -3,10 +3,12 @@ package gllc.tech.dateapp.UpComingDates;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +31,7 @@ public class ReviewProfileFragment extends Fragment {
     CircleImageView profilePic;
     TextView name;
     TextView shortBio;
-    Button chat, remove;
+    ImageView chatImage, removeImage;
 
     //public static User reviewPerson;
 
@@ -39,7 +41,6 @@ public class ReviewProfileFragment extends Fragment {
 
         MyApplication.justPosted = false;
         //MyApplication.otherPersonHolder = MyApplication.otherPerson;
-
     }
 
     @Nullable
@@ -50,8 +51,8 @@ public class ReviewProfileFragment extends Fragment {
         profilePic = (CircleImageView) view.findViewById(R.id.profileImage);
         name = (TextView)view.findViewById(R.id.nameProfileReview);
         shortBio = (TextView)view.findViewById(R.id.shortBioProfileReview);
-        chat = (Button)view.findViewById(R.id.chatButton);
-        remove = (Button)view.findViewById(R.id.removeButton);
+        chatImage = (ImageView)view.findViewById(R.id.chatImage);
+        removeImage = (ImageView)view.findViewById(R.id.removeImage);
 
 
         return view;
@@ -65,7 +66,7 @@ public class ReviewProfileFragment extends Fragment {
         shortBio.setText(MyApplication.otherPerson.getBio());
         name.setText(MyApplication.otherPerson.getName());
 
-        chat.setOnClickListener(new View.OnClickListener() {
+        chatImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //((MainActivity)getActivity()).changeToolbarText("Chat");
@@ -87,13 +88,17 @@ public class ReviewProfileFragment extends Fragment {
             }
         });
 
-        remove.setOnClickListener(new View.OnClickListener() {
+        removeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
                 databaseReference.removeValue();
+
+                DateReviewFragment.layout.removeAllViews();
+                ((MainActivity)getActivity()).refreshDateReview();
+
 
                 ((MainActivity)getActivity()).popBackStack();
 

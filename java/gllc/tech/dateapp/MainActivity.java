@@ -421,4 +421,10 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
             }
         }
     }
+
+    public void refreshDateReview() {
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment fragment = manager.findFragmentById(R.id.yourDates);
+        ((DateReviewFragment) fragment).decideDate();
+    }
 }

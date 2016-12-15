@@ -43,7 +43,7 @@ public class DateReviewFragment extends Fragment{
     ListView listView;
     DateReviewAdapter adapter;
     TextView textView, requestsOrMatch;
-    LinearLayout layout;
+    public static LinearLayout layout;
     CircleImageView matchImage;
     HorizontalScrollView horizontalScrollView;
     ChildEventListener childEventListener;
@@ -56,7 +56,6 @@ public class DateReviewFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.cameFromDateReview = true;
-        Log.i("--All", "Set cameFromDateReview to true");
     }
 
     @Nullable
@@ -97,12 +96,19 @@ public class DateReviewFragment extends Fragment{
             }
         });
 
+        decideDate();
+
+
+    }
+
+    public void decideDate() {
+
         if (MyApplication.dateSelected.getTheDate().equals("NA")){
             populateRequests();
         }
 
         else {
-           setupDate();
+            setupDate();
         }
     }
 
@@ -177,7 +183,7 @@ public class DateReviewFragment extends Fragment{
                                 MyApplication.otherPerson = MyApplication.allUsers.get(i);
                             }
                         }
-
+                        populateRequestsReference.removeEventListener(childEventListener);
                         profileUrl = new ArrayList<String>();
                         ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.dateReview, "DateReview");
                     }
@@ -372,6 +378,7 @@ public class DateReviewFragment extends Fragment{
         MyApplication.dateSelectedKey="";
         MyApplication.cameFromDateReview = false;
         MyApplication.cameFromYourDates=false;
+        Log.i("--All", "Detach");
         populateRequestsReference.removeEventListener(childEventListener);
     }
 
