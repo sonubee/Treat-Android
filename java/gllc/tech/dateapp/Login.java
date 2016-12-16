@@ -91,10 +91,8 @@ public class Login extends Fragment {
 
         loginButton = (LoginButton) view.findViewById(R.id.login_button);
 
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE444");
         setupFacebookLogin();
 
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE555");
         new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(

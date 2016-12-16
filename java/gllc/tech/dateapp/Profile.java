@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,7 +43,16 @@ public class Profile extends Fragment {
     TextView name, bio;
     EditText enterBio;
     boolean editingBio = false;
-    ArrayList<String> imageURLs = new ArrayList<>();
+    public static ArrayList<String> albumIds = new ArrayList<>();
+    public static ArrayList<String> albumNames = new ArrayList<>();
+    public static ArrayList<String> imageURLs = new ArrayList<>();
+    public static ArrayList<String> coverPhotosArray = new ArrayList<>();
+    public static ArrayList<Boolean> hasHoverPhotos = new ArrayList<>();
+    public static HashMap<String,String> albumIdToCoverPhoto = new HashMap<>();
+    public static HashMap<String,String> albumIdToLink = new HashMap<>();
+
+    String albumId;
+    int a=0,b=0,c=0;
 
     @Nullable
     @Override
@@ -100,6 +110,7 @@ public class Profile extends Fragment {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 new GraphRequest(
                         AccessToken.getCurrentAccessToken(),
                         "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
@@ -107,36 +118,202 @@ public class Profile extends Fragment {
                         HttpMethod.GET,
                         new GraphRequest.Callback() {
                             public void onCompleted(GraphResponse response) {
-
-
                                 try {
                                     JSONObject jsonObject = response.getJSONObject();
                                     if (jsonObject.has("data")) {
                                         JSONArray jaData = jsonObject.optJSONArray("data");
-                                        for (int i = 0; i < jaData.length(); i++)//Get no. of images {
+                                        for (int i = 0; i < jaData.length(); i++) {
                                             try {
                                                 JSONObject albumObject = jaData.getJSONObject(i);
-                                                String albumId = albumObject.getString("id");
 
-                                                GetFacebookImages(albumId); //find Album ID and get All Images from album
+                                                albumId = albumObject.getString("id");
+                                                albumIds.add(albumId);
+                                                String albumName = albumObject.getString("name");
+                                                albumNames.add(albumName);
 
-                                            }catch (Exception e){
-                                                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE" + e.toString());
+                                                Log.i("--All", "Album Size Early: " + albumIds.size());
+                                                getCoverPhotoID(albumId);
 
-                                    }
+                                                //GetFacebookImages(albumId); //find Album ID and get All Images from album
+
+                                                //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE" + albumId);
+
+
+                                            } catch (Exception e) {
+                                                Log.i("--All", "Error: " + e.toString());
+
+                                            }
+                                        }
                                     }
                                 } catch (Exception e) {
                                 }
-            /* handle the result */
                             }
                         }
                 ).executeAsync();
+
                 //MyApplication.selectedImageUrl = MyApplication.currentUser.getProfilePic();
                 //((MainActivity)getActivity()).addFragments(FullImageFragment.class, R.id.profileLayout, "ProfileScreen");
             }
         });
 
 
+
+    }
+
+    public void getCoverPhotoID(final String albumIdToUse) {
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "cover_photo");
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + albumIdToUse,
+                parameters,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        try {
+                            if (response.getError() == null) {
+                                JSONObject jsonObject = response.getJSONObject();
+
+                                Log.i("--All", "JSON: " + jsonObject.toString());
+
+                                if (jsonObject.has("cover_photo")) {
+
+                                    JSONObject coverPhotoJSON = jsonObject.getJSONObject("cover_photo");
+                                    String coverPhotoId = coverPhotoJSON.get("id").toString();
+                                    coverPhotosArray.add(coverPhotoId);
+
+                                    albumIdToCoverPhoto.put(albumIdToUse, coverPhotoId);
+
+
+                                    //Log.i("--All", "AlbumID: " + albumIdToUse);
+                                    //Log.i("--All", "Cover Photo ID: " + coverPhotoId);
+                                    Log.i("--All", "Cover Photo Size: " + coverPhotosArray.size());
+
+                                    //getCoverPhotoPicture(coverPhotoId, albumIdToUse);
+                                    getCoverPhotoPicture2(coverPhotoId, albumIdToUse);
+
+
+                                } else{
+                                    coverPhotosArray.add("NA");
+                                    albumIdToCoverPhoto.put(albumIdToUse,"NA");
+                                    b++;
+                                }
+
+                            } else {
+                                Log.v("--All", response.getError().toString());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+        ).executeAsync();
+    }
+
+    public void getCoverPhotoPicture2(String coverPhotoId, final String albumIdToUse) {
+        a++;
+        Log.i("--All", "Called: " + a);
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "images");
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + coverPhotoId,
+                parameters,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        //Log.i("--All", "Response: " + response.toString());
+                        JSONObject jsonObject = response.getJSONObject();
+                        Log.i("--All", "JSON: " + jsonObject.toString());
+
+                        try{
+                            JSONArray imagesArrayJSON = jsonObject.getJSONArray("images");
+                            Log.i("--All", "Images: " +imagesArrayJSON.getJSONObject(0).getString("source"));
+                            if (!albumIdToCoverPhoto.get(albumIdToUse).equals("NA")) {
+                                albumIdToLink.put(albumIdToUse, imagesArrayJSON.getJSONObject(0).getString("source"));
+                                //imageURLs.add(imagesArrayJSON.getJSONObject(0).getString("source"));
+                            }else{
+                                //imageURLs.add("NA");
+                                albumIdToLink.put(albumIdToUse, "NA");
+                            }
+
+                        }catch (Exception e){
+                            Log.i("--All", "Error: " + e.getMessage());
+                        }
+
+                        b++;
+
+                        if (b == albumIds.size()) {
+                            ((MainActivity)getActivity()).addFragments(DisplayFacebookAlbums.class, R.id.profileLayout, "Profile");
+                        }
+
+                        Log.i("--All", "B: " + b);
+                        Log.i("--All", "Album: " + albumIds.size());
+
+                    }
+                }
+        ).executeAsync();
+    }
+
+    public void getCoverPhotoPicture(final String coverPhotoId, String albumIdToUse) {
+        //        String url = "https://graph.facebook.com/" + "me" + "/"+albumId+"/photos?access_token=" + AccessToken.getCurrentAccessToken() + "&fields=images";
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "images");
+        /* make the API call */
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + albumIdToUse + "/photos",
+                parameters,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        //Log.v("--All", "Facebook Photos response: " + response);
+                        try {
+                            if (response.getError() == null) {
+                                JSONObject joMain = response.getJSONObject();
+
+                                Log.i("--All", "JSON from Getting Links: "+ joMain.toString());
+                                Log.i("--All", "Cover Photo ID to Match: " + coverPhotoId);
+
+                                boolean found = false;
+
+                                if (joMain.has("data")) {
+                                    JSONArray jaData = joMain.optJSONArray("data");
+                                    for (int i = 0; i < jaData.length(); i++) {
+                                        JSONObject joAlbum = jaData.getJSONObject(i);
+                                        JSONArray jaImages = joAlbum.getJSONArray("images");// get images Array in JSONArray format
+                                        if (jaImages.length() > 0) {
+                                            //imageURLs.add(jaImages.getJSONObject(0).getString("source"));
+                                            Log.i("--All", "Picture Link: "+jaImages.getJSONObject(0).getString("source"));
+                                            if (jaImages.getJSONObject(0).getString("source").contains(coverPhotoId)) {
+                                                found = true;
+                                                b++;
+                                                imageURLs.add(jaImages.getJSONObject(0).getString("source"));
+                                            }
+                                        }
+                                    }
+
+                                    if (b > (albumIds.size()-10)) {
+                                        ((MainActivity)getActivity()).addFragments(DisplayFacebookAlbums.class, R.id.profileLayout, "Profile");
+                                    }
+
+
+
+                                    //set your adapter here
+                                }
+
+                            } else {
+                                Log.v("--All", response.getError().toString());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+        ).executeAsync();
 
     }
 
@@ -153,7 +330,7 @@ public class Profile extends Fragment {
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
             /* handle the result */
-                        Log.v("--All", "Facebook Photos response: " + response);
+                        //Log.v("--All", "Facebook Photos response: " + response);
                         try {
                             if (response.getError() == null) {
 
@@ -166,24 +343,29 @@ public class Profile extends Fragment {
                                         JSONArray jaImages = joAlbum.getJSONArray("images");// get images Array in JSONArray format
                                         if (jaImages.length() > 0) {
                                             imageURLs.add(jaImages.getJSONObject(0).getString("source"));
-                                            Log.i("--All", "Picture Link: "+jaImages.getJSONObject(0).getString("source"));
+                                            //Log.i("--All", "Picture Link: "+jaImages.getJSONObject(0).getString("source"));
                                         }
                                     }
+
+
+
 
                                     //set your adapter here
                                 }
 
-                        } else {
-                            Log.v("--All", response.getError().toString());
+                            } else {
+                                Log.v("--All", response.getError().toString());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
+                    }
                 }
+        ).executeAsync();
     }
-    ).executeAsync();
-}
+
+
 
 
 }
