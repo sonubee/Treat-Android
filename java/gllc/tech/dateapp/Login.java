@@ -111,6 +111,7 @@ public class Login extends Fragment {
 
                 if (currentAccessToken != null){
                     Log.i("--All", "Logged in from AccessTokenTracker");
+                    Log.i("--All", "Permissions: " + currentAccessToken.getPermissions().toString());
                     loginButton.setVisibility(View.INVISIBLE);
                 }
             }
@@ -230,7 +231,7 @@ public class Login extends Fragment {
 
     public void setupFacebookLogin(){
 
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends"));
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends", "user_photos"));
         // If using in a fragment
         loginButton.setFragment(this);
 

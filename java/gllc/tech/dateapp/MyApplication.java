@@ -60,6 +60,7 @@ public class MyApplication extends Application {
     public static Place placeChosen;
     public static boolean cameFromPost = false;
     public static boolean cameFromYourDates = false;
+    public static String selectedImageUrl = "";
 
 
 

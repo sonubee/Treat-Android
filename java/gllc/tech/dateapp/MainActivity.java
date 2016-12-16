@@ -246,9 +246,10 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //fragment = getSupportFragmentManager().findFragmentById(R.id.fullScreenImageLayout);
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(id, fragment).addToBackStack(tag)
+        fragmentManager.beginTransaction().replace(id, fragment).addToBackStack(null)
                 .commit();
     }
 
@@ -265,6 +266,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         }
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         fragmentManager.beginTransaction().replace(id, fragment)
                 .commit();
     }
