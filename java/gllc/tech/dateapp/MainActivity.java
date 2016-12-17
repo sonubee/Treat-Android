@@ -273,6 +273,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     public void popBackStack() {
         getSupportFragmentManager().popBackStack();
+        Log.i("--All", "Popping Backstack");
     }
 
     @Override
@@ -353,7 +354,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     }
 
     public User geteUser(){
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE123123" + saveUser.getProfilePic());
         return saveUser;
     }
 

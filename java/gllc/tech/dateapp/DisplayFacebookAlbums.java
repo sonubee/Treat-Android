@@ -89,10 +89,8 @@ public class DisplayFacebookAlbums extends Fragment {
                                     }
                                     //set your adapter here
                                     Log.i("--All", "Album Size: "+imageURLs.size());
+                                    ((MainActivity)getActivity()).addFragments(DisplayAlbumImages.class, R.id.profileLayout, "Test");
 
-                                    //((MainActivity)getActivity()).replaceFragments(DisplayAlbumImages.class, R.id.displayFacebookAlbumsLayout);
-                                    Intent intent = new Intent(getActivity(), DisplayAlbumImagesActivity.class);
-                                    startActivity(intent);
                                 }
                             } else {
                                 Log.v("--All", "Error: " + response.getError().toString());
@@ -105,5 +103,4 @@ public class DisplayFacebookAlbums extends Fragment {
                 }
         ).executeAsync();
     }
-
 }

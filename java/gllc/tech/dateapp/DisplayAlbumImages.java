@@ -21,23 +21,19 @@ public class DisplayAlbumImages extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.test_layout, container, false);
+        View view = inflater.inflate(R.layout.display_album_images, container, false);
 
-        ((MainActivity)getActivity()).popBackStack();
-
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE11111");
-/*
-        GridView gridview = (GridView) view.findViewById(R.id.albumImagesGridview);
-        gridview.setAdapter(new AlbumImagesAdapter(getContext()));
+        GridView gridview = (GridView) view.findViewById(R.id.albumImagesGridView);
+        gridview.setAdapter(new MyAdapter(getContext()));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getContext(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MyApplication.selectedImageUrl = DisplayFacebookAlbums.imageURLs.get(position);
+                ((MainActivity)getActivity()).addFragments(FullImageFragment.class, R.id.profileLayout, "Another");
             }
         });
-*/
+
         return view;
     }
 
