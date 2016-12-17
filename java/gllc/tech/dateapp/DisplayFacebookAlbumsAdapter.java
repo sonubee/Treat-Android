@@ -48,27 +48,12 @@ public class DisplayFacebookAlbumsAdapter extends BaseAdapter {
         albumHolder.albumImage = (ImageView)convertView.findViewById(R.id.albumImage);
         albumHolder.albumName = (TextView) convertView.findViewById(R.id.albumName);
 
-
-        Log.i("--All", "Album ID: " +Profile.albumIds.get(position));
-
         String link = Profile.albumIdToLink.get(Profile.albumIds.get(position));
 
-        Log.i("--All", "Putting Picture: " + link);
 
-        try{
-            if (!link.equals("NA")) {
-                Picasso.with(context).load(link).into(albumHolder.albumImage);
-            }else{
-                Log.i("--All", "Putting X");
-                albumHolder.albumImage.setImageResource(R.drawable.no);
-            }
-        }catch (Exception e){
-            albumHolder.albumImage.setImageResource(R.drawable.no);
-        }
-
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+ Profile.albumNames.size());
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+Profile.albumIds.size());
-
+        if (!link.equals("NA")) {
+            Picasso.with(context).load(link).into(albumHolder.albumImage);
+        }else{albumHolder.albumImage.setImageResource(R.drawable.placeholder);}
 
         albumHolder.albumName.setText(Profile.albumNames.get(position));
 

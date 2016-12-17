@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MapsActivity"/>
+        <activity android:name=".DisplayAlbumImagesActivity"/>
 
 
         <activity android:name="com.facebook.FacebookActivity"

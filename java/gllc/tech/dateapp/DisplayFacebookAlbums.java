@@ -1,5 +1,6 @@
 package gllc.tech.dateapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,7 @@ public class DisplayFacebookAlbums extends Fragment {
 
     ListView listView;
     DisplayFacebookAlbumsAdapter adapter;
-    ArrayList<String> imageURLs = new ArrayList<>();
+    public static ArrayList<String> imageURLs = new ArrayList<>();
 
     @Nullable
     @Override
@@ -51,54 +52,18 @@ public class DisplayFacebookAlbums extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String albumId = Profile.albumIds.get(position);
 
-                //GetFacebookImages(albumId); //find Album ID and get All Images from album
+                getAlbumImages(albumId);
             }
         });
+
+
     }
 
-    public void GetFacebookImages(final String albumId) {
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "cover_photo");
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/" + albumId,
-                parameters,
-                HttpMethod.GET,
-                new GraphRequest.Callback() {
-                    public void onCompleted(GraphResponse response) {
-                        Log.v("--All", "Facebook Photos response: " + response);
-                        try {
-                            if (response.getError() == null) {
-                                JSONObject jsonObject = response.getJSONObject();
-
-                                Log.i("--All", "JSON: " + jsonObject.toString());
-
-                                if (jsonObject.has("cover_photo")) {
-
-                                    JSONObject coverPhotoJSON = jsonObject.getJSONObject("cover_photo");
-                                    String coverPhotoId = coverPhotoJSON.get("id").toString();
-
-                                    Log.i("--All", "Cover Photo ID: " + coverPhotoId);
-
-                                    getCoverPhotoPicture(coverPhotoId, albumId);
-                                }
-
-                            } else {
-                                Log.v("--All", response.getError().toString());
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }
-        ).executeAsync();
-    }
-
-    public void getCoverPhotoPicture(final String coverPhotoId, String albumId) {
-        //        String url = "https://graph.facebook.com/" + "me" + "/"+albumId+"/photos?access_token=" + AccessToken.getCurrentAccessToken() + "&fields=images";
+    public void getAlbumImages(String albumId) {
+//        String url = "https://graph.facebook.com/" + "me" + "/"+albumId+"/photos?access_token=" + AccessToken.getCurrentAccessToken() + "&fields=images";
         Bundle parameters = new Bundle();
         parameters.putString("fields", "images");
+        //parameters.putInt("limit", 5000);
         /* make the API call */
         new GraphRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -107,30 +72,30 @@ public class DisplayFacebookAlbums extends Fragment {
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
-                        //Log.v("--All", "Facebook Photos response: " + response);
+                        Log.i("--All", "Response: " + response.toString());
                         try {
                             if (response.getError() == null) {
                                 JSONObject joMain = response.getJSONObject();
-
-                                Log.i("--All", "JSON: "+ joMain.toString());
-                                Log.i("--All", "Cover Photo ID: " + coverPhotoId);
-
                                 if (joMain.has("data")) {
                                     JSONArray jaData = joMain.optJSONArray("data");
                                     for (int i = 0; i < jaData.length(); i++) {
                                         JSONObject joAlbum = jaData.getJSONObject(i);
-                                        JSONArray jaImages = joAlbum.getJSONArray("images");// get images Array in JSONArray format
+                                        JSONArray jaImages = joAlbum.getJSONArray("images");
                                         if (jaImages.length() > 0) {
                                             imageURLs.add(jaImages.getJSONObject(0).getString("source"));
                                             Log.i("--All", "Picture Link: "+jaImages.getJSONObject(0).getString("source"));
+                                            Log.i("--All", "Size Now: " + imageURLs.size());
                                         }
                                     }
-
                                     //set your adapter here
-                                }
+                                    Log.i("--All", "Album Size: "+imageURLs.size());
 
+                                    //((MainActivity)getActivity()).replaceFragments(DisplayAlbumImages.class, R.id.displayFacebookAlbumsLayout);
+                                    Intent intent = new Intent(getActivity(), DisplayAlbumImagesActivity.class);
+                                    startActivity(intent);
+                                }
                             } else {
-                                Log.v("--All", response.getError().toString());
+                                Log.v("--All", "Error: " + response.getError().toString());
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -139,6 +104,6 @@ public class DisplayFacebookAlbums extends Fragment {
                     }
                 }
         ).executeAsync();
-
     }
+
 }
