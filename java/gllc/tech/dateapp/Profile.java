@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,8 @@ public class Profile extends Fragment {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     CircleImageView profileImage;
-    ImageView editBio;
+    ImageView photo2;
+    ImageView editBio, editPhoto2;
     TextView name, bio;
     EditText enterBio;
     boolean editingBio = false;
@@ -48,6 +50,7 @@ public class Profile extends Fragment {
     public static ArrayList<String> coverPhotosArray = new ArrayList<>();
     public static HashMap<String,String> albumIdToCoverPhoto = new HashMap<>();
     public static HashMap<String,String> albumIdToLink = new HashMap<>();
+    public static int photoToReplace=0;
 
     String albumId;
     int a=0,b=0,c=0;
@@ -55,15 +58,19 @@ public class Profile extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_profile, container, false);
+        View view = inflater.inflate(R.layout.third_profile, container, false);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         profileImage = (CircleImageView)view.findViewById(R.id.userPicture);
         name = (TextView)view.findViewById(R.id.nameUser);
         editBio = (ImageView)view.findViewById(R.id.editButton);
+        editPhoto2 = (ImageView)view.findViewById(R.id.editButtonPhoto2);
         bio = (TextView)view.findViewById(R.id.bioTextView);
         enterBio = (EditText)view.findViewById(R.id.bioEditText);
+        photo2 = (ImageView)view.findViewById(R.id.supportImage1);
+
+        //Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
 
         return view;
     }
@@ -82,6 +89,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
 
+                getAlbums();
                 if (!editingBio) {
                     enterBio.setText(preferences.getString("bio",""));
                     bio.setVisibility(View.INVISIBLE);
@@ -104,46 +112,55 @@ public class Profile extends Fragment {
                 }
             }
         });
-
+/*
+        editPhoto2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAlbums();
+                photoToReplace=1;
+            }
+        });
+*/
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new GraphRequest(
-                        AccessToken.getCurrentAccessToken(),
-                        "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
-                        null,
-                        HttpMethod.GET,
-                        new GraphRequest.Callback() {
-                            public void onCompleted(GraphResponse response) {
-                                try {
-                                    JSONObject jsonObject = response.getJSONObject();
-                                    if (jsonObject.has("data")) {
-                                        JSONArray jaData = jsonObject.optJSONArray("data");
-                                        for (int i = 0; i < jaData.length(); i++) {
-                                            try {
-                                                JSONObject albumObject = jaData.getJSONObject(i);
-
-                                                albumId = albumObject.getString("id");
-                                                albumIds.add(albumId);
-                                                String albumName = albumObject.getString("name");
-                                                albumNames.add(albumName);
-
-                                                getCoverPhotoID(albumId);
-
-                                            } catch (Exception e) {Log.i("--All", "Error: " + e.toString());}
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                }
-                            }
-                        }
-                ).executeAsync();
+               getAlbums();
+                photoToReplace=2;
             }
         });
+    }
 
+    public void getAlbums(){
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
+                null,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject();
+                            if (jsonObject.has("data")) {
+                                JSONArray jaData = jsonObject.optJSONArray("data");
+                                for (int i = 0; i < jaData.length(); i++) {
+                                    try {
+                                        JSONObject albumObject = jaData.getJSONObject(i);
 
+                                        albumId = albumObject.getString("id");
+                                        albumIds.add(albumId);
+                                        String albumName = albumObject.getString("name");
+                                        albumNames.add(albumName);
 
+                                        getCoverPhotoID(albumId);
+
+                                    } catch (Exception e) {Log.i("--All", "Error: " + e.toString());}
+                                }
+                            }
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+        ).executeAsync();
     }
 
     public void getCoverPhotoID(final String albumIdToUse) {
@@ -209,10 +226,20 @@ public class Profile extends Fragment {
 
                         b++;
                         if (b == albumIds.size()) {
-                            ((MainActivity)getActivity()).addFragments(DisplayFacebookAlbums.class, R.id.container, "Profile");
+                            ((MainActivity)getActivity()).addFragments(DisplayFacebookAlbums.class, R.id.container, "DisplayFacebookAlbums");
                         }
                     }
                 }
         ).executeAsync();
+    }
+
+    public void changePhoto(int photoNum, String url) {
+        if (photoNum == 2) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+            Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+            //profileImage.setImageResource(R.drawable.no);
+            Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
+        }
     }
 }

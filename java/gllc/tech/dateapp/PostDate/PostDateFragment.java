@@ -113,7 +113,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                     listOfPlaces = new ArrayList<Place>();
                     listOfEvents = new ArrayList<>();
 
-                    ((MainActivity)getActivity()).replaceFragments(PostDateFragment.class, R.id.container);
+                    ((MainActivity)getActivity()).replaceFragments(PostDateFragment.class, R.id.container, "PostDateFragment");
                     Toast.makeText(getContext(), "Posted! Check Your Upcoming Dates", Toast.LENGTH_LONG).show();
                 }
             }

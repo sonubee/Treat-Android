@@ -35,6 +35,7 @@ public class DisplayFacebookAlbums extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.display_facebook_albums, container, false);
+
         return view;
     }
 

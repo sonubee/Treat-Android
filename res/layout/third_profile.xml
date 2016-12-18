@@ -34,6 +34,7 @@
         android:layout_height="100dp" />
 
     <ImageView
+        android:onClick="editPhoto"
         android:layout_width="20dp"
         android:layout_height="20dp"
         app:srcCompat="@color/colorAccent"
@@ -147,7 +148,7 @@
         android:layout_toEndOf="@+id/textView5"
         android:layout_marginLeft="30dp"
         android:id="@+id/menCheckBox"
-        app:buttonTint="@android:color/holo_blue_bright" />
+        />
 
     <CheckBox
         android:buttonTint="@color/colorAccent"
@@ -160,7 +161,7 @@
         android:layout_toEndOf="@+id/menCheckBox"
         android:layout_alignBottom="@+id/menCheckBox"
         android:layout_marginLeft="30dp"
-        app:buttonTint="@android:color/holo_blue_bright" />
+        />
 
     <SeekBar
         android:background="#662a8187"

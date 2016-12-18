@@ -12,11 +12,15 @@ public class User {
     String profilePic;
     String fid;
     String bio;
+    String photo1;
+    String photo2;
+    String photo3;
+    String photo4;
 
     public User() {
     }
 
-    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio) {
+    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4) {
         this.name = name;
         this.email = email;
         this.id = id;
@@ -24,6 +28,10 @@ public class User {
         this.profilePic = profilePic;
         this.fid = fid;
         this.bio = bio;
+        this.photo1 = photo1;
+        this.photo2 = photo2;
+        this.photo3 = photo3;
+        this.photo4 = photo4;
     }
 
     public String getName() {
@@ -82,4 +90,35 @@ public class User {
         this.bio = bio;
     }
 
+    public String getPhoto1() {
+        return photo1;
+    }
+
+    public void setPhoto1(String photo1) {
+        this.photo1 = photo1;
+    }
+
+    public String getPhoto2() {
+        return photo2;
+    }
+
+    public void setPhoto2(String photo2) {
+        this.photo2 = photo2;
+    }
+
+    public String getPhoto3() {
+        return photo3;
+    }
+
+    public void setPhoto3(String photo3) {
+        this.photo3 = photo3;
+    }
+
+    public String getPhoto4() {
+        return photo4;
+    }
+
+    public void setPhoto4(String photo4) {
+        this.photo4 = photo4;
+    }
 }

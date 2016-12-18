@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -53,6 +54,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     @Override
     public void onInt(Bundle savedInstanceState) {
+
 
         materialDesignSetup();
 
@@ -249,15 +251,16 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         //fragment = getSupportFragmentManager().findFragmentById(R.id.fullScreenImageLayout);
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(id, fragment).addToBackStack(null)
+        fragmentManager.beginTransaction().replace(id, fragment, tag).addToBackStack(null)
                 .commit();
+        //getSupportFragmentManager().executePendingTransactions();
     }
 
     public void popAllFragments(){
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
-    public void replaceFragments(Class fragmentClass, int id) {
+    public void replaceFragments(Class fragmentClass, int id, String tag) {
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -267,7 +270,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction().replace(id, fragment)
+        fragmentManager.beginTransaction().replace(id, fragment, tag)
                 .commit();
     }
 
@@ -312,7 +315,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
                 FragmentManager manager = getSupportFragmentManager();
-                Fragment fragment = manager.findFragmentById(R.id.yourDates);
+                //Fragment fragment = manager.findFragmentById(R.id.yourDates);
+                Fragment fragment = manager.findFragmentByTag("YourDates");
                 ((DateReviewFragment) fragment).setupDate();
 /*
                 MyApplication.otherPersonHolder = MyApplication.otherPerson;
@@ -428,5 +432,19 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.yourDates);
         ((DateReviewFragment) fragment).decideDate();
+    }
+
+    public void changePhotos(int photoNum, String url) {
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment fragment = manager.findFragmentByTag("Profile");
+        ((Profile) fragment).changePhoto(photoNum, url);
+    }
+
+    public void editPhoto(View v) {
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE33");
+        FragmentManager manager = getSupportFragmentManager();
+        Fragment fragment = manager.findFragmentByTag("Profile");
+        ImageView imageView = (ImageView)fragment.getView().findViewById(R.id.supportImage1);
+        imageView.setImageResource(R.drawable.no);
     }
 }

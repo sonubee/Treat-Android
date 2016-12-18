@@ -140,10 +140,11 @@ public class Login extends Fragment {
                 if (user != null) {
                     Log.i("--All", "Logged in through Firebase");
                     // User is signed in
-                    //MyApplication.currentUser = new User(preferences.getString("id", "NA"), MyApplication.currentUser.getEmail(), user.getUid(), MyApplication.currentUser.getGender(), MyApplication.currentUser.getProfilePic(), MyApplication.currentUser.getFid());
+
                     MyApplication.currentUser = new User(preferences.getString("name", "NA"), preferences.getString("email", "NA"), user.getUid(),
                             preferences.getString("gender", "NA"), preferences.getString("profilePic", "NA"), preferences.getString("fid", "NA"),
-                            preferences.getString("bio", "NA"));
+                            preferences.getString("bio", "NA"), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
+                            preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"));
 
                     editor = preferences.edit();
                     editor.putString("id", user.getUid());
@@ -163,7 +164,7 @@ public class Login extends Fragment {
                     DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
                     myRef.setValue(MyApplication.currentUser);
 
-                    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container);
+                    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
 
 
 
@@ -261,15 +262,15 @@ public class Login extends Fragment {
                                     editor.putString("email",email);
                                     editor.putString("fid", object.getString("id"));
                                     editor.putString("name", object.getString("name"));
+                                    editor.putString("gender", object.getString("gender"));
                                     editor.putString("profilePic", "test");
                                     editor.putString("profilePic", "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large");
                                     editor.apply();
 
-                                    MyApplication.currentUser = new User(object.getString("name"), object.getString("email"), "NA", preferences.getString("bio", ""),"https://graph.facebook.com/" + object.getString("id") + "/picture?type=large", object.getString("id"), "NA" );
-
-                                    //uploadProfilePhoto();
-
-
+                                    MyApplication.currentUser = new User(object.getString("name"), object.getString("email"), "NA", preferences.getString("gender", ""),
+                                            "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large", object.getString("id"),
+                                            preferences.getString("bio", ""), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
+                                            preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"));
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();

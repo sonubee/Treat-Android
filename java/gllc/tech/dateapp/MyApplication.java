@@ -68,7 +68,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        currentUser = new User("Name", "Email", "FID", "Gender", "Profile Pic", "ID", "Bio");
+        currentUser = new User("Name", "Email", "FID", "Gender", "Profile Pic", "ID", "Bio", "NA", "NA", "NA", "NA");
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
