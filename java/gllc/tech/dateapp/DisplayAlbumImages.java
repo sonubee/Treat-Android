@@ -29,7 +29,7 @@ public class DisplayAlbumImages extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MyApplication.selectedImageUrl = DisplayFacebookAlbums.imageURLs.get(position);
-                ((MainActivity)getActivity()).addFragments(FullImageFragment.class, R.id.container, "FullImageFragment");
+                ((MainActivity)getActivity()).addFragments(FullImageFragment.class, R.id.container, "Another");
             }
         });
 

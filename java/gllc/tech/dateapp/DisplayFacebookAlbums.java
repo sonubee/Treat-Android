@@ -90,7 +90,7 @@ public class DisplayFacebookAlbums extends Fragment {
                                     }
                                     //set your adapter here
                                     Log.i("--All", "Album Size: "+imageURLs.size());
-                                    ((MainActivity)getActivity()).addFragments(DisplayAlbumImages.class, R.id.container, "DisplayAlbumImages");
+                                    ((MainActivity)getActivity()).addFragments(DisplayAlbumImages.class, R.id.container, "Test");
 
                                 }
                             } else {

@@ -123,7 +123,6 @@ public class Login extends Fragment {
                 Log.i("--All", "Logged In Already");
                 //upload/ProfilePhoto();
                 loginButton.setVisibility(View.INVISIBLE);
-                ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
             }
         } catch (Exception e){
             Log.i("--All", "Logged Out Already");
