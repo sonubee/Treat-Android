@@ -140,7 +140,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
             case 0:
                 getSupportActionBar().setTitle("Login");
-                mFragment = new Login();
+                mFragment = new Profile();
                 break;
 
             case 1:
@@ -253,7 +253,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(id, fragment, tag).addToBackStack(null)
                 .commit();
-        //getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     public void popAllFragments(){
@@ -437,14 +437,9 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     public void changePhotos(int photoNum, String url) {
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentByTag("Profile");
+        //ImageView imageView = (ImageView)fragment.getView().findViewById(R.id.supportImage1);
+        //imageView.setImageResource(R.drawable.no);
         ((Profile) fragment).changePhoto(photoNum, url);
-    }
 
-    public void editPhoto(View v) {
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE33");
-        FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentByTag("Profile");
-        ImageView imageView = (ImageView)fragment.getView().findViewById(R.id.supportImage1);
-        imageView.setImageResource(R.drawable.no);
     }
 }

@@ -40,7 +40,7 @@ public class FullImageFragment extends Fragment {
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).popAllFragments();
+                //((MainActivity)getActivity()).popAllFragments();
                 ((MainActivity)getActivity()).changePhotos(2, MyApplication.selectedImageUrl);
             }
         });

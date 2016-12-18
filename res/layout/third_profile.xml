@@ -34,7 +34,6 @@
         android:layout_height="100dp" />
 
     <ImageView
-        android:onClick="editPhoto"
         android:layout_width="20dp"
         android:layout_height="20dp"
         app:srcCompat="@color/colorAccent"

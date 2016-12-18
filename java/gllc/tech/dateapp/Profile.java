@@ -89,7 +89,6 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
 
-                getAlbums();
                 if (!editingBio) {
                     enterBio.setText(preferences.getString("bio",""));
                     bio.setVisibility(View.INVISIBLE);
@@ -112,7 +111,7 @@ public class Profile extends Fragment {
                 }
             }
         });
-/*
+
         editPhoto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +119,7 @@ public class Profile extends Fragment {
                 photoToReplace=1;
             }
         });
-*/
+
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +130,7 @@ public class Profile extends Fragment {
     }
 
     public void getAlbums(){
+        albumIds.clear();
         new GraphRequest(
                 AccessToken.getCurrentAccessToken(),
                 "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
@@ -241,5 +241,9 @@ public class Profile extends Fragment {
             //profileImage.setImageResource(R.drawable.no);
             Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
         }
+    }
+
+    public void test() {
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
     }
 }
