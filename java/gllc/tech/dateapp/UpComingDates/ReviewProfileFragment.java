@@ -32,6 +32,7 @@ public class ReviewProfileFragment extends Fragment {
     TextView name;
     TextView shortBio;
     ImageView chatImage, removeImage;
+    ImageView reviewPhoto2,reviewPhoto3,reviewPhoto4;
 
     //public static User reviewPerson;
 
@@ -49,6 +50,9 @@ public class ReviewProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.profile_review, container, false);
 
         profilePic = (CircleImageView) view.findViewById(R.id.profileImage);
+        reviewPhoto2 = (ImageView) view.findViewById(R.id.reviewPhoto2);
+        reviewPhoto3 = (ImageView) view.findViewById(R.id.reviewPhoto3);
+        reviewPhoto4 = (ImageView) view.findViewById(R.id.reviewPhoto4);
         name = (TextView)view.findViewById(R.id.nameProfileReview);
         shortBio = (TextView)view.findViewById(R.id.shortBioProfileReview);
         chatImage = (ImageView)view.findViewById(R.id.chatImage);
@@ -62,7 +66,21 @@ public class ReviewProfileFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(profilePic);
+        if (MyApplication.otherPerson.getPhoto1().equals("NA")) {
+            Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(profilePic);
+        } else {
+            Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto1()).into(profilePic);
+        }
+        if (!MyApplication.otherPerson.getPhoto2().equals("NA")) {
+            Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto2()).into(reviewPhoto2);
+        }
+        if (!MyApplication.otherPerson.getPhoto3().equals("NA")) {
+            Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto3()).into(reviewPhoto3);
+        }
+        if (!MyApplication.otherPerson.getPhoto4().equals("NA")) {
+            Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto4()).into(reviewPhoto4);
+        }
+
         shortBio.setText(MyApplication.otherPerson.getBio());
         name.setText(MyApplication.otherPerson.getName());
 

@@ -75,9 +75,8 @@ public class SearchDatesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
-                myRef.setValue(true);
-
+                //DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
+                //myRef.setValue(true);
 
                 DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" + MyApplication.currentUser.getId());
                 myRef2.setValue(MyApplication.currentUser.getProfilePic());
@@ -91,8 +90,8 @@ public class SearchDatesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
-                myRef.setValue(false);
+                //DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
+                //myRef.setValue(false);
                 dateCounter++;
                 showDate();
             }

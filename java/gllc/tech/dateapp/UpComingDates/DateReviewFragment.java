@@ -374,12 +374,16 @@ public class DateReviewFragment extends Fragment{
     @Override
     public void onDetach() {
         super.onDetach();
+
+        if (MyApplication.dateSelected.getTheDate().equals("NA")) {
+            populateRequestsReference.removeEventListener(childEventListener);
+        }
         MyApplication.dateSelected = null;
         MyApplication.dateSelectedKey="";
         MyApplication.cameFromDateReview = false;
         MyApplication.cameFromYourDates=false;
         Log.i("--All", "Detach");
-        populateRequestsReference.removeEventListener(childEventListener);
+
     }
 
 

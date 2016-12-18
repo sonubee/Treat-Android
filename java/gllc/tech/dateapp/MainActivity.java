@@ -14,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -34,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
+import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
@@ -203,7 +203,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         //mHelpLiveo.add("About", R.drawable.about);
 //        mHelpLiveo.addSeparator(); // Item separator
 
-        //with(this, Navigation.THEME_DARK). add theme dark
+        with(this, Navigation.THEME_DARK).
         //with(this, Navigation.THEME_LIGHT). add theme light
 
         with(this) // default theme is dark
@@ -316,7 +316,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
                 FragmentManager manager = getSupportFragmentManager();
                 //Fragment fragment = manager.findFragmentById(R.id.yourDates);
-                Fragment fragment = manager.findFragmentByTag("YourDates");
+                Fragment fragment = manager.findFragmentByTag("DatesReview");
                 ((DateReviewFragment) fragment).setupDate();
 /*
                 MyApplication.otherPersonHolder = MyApplication.otherPerson;
@@ -434,17 +434,10 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         ((DateReviewFragment) fragment).decideDate();
     }
 
-    public void changePhotos(int photoNum, String url) {
+    public void changePhotos() {
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentByTag("Profile");
-        ((Profile) fragment).changePhoto(photoNum, url);
+        ((Profile) fragment).reloadProfileFragment();
     }
 
-    public void editPhoto(View v) {
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE33");
-        FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentByTag("Profile");
-        ImageView imageView = (ImageView)fragment.getView().findViewById(R.id.supportImage1);
-        imageView.setImageResource(R.drawable.no);
-    }
 }

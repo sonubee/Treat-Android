@@ -40,8 +40,8 @@ public class Profile extends Fragment {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     CircleImageView profileImage;
-    ImageView photo2;
-    ImageView editBio, editPhoto2;
+    ImageView photo2, photo3, photo4;
+    ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;
     TextView name, bio;
     EditText enterBio;
     boolean editingBio = false;
@@ -65,12 +65,19 @@ public class Profile extends Fragment {
         profileImage = (CircleImageView)view.findViewById(R.id.userPicture);
         name = (TextView)view.findViewById(R.id.nameUser);
         editBio = (ImageView)view.findViewById(R.id.editButton);
+        editPhoto1 = (ImageView)view.findViewById(R.id.editButtonPhoto1);
         editPhoto2 = (ImageView)view.findViewById(R.id.editButtonPhoto2);
+        editPhoto3 = (ImageView)view.findViewById(R.id.editButtonPhoto3);
+        editPhoto4 = (ImageView)view.findViewById(R.id.editButtonPhoto4);
         bio = (TextView)view.findViewById(R.id.bioTextView);
         enterBio = (EditText)view.findViewById(R.id.bioEditText);
         photo2 = (ImageView)view.findViewById(R.id.supportImage1);
+        photo3 = (ImageView)view.findViewById(R.id.supportImage2);
+        photo4 = (ImageView)view.findViewById(R.id.supportImage3);
 
         //Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
+
+        loadImages();
 
         return view;
     }
@@ -79,10 +86,14 @@ public class Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Picasso.with(getContext()).load("https://graph.facebook.com/" + preferences.getString("fid", "NA") + "/picture?type=large").into(profileImage);
         name.setText(preferences.getString("name", "NA"));
 
         editBio.setImageResource(R.drawable.edit);
+        editPhoto1.setImageResource(R.drawable.edit);
+        editPhoto2.setImageResource(R.drawable.edit);
+        editPhoto3.setImageResource(R.drawable.edit);
+        editPhoto4.setImageResource(R.drawable.edit);
+
         bio.setText(preferences.getString("bio", "Enter Short Bio Here!"));
 
         editBio.setOnClickListener(new View.OnClickListener() {
@@ -112,25 +123,70 @@ public class Profile extends Fragment {
                 }
             }
         });
-/*
-        editPhoto2.setOnClickListener(new View.OnClickListener() {
+
+        editPhoto1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getAlbums();
                 photoToReplace=1;
             }
         });
-*/
-        profileImage.setOnClickListener(new View.OnClickListener() {
+
+        editPhoto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               getAlbums();
+                getAlbums();
                 photoToReplace=2;
+            }
+        });
+
+        editPhoto3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAlbums();
+                photoToReplace=3;
+            }
+        });
+
+        editPhoto4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAlbums();
+                photoToReplace=4;
             }
         });
     }
 
+    public void loadImages() {
+        if (preferences.getString("photo1", "NA").equals("NA")) {
+            Picasso.with(getContext()).load("https://graph.facebook.com/" + preferences.getString("fid", "NA") + "/picture?type=large").into(profileImage);
+        } else {
+            Picasso.with(getContext()).load(preferences.getString("photo1", "NA")).into(profileImage);
+        }
+
+        if (preferences.getString("photo2", "NA").equals("NA")) {
+            photo2.setImageResource(R.drawable.placeholder);
+        } else {
+            Picasso.with(getContext()).load(preferences.getString("photo2", "NA")).into(photo2);
+        }
+
+        if (preferences.getString("photo3", "NA").equals("NA")) {
+            photo3.setImageResource(R.drawable.placeholder);
+        } else {
+            Picasso.with(getContext()).load(preferences.getString("photo3", "NA")).into(photo3);
+        }
+
+        if (preferences.getString("photo4", "NA").equals("NA")) {
+            photo4.setImageResource(R.drawable.placeholder);
+        } else {
+            Picasso.with(getContext()).load(preferences.getString("photo4", "NA")).into(photo4);
+        }
+
+    }
+
     public void getAlbums(){
+        albumIds.clear();
+        b=0;
         new GraphRequest(
                 AccessToken.getCurrentAccessToken(),
                 "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
@@ -233,13 +289,9 @@ public class Profile extends Fragment {
         ).executeAsync();
     }
 
-    public void changePhoto(int photoNum, String url) {
-        if (photoNum == 2) {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.detach(this).attach(this).commit();
-            Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
-            //profileImage.setImageResource(R.drawable.no);
-            Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
-        }
+    public void reloadProfileFragment() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+
     }
 }
