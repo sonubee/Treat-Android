@@ -209,7 +209,7 @@ public class Profile extends Fragment {
 
                         b++;
                         if (b == albumIds.size()) {
-                            ((MainActivity)getActivity()).addFragments(DisplayFacebookAlbums.class, R.id.profileLayout, "Profile");
+                            ((MainActivity)getActivity()).addFragments(DisplayFacebookAlbums.class, R.id.container, "Profile");
                         }
                     }
                 }

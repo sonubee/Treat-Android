@@ -17,12 +17,12 @@ import java.util.List;
  * Created by bhangoo on 12/16/2016.
  */
 
-class MyAdapter extends BaseAdapter {
+class DisplayAlbumImagesAdapter extends BaseAdapter {
 
     private final LayoutInflater mInflater;
     Context context;
 
-    public MyAdapter(Context context) {
+    public DisplayAlbumImagesAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
         this.context = context;
     }

@@ -69,7 +69,7 @@ public class ShowAllMessages extends Fragment {
                         }
                     }
                 }
-                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.showAllMessagesLayout, "ShowAllMessages");
+                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "ShowAllMessages");
             }
         });
     }

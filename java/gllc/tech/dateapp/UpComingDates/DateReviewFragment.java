@@ -131,7 +131,7 @@ public class DateReviewFragment extends Fragment{
                         MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
                         Log.i("--All", "Set cameFromDateReview to true");
                         MyApplication.cameFromDateReview = true;
-                        ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.dateReview, "DateReview");
+                        ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "DateReview");
                     }
                 });
             }
@@ -151,7 +151,7 @@ public class DateReviewFragment extends Fragment{
                         MyApplication.cameFromDateReview = true;
                         Log.i("--All", "Set cameFromDateReview to true");
                         MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
-                        ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.dateReview, "DateReview");
+                        ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "DateReview");
                     }
                 });
             }
@@ -185,7 +185,7 @@ public class DateReviewFragment extends Fragment{
                         }
                         populateRequestsReference.removeEventListener(childEventListener);
                         profileUrl = new ArrayList<String>();
-                        ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.dateReview, "DateReview");
+                        ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "DateReview");
                     }
                 });
 

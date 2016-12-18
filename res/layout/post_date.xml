@@ -44,7 +44,7 @@
 
     <EditText
         android:gravity="center"
-        android:visibility="invisible"
+
         android:textColor="#619cc9"
         android:textColorHint="#619cc9"
         android:hint="Enter Short Description of Date"

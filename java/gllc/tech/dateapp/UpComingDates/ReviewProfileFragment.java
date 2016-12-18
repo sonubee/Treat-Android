@@ -71,7 +71,7 @@ public class ReviewProfileFragment extends Fragment {
             public void onClick(View v) {
                 //((MainActivity)getActivity()).changeToolbarText("Chat");
                 ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
-                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.profileReview, "ReviewProfile");
+                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "ReviewProfile");
                 AgreedChats agreedChats = new AgreedChats(MyApplication.currentUser.getId(), MyApplication.otherPerson.getId(), MyApplication.dateSelectedKey);
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();

@@ -163,7 +163,7 @@ public class Login extends Fragment {
                     DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
                     myRef.setValue(MyApplication.currentUser);
 
-                    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.loginLayout);
+                    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container);
 
 
 
