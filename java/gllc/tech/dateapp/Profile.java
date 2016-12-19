@@ -1,15 +1,20 @@
 package gllc.tech.dateapp;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -153,6 +158,81 @@ public class Profile extends Fragment {
             public void onClick(View v) {
                 getAlbums();
                 photoToReplace=4;
+            }
+        });
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.full_image);
+
+                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                if (preferences.getString("photo1", "NA").equals("NA")) {
+                    Picasso.with(getContext()).load("https://graph.facebook.com/" + preferences.getString("fid", "NA") + "/picture?type=large").into(imageView);
+                } else {
+                    Picasso.with(getContext()).load(preferences.getString("photo1", "NA")).into(imageView);
+                }
+                dialog.show();
+            }
+        });
+
+        photo2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.full_image);
+
+                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                if (preferences.getString("photo2", "NA").equals("NA")) {
+                    getAlbums();
+                    photoToReplace=2;
+                } else {
+                    Picasso.with(getContext()).load(preferences.getString("photo2", "NA")).into(imageView);
+                }
+                dialog.show();
+            }
+        });
+
+        photo3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.full_image);
+
+                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                if (preferences.getString("photo3", "NA").equals("NA")) {
+                    getAlbums();
+                    photoToReplace=3;
+                } else {
+                    Picasso.with(getContext()).load(preferences.getString("photo3", "NA")).into(imageView);
+                }
+                dialog.show();
+            }
+        });
+
+        photo4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.full_image);
+
+                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                if (preferences.getString("photo4", "NA").equals("NA")) {
+                    getAlbums();
+                    photoToReplace=4;
+                } else {
+                    Picasso.with(getContext()).load(preferences.getString("photo4", "NA")).into(imageView);
+                }
+                dialog.show();
             }
         });
     }
