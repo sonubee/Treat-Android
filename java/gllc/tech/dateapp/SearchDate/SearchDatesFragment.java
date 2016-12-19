@@ -74,26 +74,31 @@ public class SearchDatesFragment extends Fragment {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                //DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
-                //myRef.setValue(true);
 
-                DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" + MyApplication.currentUser.getId());
-                myRef2.setValue(MyApplication.currentUser.getProfilePic());
+                if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    //DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
+                    //myRef.setValue(true);
 
-                dateCounter++;
-                showDate();
+                    DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" + MyApplication.currentUser.getId());
+                    myRef2.setValue(MyApplication.currentUser.getProfilePic());
+
+                    dateCounter++;
+                    showDate();
+                }
             }
         });
 
         no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                //DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
-                //myRef.setValue(false);
-                dateCounter++;
-                showDate();
+                if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    //DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
+                    //myRef.setValue(false);
+                    dateCounter++;
+                    showDate();
+                }
             }
         });
 

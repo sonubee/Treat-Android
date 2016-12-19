@@ -61,6 +61,7 @@ public class MyApplication extends Application {
     public static boolean cameFromPost = false;
     public static boolean cameFromYourDates = false;
     public static String selectedImageUrl = "";
+    public static boolean hasDate = false;
 
 
 

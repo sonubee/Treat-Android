@@ -147,4 +147,9 @@ public class MessageFragment extends Fragment {
 
         MyApplication.cameFromDateReview=false;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

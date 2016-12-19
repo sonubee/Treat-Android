@@ -128,6 +128,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         FragmentTransaction ft = mFragmentManager.beginTransaction();
 
         mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        MyApplication.hasDate = false;
         MyApplication.otherPerson = null;
         MyApplication.dateSelected = null;
         MyApplication.dateSelectedKey = "";
@@ -430,7 +432,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     public void refreshDateReview() {
         FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = manager.findFragmentById(R.id.yourDates);
+        Fragment fragment = manager.findFragmentByTag("DatesReview");
         ((DateReviewFragment) fragment).decideDate();
     }
 

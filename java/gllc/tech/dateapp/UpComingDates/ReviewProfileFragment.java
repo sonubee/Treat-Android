@@ -1,5 +1,7 @@
 package gllc.tech.dateapp.UpComingDates;
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,6 +84,72 @@ public class ReviewProfileFragment extends Fragment {
             Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto4()).into(reviewPhoto4);
         }
 
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.full_image);
+
+                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                if (MyApplication.otherPerson.getPhoto1().equals("NA")) {
+                    Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApplication.otherPerson.getFid() + "/picture?type=large").into(imageView);
+                } else {
+                    Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto1()).into(imageView);
+                }
+                dialog.show();
+            }
+        });
+
+        reviewPhoto2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.full_image);
+
+                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                if (!MyApplication.otherPerson.getPhoto2().equals("NA")) {
+                    Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto2()).into(imageView);
+                }
+                dialog.show();
+            }
+        });
+
+        reviewPhoto3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.full_image);
+
+                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                if (!MyApplication.otherPerson.getPhoto3().equals("NA")) {
+                    Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto3()).into(imageView);
+                }
+                dialog.show();
+            }
+        });
+
+        reviewPhoto4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.full_image);
+
+                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                if (!MyApplication.otherPerson.getPhoto4().equals("NA")) {
+                    Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto4()).into(imageView);
+                }
+                dialog.show();
+            }
+        });
+
         shortBio.setText(MyApplication.otherPerson.getBio());
         name.setText(MyApplication.otherPerson.getName());
 
@@ -122,5 +191,10 @@ public class ReviewProfileFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -109,6 +109,7 @@ public class DateReviewFragment extends Fragment{
 
         else {
             setupDate();
+            MyApplication.hasDate = true;
         }
     }
 
@@ -375,9 +376,12 @@ public class DateReviewFragment extends Fragment{
     public void onDetach() {
         super.onDetach();
 
-        if (MyApplication.dateSelected.getTheDate().equals("NA")) {
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE" + MyApplication.dateSelectedKey);
+
+        if (!MyApplication.hasDate) {
             populateRequestsReference.removeEventListener(childEventListener);
         }
+
         MyApplication.dateSelected = null;
         MyApplication.dateSelectedKey="";
         MyApplication.cameFromDateReview = false;
