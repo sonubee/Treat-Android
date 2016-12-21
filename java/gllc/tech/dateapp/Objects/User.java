@@ -16,11 +16,12 @@ public class User {
     String photo2;
     String photo3;
     String photo4;
+    int karmaPoints;
 
     public User() {
     }
 
-    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4) {
+    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4, int karmaPoints) {
         this.name = name;
         this.email = email;
         this.id = id;
@@ -32,6 +33,7 @@ public class User {
         this.photo2 = photo2;
         this.photo3 = photo3;
         this.photo4 = photo4;
+        this.karmaPoints = karmaPoints;
     }
 
     public String getName() {
@@ -120,5 +122,13 @@ public class User {
 
     public void setPhoto4(String photo4) {
         this.photo4 = photo4;
+    }
+
+    public int getKarmaPoints() {
+        return karmaPoints;
+    }
+
+    public void setKarmaPoints(int karmaPoints) {
+        this.karmaPoints = karmaPoints;
     }
 }

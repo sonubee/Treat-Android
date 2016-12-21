@@ -55,7 +55,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     public void onInt(Bundle savedInstanceState) {
 
-
         materialDesignSetup();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -171,6 +170,11 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 mFragment = new Login();
                 break;
 
+            case 6:
+                getSupportActionBar().setTitle("Completed Dates");
+                mFragment = new CompletedDates();
+                break;
+
             default:
                 mFragment = new MainScreen();
                 break;
@@ -196,6 +200,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add("Upcoming Dates", R.drawable.upcoming);
         mHelpLiveo.add("Messages", R.drawable.message);
         mHelpLiveo.add("Logout", R.drawable.logout);
+        mHelpLiveo.add("Completed Dates", R.drawable.upcoming);
 
 //        mHelpLiveo.addSubHeader(getString(R.string.categories)); //Item subHeader
         //mHelpLiveo.add(getString(R.string.starred), R.mipmap.ic_star_black_24dp);

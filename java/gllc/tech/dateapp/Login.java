@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -46,7 +47,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Objects.AgreedChats;
@@ -68,8 +71,6 @@ public class Login extends Fragment {
     SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,7 +145,7 @@ public class Login extends Fragment {
                     MyApplication.currentUser = new User(preferences.getString("name", "NA"), preferences.getString("email", "NA"), user.getUid(),
                             preferences.getString("gender", "NA"), preferences.getString("profilePic", "NA"), preferences.getString("fid", "NA"),
                             preferences.getString("bio", "NA"), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
-                            preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"));
+                            preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"), preferences.getInt("karmaPoints", 0));
 
                     editor = preferences.edit();
                     editor.putString("id", user.getUid());
@@ -159,6 +160,7 @@ public class Login extends Fragment {
 
                     downloadAgreedChats();
                     downloadDates();
+                    downloadCompletedDates();
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
@@ -270,7 +272,7 @@ public class Login extends Fragment {
                                     MyApplication.currentUser = new User(object.getString("name"), object.getString("email"), "NA", preferences.getString("gender", ""),
                                             "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large", object.getString("id"),
                                             preferences.getString("bio", ""), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
-                                            preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"));
+                                            preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"), preferences.getInt("karmaPoints", 0));
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -352,33 +354,57 @@ public class Login extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 TheDate value = dataSnapshot.getValue(TheDate.class);
                 value.setKey(dataSnapshot.getKey());
-                MyApplication.allDates.add(value);
-                MyApplication.dateHashMap.put(dataSnapshot.getKey(), value);
 
-                if (value.getTheDate().equals(MyApplication.currentUser.getId())){
-                    MyApplication.fullMatchesAsDate.add(value);
-                    MyApplication.fullMatchesAsDateHashMap.put(dataSnapshot.getKey(), value);
+                boolean completed = false;
+
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                    Date strDate = sdf.parse(value.getDateOfDate());
+                    if (System.currentTimeMillis() > strDate.getTime()) {
+
+                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                        DatabaseReference databaseReference = firebaseDatabase.getReference("Dates/"+value.getKey());
+                        databaseReference.removeValue();
+
+                        DatabaseReference databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+value.getKey());
+                        databaseReference1.setValue(value);
+
+
+                        completed = true;
+                    }
+                } catch (Exception e) {
+                    Log.i("--All", "Error from Adding Dates: " + e.getMessage());
                 }
 
-                if (value.getPoster().equals(MyApplication.currentUser.getId()) && !value.getTheDate().equals("NA")){
-                    MyApplication.fullMatchesAsCreator.add(value);
-                    MyApplication.fullMatchesAsCreatorHashMap.put(dataSnapshot.getKey(), value);
-                    //MyApplication.myDate = value;
-                    //MyApplication.myDateKey = dataSnapshot.getKey();
+                if (!completed) {
+                    MyApplication.allDates.add(value);
+                    MyApplication.dateHashMap.put(dataSnapshot.getKey(), value);
+
+                    if (value.getTheDate().equals(MyApplication.currentUser.getId())){
+                        MyApplication.fullMatchesAsDate.add(value);
+                        MyApplication.fullMatchesAsDateHashMap.put(dataSnapshot.getKey(), value);
+                    }
+
+                    if (value.getPoster().equals(MyApplication.currentUser.getId()) && !value.getTheDate().equals("NA")){
+                        MyApplication.fullMatchesAsCreator.add(value);
+                        MyApplication.fullMatchesAsCreatorHashMap.put(dataSnapshot.getKey(), value);
+                        //MyApplication.myDate = value;
+                        //MyApplication.myDateKey = dataSnapshot.getKey();
+                    }
+
+                    if (value.getPoster().equals(MyApplication.currentUser.getId()) && value.getTheDate().equals("NA")){
+                        MyApplication.pendingDates.add(value);
+                        MyApplication.pendingDatesHashMap.put(value.getKey(), value);
+                    }
                 }
 
-                if (value.getPoster().equals(MyApplication.currentUser.getId()) && value.getTheDate().equals("NA")){
-                    MyApplication.pendingDates.add(value);
-                    MyApplication.pendingDatesHashMap.put(value.getKey(), value);
-                }
+
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 TheDate theDate = dataSnapshot.getValue(TheDate.class);
                 theDate.setKey(dataSnapshot.getKey());
-
-
 
                 for (int i=0; i<MyApplication.allDates.size(); i++){
                     if (MyApplication.allDates.get(i).getKey().equals(dataSnapshot.getKey())){
@@ -488,6 +514,57 @@ public class Login extends Fragment {
                 MyApplication.pendingDatesHashMap.remove(dataSnapshot.getKey());
                 MyApplication.fullMatchesAsCreatorHashMap.remove(dataSnapshot.getKey());
                 MyApplication.combinesDatesHashMap.remove(dataSnapshot.getKey());
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void downloadCompletedDates(){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates");
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                TheDate completedDate = dataSnapshot.getValue(TheDate.class);
+
+                MyApplication.allDates.add(completedDate);
+                if (completedDate.getPoster().equals(MyApplication.currentUser.getId()) || completedDate.getTheDate().equals(MyApplication.currentUser.getId())) {
+                    MyApplication.completedDates.add(completedDate);
+
+                    if (completedDate.isPosterKarma() && completedDate.isTheDateKarma()) {
+                        int karma = MyApplication.currentUser.getKarmaPoints();
+                        MyApplication.currentUser.setKarmaPoints(karma++);
+                        MyApplication.karmaAccounted.put(completedDate.getKey(), true);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                TheDate completedDate = dataSnapshot.getValue(TheDate.class);
+
+                if (completedDate.getPoster().equals(MyApplication.currentUser.getId()) || completedDate.getTheDate().equals(MyApplication.currentUser.getId())) {
+                    if (completedDate.isPosterKarma() && completedDate.isTheDateKarma()) {
+                        int karma = MyApplication.currentUser.getKarmaPoints();
+                        MyApplication.currentUser.setKarmaPoints(karma++);
+                        MyApplication.karmaAccounted.put(completedDate.getKey(), true);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
 

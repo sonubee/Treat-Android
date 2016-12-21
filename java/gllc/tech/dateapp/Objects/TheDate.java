@@ -14,11 +14,13 @@ public class TheDate {
     String dateTitle;
     String key;
     ArrayList<EventsOfDate> events;
+    boolean posterKarma;
+    boolean theDateKarma;
 
     public TheDate() {
     }
 
-    public TheDate(String poster, String theDate, String dateCreated, String dateOfDate, String dateTitle, String key, ArrayList<EventsOfDate> events) {
+    public TheDate(String poster, String theDate, String dateCreated, String dateOfDate, String dateTitle, String key, ArrayList<EventsOfDate> events, boolean posterKarma, boolean theDateKarma) {
         this.poster = poster;
         this.theDate = theDate;
         this.dateCreated = dateCreated;
@@ -26,6 +28,8 @@ public class TheDate {
         this.dateTitle = dateTitle;
         this.key = key;
         this.events = events;
+        this.posterKarma = posterKarma;
+        this.theDateKarma = theDateKarma;
     }
 
     public String getPoster() {
@@ -84,7 +88,18 @@ public class TheDate {
         this.events = events;
     }
 
+    public boolean isPosterKarma() {return posterKarma;}
 
+    public void setPosterKarma(boolean posterKarma) {
+        this.posterKarma = posterKarma;
+    }
 
+    public boolean isTheDateKarma() {
+        return theDateKarma;
+    }
+
+    public void setTheDateKarma(boolean theDateKarma) {
+        this.theDateKarma = theDateKarma;
+    }
 
 }

@@ -62,14 +62,14 @@ public class MyApplication extends Application {
     public static boolean cameFromYourDates = false;
     public static String selectedImageUrl = "";
     public static boolean hasDate = false;
-
-
+    public static ArrayList<TheDate> completedDates = new ArrayList<>();
+    public static HashMap<String, Boolean> karmaAccounted = new HashMap<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        currentUser = new User("Name", "Email", "FID", "Gender", "Profile Pic", "ID", "Bio", "NA", "NA", "NA", "NA");
+        currentUser = new User("Name", "Email", "FID", "Gender", "Profile Pic", "ID", "Bio", "NA", "NA", "NA", "NA", 0);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);

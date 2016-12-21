@@ -108,7 +108,7 @@ public class SearchDatesFragment extends Fragment {
 
     public void showDate(){
 
-        if (dateCounter < MyApplication.allDates.size() || dateCounter == 0){
+        if (dateCounter < MyApplication.allDates.size() && MyApplication.allDates.size() > 0){
 
             if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())){
                 FirebaseDatabase database2 = FirebaseDatabase.getInstance();

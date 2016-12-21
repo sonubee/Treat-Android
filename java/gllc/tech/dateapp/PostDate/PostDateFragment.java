@@ -104,7 +104,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                     String currentDateandTime = sdf.format(new Date());
 
-                    TheDate newDate = new TheDate(MyApplication.currentUser.getId(), "NA", currentDateandTime, theDateString, titleDate.getText().toString(), "NA", listOfEvents);
+                    TheDate newDate = new TheDate(MyApplication.currentUser.getId(), "NA", currentDateandTime, theDateString, titleDate.getText().toString(), "NA", listOfEvents, false, false);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference("Dates");
