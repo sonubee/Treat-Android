@@ -42,6 +42,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -71,10 +72,13 @@ public class Login extends Fragment {
     SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    boolean loggedInFacebook = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        downloadUsers();
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -142,14 +146,23 @@ public class Login extends Fragment {
                     Log.i("--All", "Logged in through Firebase");
                     // User is signed in
 
-                    MyApplication.currentUser = new User(preferences.getString("name", "NA"), preferences.getString("email", "NA"), user.getUid(),
-                            preferences.getString("gender", "NA"), preferences.getString("profilePic", "NA"), preferences.getString("fid", "NA"),
-                            preferences.getString("bio", "NA"), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
-                            preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"), preferences.getInt("karmaPoints", 0));
+                    if (preferences.getString("id", "NA").equals("NA")) {
+                        Log.i("--All", "Inside Not Found");
+                        MyApplication.currentUser = new User(preferences.getString("name", "NA"), preferences.getString("email", "NA"), user.getUid(),
+                                preferences.getString("gender", "NA"), preferences.getString("profilePic", "NA"), preferences.getString("fid", "NA"),
+                                preferences.getString("bio", "NA"), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
+                                preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"), preferences.getInt("karmaPoints", 0));
 
-                    editor = preferences.edit();
-                    editor.putString("id", user.getUid());
-                    editor.apply();
+                        editor = preferences.edit();
+                        editor.putString("id", user.getUid());
+                        editor.apply();
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
+                        myRef.setValue(MyApplication.currentUser);
+                    }
+
+
 
                     MyApplication.agreedChats.clear();
                     MyApplication.allDates.clear();
@@ -158,17 +171,9 @@ public class Login extends Fragment {
                     MyApplication.fullMatchesAsDate.clear();
                     MyApplication.pendingDates.clear();
 
-                    downloadAgreedChats();
-                    downloadDates();
-                    downloadCompletedDates();
-
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
-                    myRef.setValue(MyApplication.currentUser);
-
-                    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
-
-
+                    if (loggedInFacebook) {
+                        ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    }
 
                 } else {
                     // User is signed out
@@ -240,6 +245,7 @@ public class Login extends Fragment {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                loggedInFacebook=true;
                 // App code
                 editor = preferences.edit();
                 Toast.makeText(getContext(), "Successful Login", Toast.LENGTH_LONG).show();
@@ -269,10 +275,13 @@ public class Login extends Fragment {
                                     editor.putString("profilePic", "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large");
                                     editor.apply();
 
-                                    MyApplication.currentUser = new User(object.getString("name"), object.getString("email"), "NA", preferences.getString("gender", ""),
-                                            "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large", object.getString("id"),
-                                            preferences.getString("bio", ""), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
-                                            preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"), preferences.getInt("karmaPoints", 0));
+                                    if (preferences.getString("id", "NA").equals("NA")) {
+                                        MyApplication.currentUser = new User(object.getString("name"), object.getString("email"), "NA", preferences.getString("gender", ""),
+                                                "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large", object.getString("id"),
+                                                preferences.getString("bio", ""), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
+                                                preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"), preferences.getInt("karmaPoints", 0));
+                                    }
+
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -559,6 +568,68 @@ public class Login extends Fragment {
                         int karma = MyApplication.currentUser.getKarmaPoints();
                         MyApplication.currentUser.setKarmaPoints(karma++);
                         MyApplication.karmaAccounted.put(completedDate.getKey(), true);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void downloadUsers(){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Users");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                downloadAgreedChats();
+                downloadDates();
+                downloadCompletedDates();
+
+                ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                MyApplication.allUsers.add(user);
+                MyApplication.userHashMap.put(user.getId(), user);
+                if (user.getId().equals(preferences.getString("id", "NA"))) {
+                    MyApplication.currentUser = user;
+                    MyApplication.foundUser=true;
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+
+                for (int i=0;i<MyApplication.allUsers.size();i++) {
+                    if (MyApplication.allUsers.get(i).getId().equals(user.getId())) {
+                        MyApplication.allUsers.set(i, user);
+                        MyApplication.userHashMap.put(user.getId(), user);
                     }
                 }
             }

@@ -2,7 +2,9 @@ package gllc.tech.dateapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -51,6 +53,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     private float x1,x2;
     static final int MIN_DISTANCE = 150;
     private GoogleApiClient mGoogleApiClient;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     public void onInt(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mActionBarToolbar);
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -69,56 +75,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 //.addApi(A)
                 .enableAutoManage(this, this)
                 .build();
-
-
-        downloadUsers();
     }
-
-    public void downloadUsers(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Users");
-
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                MyApplication.allUsers.add(user);
-                MyApplication.userHashMap.put(user.getId(), user);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-
-                for (int i=0;i<MyApplication.allUsers.size();i++) {
-                    if (MyApplication.allUsers.get(i).getId().equals(user.getId())) {
-                        MyApplication.allUsers.set(i, user);
-                        MyApplication.userHashMap.put(user.getId(), user);
-                    }
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
-
-
-
 
     @Override
     public void onItemClick(int position) {

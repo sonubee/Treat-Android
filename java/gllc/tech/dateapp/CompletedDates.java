@@ -55,6 +55,8 @@ public class CompletedDates extends Fragment {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
 
+                                Log.i("--All", "Current Karma: "+MyApplication.currentUser.getKarmaPoints());
+
                                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
                                 if (MyApplication.completedDates.get(position).getPoster().equals(MyApplication.currentUser.getId())) {
@@ -90,6 +92,7 @@ public class CompletedDates extends Fragment {
                                     databaseReference.setValue(true);
 
                                     if (MyApplication.completedDates.get(position).isPosterKarma() && MyApplication.completedDates.get(position).isTheDateKarma()) {
+                                        Log.i("--All", "Karma Here: " + MyApplication.currentUser.getKarmaPoints());
                                         int karma = MyApplication.currentUser.getKarmaPoints();
                                         karma++;
                                         MyApplication.currentUser.setKarmaPoints(karma);
@@ -98,13 +101,15 @@ public class CompletedDates extends Fragment {
                                         editor.putInt("karmaPoints", karma);
                                         editor.apply();
 
+                                        Log.i("--All", "int Karma: " + karma);
+
                                         DatabaseReference databaseReference1 = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/karmaPoints");
                                         databaseReference1.setValue(karma);
 
                                         int posterKarma = MyApplication.userHashMap.get(MyApplication.completedDates.get(position).getPoster()).getKarmaPoints();
                                         posterKarma++;
                                         DatabaseReference databaseReference2 = firebaseDatabase.getReference("Users/"+MyApplication.completedDates.get(position).
-                                                getTheDate()+"/karmaPoints");
+                                                getPoster()+"/karmaPoints");
                                         databaseReference2.setValue(posterKarma);
                                     }
                                 }
