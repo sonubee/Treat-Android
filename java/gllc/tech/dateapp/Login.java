@@ -611,7 +611,7 @@ public class Login extends Fragment {
                     ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
                 }
 
-                downloadAgreedChats();
+                //downloadAgreedChats();
                 downloadDates();
                 downloadCompletedDates();
 
