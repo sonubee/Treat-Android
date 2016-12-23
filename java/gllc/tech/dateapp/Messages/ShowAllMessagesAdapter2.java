@@ -100,12 +100,12 @@ public class ShowAllMessagesAdapter2 extends ArrayAdapter<AgreedChats>{
 
         else {
             for (int j=0; j < MyApplication.allUsers.size(); j++){
-                if (MyApplication.allUsers.get(j).getId().equals(MyApplication.agreedChats.get(position).getPoster())){
+                if (MyApplication.allUsers.get(j).getId().equals(agreedChatsArrayList.get(position).getPoster())){
                     name.setText(MyApplication.allUsers.get(j).getName());
                     Picasso.with(context).load(MyApplication.allUsers.get(j).getProfilePic()).into(image);
 
                     for (int k=0; k<MyApplication.allDates.size(); k++){
-                        if (MyApplication.allDates.get(k).getKey().equals(MyApplication.agreedChats.get(position).getDateKey())){
+                        if (MyApplication.allDates.get(k).getKey().equals(agreedChatsArrayList.get(position).getDateKey())){
                             title.setText(MyApplication.allDates.get(k).getDateTitle());
                         }
                     }

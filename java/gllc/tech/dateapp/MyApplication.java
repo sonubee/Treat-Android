@@ -36,7 +36,7 @@ public class MyApplication extends Application {
     //public static ArrayList<String> pendingDatesKeys = new ArrayList<>();
     public static HashMap<String, Boolean> matchMap = new HashMap<>();
     public static ArrayList<User> allUsers = new ArrayList<>();
-    public static ArrayList<AgreedChats> agreedChats = new ArrayList<>();
+    //public static ArrayList<AgreedChats> agreedChats = new ArrayList<>();
     public static TheDate dateSelected = new TheDate();
     public static User otherPerson = new User();
     public static String dateSelectedKey = "";

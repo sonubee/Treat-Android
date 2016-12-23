@@ -15,8 +15,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.MainActivity;
 import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.Message;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
@@ -50,12 +54,19 @@ public class MessageFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         MyApplication.visitedMessages=true;
-
+/*
         for (int i =0; i <MyApplication.agreedChats.size(); i++){
             if (MyApplication.agreedChats.get(i).getDateKey().equals(MyApplication.dateSelectedKey)){
                 messageKey = MyApplication.agreedChats.get(i).getPoster() + MyApplication.agreedChats.get(i).getRequester();
             }
         }
+*/
+        //messageKey = MyApplication.dateSelected.getPoster() + MyApplication.dateSelected.getTheDate();
+        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE1"+MyApplication.dateSelected.getPoster());
+        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE2"+MyApplication.dateSelected.getTheDate());
+        //Log.i("--All", "Message Key: "+messageKey);
+
+
     }
 
     @Nullable
@@ -94,10 +105,26 @@ public class MessageFragment extends Fragment {
         Picasso.with(getContext()).load(MyApplication.currentUser.getProfilePic()).into(youImage);
         Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(otherImage);
 
-        adapter = new MessageAdapter(getContext(), R.id.listviewMessaging, messageArrayList);
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("AgreedChats/"+MyApplication.currentUser.getId()+"/"+MyApplication.dateSelectedKey);
 
-        messageListview = (ListView) getActivity().findViewById(R.id.listviewMessaging);
-        messageListview.setAdapter(adapter);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                AgreedChats agreedChats = dataSnapshot.getValue(AgreedChats.class);
+                messageKey = agreedChats.getPoster()+agreedChats.getRequester();
+
+                adapter = new MessageAdapter(getContext(), R.id.listviewMessaging, messageArrayList);
+
+                messageListview = (ListView) getActivity().findViewById(R.id.listviewMessaging);
+                messageListview.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 

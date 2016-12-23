@@ -172,7 +172,7 @@ public class ReviewProfileFragment extends Fragment {
                 databaseReference.setValue(agreedChats);
 
                 MyApplication.justPosted = true;
-                MyApplication.agreedChats.add(agreedChats);
+                //MyApplication.agreedChats.add(agreedChats);
 
 
             }

@@ -68,7 +68,7 @@ public class Login extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MyApplication.agreedChats.clear();
+        //MyApplication.agreedChats.clear();
         MyApplication.allDates.clear();
         MyApplication.combinedDates.clear();
         MyApplication.fullMatchesAsCreator.clear();
@@ -300,7 +300,7 @@ public class Login extends Fragment {
         });
     }
 
-
+/*
     public void downloadAgreedChats(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("AgreedChats/" + MyApplication.currentUser.getId());
@@ -341,6 +341,7 @@ public class Login extends Fragment {
             }
         });
     }
+    */
     public void downloadDates() {
 
         MyApplication.allDates.clear();
@@ -426,12 +427,12 @@ public class Login extends Fragment {
                             if (MyApplication.combinedDates.get(j).getKey().equals(dataSnapshot.getKey())) {
                                 MyApplication.combinedDates.remove(j);
                                 MyApplication.combinesDatesHashMap.remove(dataSnapshot.getKey());
-
+/*
                                 for (int k=0; k<MyApplication.agreedChats.size(); k++){
                                     if (MyApplication.agreedChats.get(k).getDateKey().equals(dataSnapshot.getKey())){
                                         MyApplication.agreedChats.remove(k);
                                     }
-                                }
+                                }*/
                                 YourDatesFragment.adapter.notifyDataSetChanged();
                                 Log.i("--All", "Removing Match as Date");
                             }
@@ -536,7 +537,7 @@ public class Login extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 TheDate completedDate = dataSnapshot.getValue(TheDate.class);
 
-                MyApplication.allDates.add(completedDate);
+                //MyApplication.allDates.add(completedDate);
                 if (completedDate.getPoster().equals(MyApplication.currentUser.getId()) || completedDate.getTheDate().equals(MyApplication.currentUser.getId())) {
                     MyApplication.completedDates.add(completedDate);
 
