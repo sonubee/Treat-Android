@@ -42,8 +42,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Profile extends Fragment {
 
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+    //SharedPreferences preferences;
+    //SharedPreferences.Editor editor;
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
     ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;
@@ -65,7 +65,7 @@ public class Profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.third_profile, container, false);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        //preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         profileImage = (CircleImageView)view.findViewById(R.id.userPicture);
         name = (TextView)view.findViewById(R.id.nameUser);
@@ -92,7 +92,8 @@ public class Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        name.setText(preferences.getString("name", "NA"));
+        //name.setText(preferences.getString("name", "NA"));
+        name.setText(MyApplication.currentUser.getName());
 
         karmaPoints.setText(MyApplication.currentUser.getKarmaPoints() + " Karma Points");
 
@@ -102,23 +103,24 @@ public class Profile extends Fragment {
         editPhoto3.setImageResource(R.drawable.edit);
         editPhoto4.setImageResource(R.drawable.edit);
 
-        bio.setText(preferences.getString("bio", "Enter Short Bio Here!"));
+//        bio.setText(preferences.getString("bio", "Enter Short Bio Here!"));
+        bio.setText(MyApplication.currentUser.getBio());
 
         editBio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                getAlbums();
                 if (!editingBio) {
-                    enterBio.setText(preferences.getString("bio",""));
+                    //enterBio.setText(preferences.getString("bio",""));
+                    enterBio.setText(MyApplication.currentUser.getBio());
                     bio.setVisibility(View.INVISIBLE);
                     enterBio.setVisibility(View.VISIBLE);
                     editBio.setImageResource(R.drawable.save);
                     editingBio=true;
                 } else {
-                    editor = preferences.edit();
-                    editor.putString("bio", enterBio.getText().toString());
-                    editor.apply();
+                    //editor = preferences.edit();
+                    //editor.putString("bio", enterBio.getText().toString());
+                    //editor.apply();
+                    MyApplication.currentUser.setBio(enterBio.getText().toString());
                     bio.setText(enterBio.getText().toString());
                     bio.setVisibility(View.VISIBLE);
                     enterBio.setVisibility(View.INVISIBLE);
@@ -173,10 +175,10 @@ public class Profile extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
-                if (preferences.getString("photo1", "NA").equals("NA")) {
-                    Picasso.with(getContext()).load("https://graph.facebook.com/" + preferences.getString("fid", "NA") + "/picture?type=large").into(imageView);
+                if (MyApplication.currentUser.getPhoto1().equals("NA")) {
+                    Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApplication.currentUser.getFid() + "/picture?type=large").into(imageView);
                 } else {
-                    Picasso.with(getContext()).load(preferences.getString("photo1", "NA")).into(imageView);
+                    Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto1()).into(imageView);
                 }
                 dialog.show();
             }
@@ -191,11 +193,11 @@ public class Profile extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
-                if (preferences.getString("photo2", "NA").equals("NA")) {
+                if (MyApplication.currentUser.getPhoto2().equals("NA")) {
                     getAlbums();
                     photoToReplace=2;
                 } else {
-                    Picasso.with(getContext()).load(preferences.getString("photo2", "NA")).into(imageView);
+                    Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto2()).into(imageView);
                 }
                 dialog.show();
             }
@@ -210,11 +212,11 @@ public class Profile extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
-                if (preferences.getString("photo3", "NA").equals("NA")) {
+                if (MyApplication.currentUser.getPhoto3().equals("NA")) {
                     getAlbums();
                     photoToReplace=3;
                 } else {
-                    Picasso.with(getContext()).load(preferences.getString("photo3", "NA")).into(imageView);
+                    Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto3()).into(imageView);
                 }
                 dialog.show();
             }
@@ -229,11 +231,11 @@ public class Profile extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
-                if (preferences.getString("photo4", "NA").equals("NA")) {
+                if (MyApplication.currentUser.getPhoto4().equals("NA")) {
                     getAlbums();
                     photoToReplace=4;
                 } else {
-                    Picasso.with(getContext()).load(preferences.getString("photo4", "NA")).into(imageView);
+                    Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto4()).into(imageView);
                 }
                 dialog.show();
             }
@@ -241,28 +243,28 @@ public class Profile extends Fragment {
     }
 
     public void loadImages() {
-        if (preferences.getString("photo1", "NA").equals("NA")) {
-            Picasso.with(getContext()).load("https://graph.facebook.com/" + preferences.getString("fid", "NA") + "/picture?type=large").into(profileImage);
+        if (MyApplication.currentUser.getPhoto1().equals("NA")) {
+            Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApplication.currentUser.getFid() + "/picture?type=large").into(profileImage);
         } else {
-            Picasso.with(getContext()).load(preferences.getString("photo1", "NA")).into(profileImage);
+            Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto1()).into(profileImage);
         }
 
-        if (preferences.getString("photo2", "NA").equals("NA")) {
+        if (MyApplication.currentUser.getPhoto2().equals("NA")) {
             photo2.setImageResource(R.drawable.placeholder);
         } else {
-            Picasso.with(getContext()).load(preferences.getString("photo2", "NA")).into(photo2);
+            Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto2()).into(photo2);
         }
 
-        if (preferences.getString("photo3", "NA").equals("NA")) {
+        if (MyApplication.currentUser.getPhoto3().equals("NA")) {
             photo3.setImageResource(R.drawable.placeholder);
         } else {
-            Picasso.with(getContext()).load(preferences.getString("photo3", "NA")).into(photo3);
+            Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto3()).into(photo3);
         }
 
-        if (preferences.getString("photo4", "NA").equals("NA")) {
+        if (MyApplication.currentUser.getPhoto4().equals("NA")) {
             photo4.setImageResource(R.drawable.placeholder);
         } else {
-            Picasso.with(getContext()).load(preferences.getString("photo4", "NA")).into(photo4);
+            Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto4()).into(photo4);
         }
 
     }

@@ -73,7 +73,7 @@ public class DisplayFacebookAlbums extends Fragment {
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
-                        Log.i("--All", "Response: " + response.toString());
+                        //Log.i("--All", "Response: " + response.toString());
                         try {
                             if (response.getError() == null) {
                                 JSONObject joMain = response.getJSONObject();
@@ -84,12 +84,12 @@ public class DisplayFacebookAlbums extends Fragment {
                                         JSONArray jaImages = joAlbum.getJSONArray("images");
                                         if (jaImages.length() > 0) {
                                             imageURLs.add(jaImages.getJSONObject(0).getString("source"));
-                                            Log.i("--All", "Picture Link: "+jaImages.getJSONObject(0).getString("source"));
-                                            Log.i("--All", "Size Now: " + imageURLs.size());
+                                            //Log.i("--All", "Picture Link: "+jaImages.getJSONObject(0).getString("source"));
+                                            //Log.i("--All", "Size Now: " + imageURLs.size());
                                         }
                                     }
                                     //set your adapter here
-                                    Log.i("--All", "Album Size: "+imageURLs.size());
+                                    //Log.i("--All", "Album Size: "+imageURLs.size());
                                     ((MainActivity)getActivity()).addFragments(DisplayAlbumImages.class, R.id.container, "Test");
 
                                 }

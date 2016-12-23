@@ -24,8 +24,8 @@ public class ChooseFBPhoto extends Fragment {
 
     ImageView imageView;
     Button selectButton;
-    SharedPreferences.Editor editor;
-    SharedPreferences preferences;
+    //SharedPreferences.Editor editor;
+    //SharedPreferences preferences;
 
     @Nullable
     @Override
@@ -37,7 +37,7 @@ public class ChooseFBPhoto extends Fragment {
 
         Picasso.with(getContext()).load(MyApplication.selectedImageUrl).into(imageView);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        //preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         return view;
     }
@@ -49,7 +49,7 @@ public class ChooseFBPhoto extends Fragment {
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor = preferences.edit();
+                //editor = preferences.edit();
 
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -57,26 +57,30 @@ public class ChooseFBPhoto extends Fragment {
                 if (Profile.photoToReplace == 1) {
                     DatabaseReference databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/photo1");
                     databaseReference.setValue(MyApplication.selectedImageUrl);
-                    editor.putString("photo1", MyApplication.selectedImageUrl);
-                    editor.apply();
+                    MyApplication.currentUser.setPhoto1(MyApplication.selectedImageUrl);
+                    //editor.putString("photo1", MyApplication.selectedImageUrl);
+                    //editor.apply();
                 }
                 if (Profile.photoToReplace == 2) {
                     DatabaseReference databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/photo2");
                     databaseReference.setValue(MyApplication.selectedImageUrl);
-                    editor.putString("photo2", MyApplication.selectedImageUrl);
-                    editor.apply();
+                    MyApplication.currentUser.setPhoto2(MyApplication.selectedImageUrl);
+                    //editor.putString("photo2", MyApplication.selectedImageUrl);
+                    //editor.apply();
                 }
                 if (Profile.photoToReplace == 3) {
                     DatabaseReference databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/photo3");
                     databaseReference.setValue(MyApplication.selectedImageUrl);
-                    editor.putString("photo3", MyApplication.selectedImageUrl);
-                    editor.apply();
+                    MyApplication.currentUser.setPhoto3(MyApplication.selectedImageUrl);
+                    //editor.putString("photo3", MyApplication.selectedImageUrl);
+                    //editor.apply();
                 }
                 if (Profile.photoToReplace == 4) {
                     DatabaseReference databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/photo4");
                     databaseReference.setValue(MyApplication.selectedImageUrl);
-                    editor.putString("photo4", MyApplication.selectedImageUrl);
-                    editor.apply();
+                    MyApplication.currentUser.setPhoto4(MyApplication.selectedImageUrl);
+                    //editor.putString("photo4", MyApplication.selectedImageUrl);
+                    //editor.apply();
                 }
 
                 ((MainActivity)getActivity()).popAllFragments();
