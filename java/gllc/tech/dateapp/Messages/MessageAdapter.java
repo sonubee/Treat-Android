@@ -45,8 +45,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         myRef.addChildEventListener(childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
                 Message message = dataSnapshot.getValue(Message.class);
                 messageArrayList.add(message);
+                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEEDownloading MEssageKey"+dataSnapshot.getKey());
+                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEEDownloading MEssageValue"+dataSnapshot.getValue().toString());
+                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEEDownloading MEssage"+message.getMessage());
                 notifyDataSetChanged();
             }
 
@@ -79,6 +83,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         View view = inflater.inflate(R.layout.message_adapter, parent, false);
 
         TextView text = (TextView) view.findViewById(R.id.message_text);
+
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+MyApplication.otherPerson.getName());
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+messageArrayList.get(position).getSender());
 
         if (messageArrayList.get(position).getSender().equals(MyApplication.otherPerson.getId())){
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)text.getLayoutParams();
