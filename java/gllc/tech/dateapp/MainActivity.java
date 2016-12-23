@@ -123,8 +123,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
             case 5:
                 LoginManager.getInstance().logOut();
-                Login.loggedInFacebook=false;
-                Login.clickedLogout=true;
                 getSupportActionBar().setTitle("Login");
                 mFragment = new Login();
                 break;

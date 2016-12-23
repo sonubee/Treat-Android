@@ -72,8 +72,6 @@ public class Login extends Fragment {
     SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    public static boolean loggedInFacebook = false;
-    public static boolean clickedLogout = false;
     boolean doneDownloading=false;
 
     @Override
@@ -153,9 +151,6 @@ public class Login extends Fragment {
                     Log.i("--All", "Logged in through Firebase");
                     // User is signed in
 
-
-
-
                     if (preferences.getString("id", "NA").equals("NA")) {
                         Log.i("--All", "Inside Not Found");
                         MyApplication.currentUser = new User(preferences.getString("name", "NA"), preferences.getString("email", "NA"), user.getUid(),
@@ -172,10 +167,10 @@ public class Login extends Fragment {
                         myRef.setValue(MyApplication.currentUser);
                     }
 
-                    if (!clickedLogout) {
+                    //if (!clickedLogout) {
                         downloadUsers();
-                    }
-                    
+                    //}
+
                     //if (loggedInFacebook && doneDownloading) {
                     //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
                     //}
@@ -254,8 +249,6 @@ public class Login extends Fragment {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                clickedLogout=false;
-                loggedInFacebook=true;
 
                 // App code
                 editor = preferences.edit();
@@ -275,14 +268,11 @@ public class Login extends Fragment {
                                     GraphResponse response) {
                                 try {
 
-                                    String email = object.getString("email");
-
                                     editor.putString("accessToken", accessToken.getToken());
-                                    editor.putString("email",email);
+                                    editor.putString("email",object.getString("email"));
                                     editor.putString("fid", object.getString("id"));
                                     editor.putString("name", object.getString("name"));
                                     editor.putString("gender", object.getString("gender"));
-                                    editor.putString("profilePic", "test");
                                     editor.putString("profilePic", "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large");
                                     editor.apply();
 

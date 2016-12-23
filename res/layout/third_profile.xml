@@ -177,7 +177,8 @@
         />
 
     <CheckBox
-        android:buttonTint="@color/colorAccent"
+        android:background="#000"
+        android:buttonTint="#FFF"
         android:textColor="#FFF"
         android:text="Women"
         android:layout_width="wrap_content"
