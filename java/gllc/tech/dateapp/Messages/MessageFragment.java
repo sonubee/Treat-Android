@@ -49,6 +49,8 @@ public class MessageFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE222"+MyApplication.otherPerson.getProfilePic());
+
         MyApplication.visitedMessages=true;
 
         for (int i =0; i <MyApplication.agreedChats.size(); i++){
@@ -56,6 +58,9 @@ public class MessageFragment extends Fragment {
                 messageKey = MyApplication.agreedChats.get(i).getPoster() + MyApplication.agreedChats.get(i).getRequester();
             }
         }
+
+
+        //MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
     }
 
     @Nullable
@@ -91,8 +96,15 @@ public class MessageFragment extends Fragment {
             }
         });
 
+        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE8888" + MyApplication.otherPersonHolder.getProfilePic());
+        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+MyApplication.otherPerson.getProfilePic());
+
+        User temp = ((MainActivity)getActivity()).geteUser();
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE9999" + temp.getProfilePic());
         Picasso.with(getContext()).load(MyApplication.currentUser.getProfilePic()).into(youImage);
         Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(otherImage);
+
+
 
         adapter = new MessageAdapter(getContext(), R.id.listviewMessaging, messageArrayList);
 
