@@ -2,9 +2,7 @@ package gllc.tech.dateapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -26,11 +21,9 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -44,7 +37,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,12 +45,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
-import gllc.tech.dateapp.UpComingDates.ReviewProfileFragment;
-import gllc.tech.dateapp.UpComingDates.YourDatesAdapter;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
@@ -73,6 +62,7 @@ public class Login extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     boolean doneDownloading=false;
+    JSONObject facebookLoginResponseJSONObject;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,7 +110,7 @@ public class Login extends Fragment {
                 if (currentAccessToken != null){
                     Log.i("--All", "Logged in from AccessTokenTracker");
                     Log.i("--All", "Permissions: " + currentAccessToken.getPermissions().toString());
-                    loginButton.setVisibility(View.INVISIBLE);
+
                 }
             }
         };
@@ -146,11 +136,10 @@ public class Login extends Fragment {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
-
                 if (user != null) {
                     Log.i("--All", "Logged in through Firebase");
                     // User is signed in
-
+/*
                     if (preferences.getString("id", "NA").equals("NA")) {
                         Log.i("--All", "Inside Not Found");
                         MyApplication.currentUser = new User(preferences.getString("name", "NA"), preferences.getString("email", "NA"), user.getUid(),
@@ -166,10 +155,9 @@ public class Login extends Fragment {
                         DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
                         myRef.setValue(MyApplication.currentUser);
                     }
+*/
 
-                    //if (!clickedLogout) {
-                        downloadUsers();
-                    //}
+                    downloadUsers(user);
 
                     //if (loggedInFacebook && doneDownloading) {
                     //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
@@ -255,7 +243,6 @@ public class Login extends Fragment {
                 Toast.makeText(getContext(), "Successful Login", Toast.LENGTH_LONG).show();
                 final AccessToken accessToken = loginResult.getAccessToken();
                 Profile profile = Profile.getCurrentProfile();
-                //Log.i("--All", "Profile" + profile.toString());
                 Log.i("--All", "Logged In through FaceBook");
                 handleFacebookAccessToken(loginResult.getAccessToken());
 
@@ -266,8 +253,11 @@ public class Login extends Fragment {
                             public void onCompleted(
                                     JSONObject object,
                                     GraphResponse response) {
-                                try {
 
+                                facebookLoginResponseJSONObject = object;
+                                loginButton.setVisibility(View.INVISIBLE);
+                                /*
+                                try {
                                     editor.putString("accessToken", accessToken.getToken());
                                     editor.putString("email",object.getString("email"));
                                     editor.putString("fid", object.getString("id"));
@@ -287,11 +277,12 @@ public class Login extends Fragment {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                */
                             }
                         });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,birthday");
+                parameters.putString("fields", "id,name,email,birthday,gender");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -587,7 +578,7 @@ public class Login extends Fragment {
         });
     }
 
-    public void downloadUsers(){
+    public void downloadUsers(final FirebaseUser firebaseUser){
 
         Log.i("--All", "Downloading Users");
 
@@ -597,14 +588,33 @@ public class Login extends Fragment {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i("--All", "Done Downloading");
+                doneDownloading=true;
+
+                if (MyApplication.foundUser) {
+                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                } else {
+                    try {
+                        MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
+                                firebaseUser.getUid(), facebookLoginResponseJSONObject.getString("gender"), "https://graph.facebook.com/" +
+                                facebookLoginResponseJSONObject.getString("id") + "/picture?type=large", facebookLoginResponseJSONObject.getString("id"),
+                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0);
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
+                        myRef.setValue(MyApplication.currentUser);
+
+                    } catch (JSONException e) {
+                        Log.i("--All", "Unable to Parse New Facebook User");
+                    }
+
+                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                }
+
                 downloadAgreedChats();
                 downloadDates();
                 downloadCompletedDates();
 
-                Log.i("--All", "Done Downloading");
-                doneDownloading=true;
-
-                ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
             }
 
             @Override
@@ -616,11 +626,11 @@ public class Login extends Fragment {
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                MyApplication.allUsers.add(user);
-                MyApplication.userHashMap.put(user.getId(), user);
-                if (user.getId().equals(preferences.getString("id", "NA"))) {
-                    MyApplication.currentUser = user;
+                User downloadUser = dataSnapshot.getValue(User.class);
+                MyApplication.allUsers.add(downloadUser);
+                MyApplication.userHashMap.put(downloadUser.getId(), downloadUser);
+                if (downloadUser.getId().equals(firebaseUser.getUid())) {
+                    MyApplication.currentUser = downloadUser;
                     MyApplication.foundUser=true;
                 }
             }
