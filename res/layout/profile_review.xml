@@ -31,7 +31,7 @@
         android:text="# Dates Completed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/datesCompleted"
+        android:id="@+id/karmaPointsReview"
         android:layout_below="@+id/nameProfileReview"
         android:layout_alignStart="@+id/nameProfileReview" />
 
@@ -42,8 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/shortBioProfileReview"
-        android:layout_below="@+id/datesCompleted"
-        android:layout_alignStart="@+id/datesCompleted"
+        android:layout_below="@+id/karmaPointsReview"
+        android:layout_alignStart="@+id/karmaPointsReview"
         android:layout_marginTop="11dp" />
 
     <ImageView

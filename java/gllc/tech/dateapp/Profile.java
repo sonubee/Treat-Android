@@ -47,7 +47,7 @@ public class Profile extends Fragment {
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
     ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;
-    TextView name, bio;
+    TextView name, bio, karmaPoints;
     EditText enterBio;
     boolean editingBio = false;
     public static ArrayList<String> albumIds = new ArrayList<>();
@@ -79,6 +79,7 @@ public class Profile extends Fragment {
         photo2 = (ImageView)view.findViewById(R.id.supportImage1);
         photo3 = (ImageView)view.findViewById(R.id.supportImage2);
         photo4 = (ImageView)view.findViewById(R.id.supportImage3);
+        karmaPoints = (TextView)view.findViewById(R.id.profileKarmaPoints);
 
         //Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
 
@@ -92,6 +93,8 @@ public class Profile extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         name.setText(preferences.getString("name", "NA"));
+
+        karmaPoints.setText(MyApplication.currentUser.getKarmaPoints() + " Karma Points");
 
         editBio.setImageResource(R.drawable.edit);
         editPhoto1.setImageResource(R.drawable.edit);

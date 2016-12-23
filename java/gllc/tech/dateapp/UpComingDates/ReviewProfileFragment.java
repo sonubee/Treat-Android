@@ -33,7 +33,7 @@ public class ReviewProfileFragment extends Fragment {
 
     CircleImageView profilePic;
     TextView name;
-    TextView shortBio;
+    TextView shortBio, karmaPoints;
     ImageView chatImage, removeImage;
     ImageView reviewPhoto2,reviewPhoto3,reviewPhoto4;
 
@@ -60,6 +60,7 @@ public class ReviewProfileFragment extends Fragment {
         shortBio = (TextView)view.findViewById(R.id.shortBioProfileReview);
         chatImage = (ImageView)view.findViewById(R.id.chatImage);
         removeImage = (ImageView)view.findViewById(R.id.removeImage);
+        karmaPoints = (TextView)view.findViewById(R.id.karmaPointsReview);
 
 
         return view;
@@ -68,6 +69,8 @@ public class ReviewProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        karmaPoints.setText(MyApplication.otherPerson.getKarmaPoints() + " Karma Points");
 
         if (MyApplication.otherPerson.getPhoto1().equals("NA")) {
             Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(profilePic);

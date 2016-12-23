@@ -88,10 +88,10 @@
     <TextView
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFF"
-        android:text="# Dates Enjoyed"
+        android:text="# Karma Points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3"
+        android:id="@+id/profileKarmaPoints"
         android:layout_marginTop="11dp"
         android:layout_below="@+id/nameUser"
         android:layout_alignStart="@+id/nameUser" />
@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/profileKarmaPoints"
         android:layout_toEndOf="@+id/userPicture"
         android:layout_marginTop="16dp"
         android:id="@+id/bioEditText"

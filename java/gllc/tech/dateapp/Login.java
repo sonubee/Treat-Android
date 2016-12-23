@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,18 +68,24 @@ public class Login extends Fragment {
 
     public static CallbackManager callbackManager;
     private LoginButton loginButton;
-    Bitmap bitmap;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    boolean loggedInFacebook = false;
+    public static boolean loggedInFacebook = false;
+    public static boolean clickedLogout = false;
+    boolean doneDownloading=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        downloadUsers();
+        MyApplication.agreedChats.clear();
+        MyApplication.allDates.clear();
+        MyApplication.combinedDates.clear();
+        MyApplication.fullMatchesAsCreator.clear();
+        MyApplication.fullMatchesAsDate.clear();
+        MyApplication.pendingDates.clear();
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -146,6 +153,9 @@ public class Login extends Fragment {
                     Log.i("--All", "Logged in through Firebase");
                     // User is signed in
 
+
+
+
                     if (preferences.getString("id", "NA").equals("NA")) {
                         Log.i("--All", "Inside Not Found");
                         MyApplication.currentUser = new User(preferences.getString("name", "NA"), preferences.getString("email", "NA"), user.getUid(),
@@ -162,18 +172,13 @@ public class Login extends Fragment {
                         myRef.setValue(MyApplication.currentUser);
                     }
 
-
-
-                    MyApplication.agreedChats.clear();
-                    MyApplication.allDates.clear();
-                    MyApplication.combinedDates.clear();
-                    MyApplication.fullMatchesAsCreator.clear();
-                    MyApplication.fullMatchesAsDate.clear();
-                    MyApplication.pendingDates.clear();
-
-                    if (loggedInFacebook) {
-                        ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    if (!clickedLogout) {
+                        downloadUsers();
                     }
+                    
+                    //if (loggedInFacebook && doneDownloading) {
+                    //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    //}
 
                 } else {
                     // User is signed out
@@ -187,6 +192,10 @@ public class Login extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
@@ -245,7 +254,9 @@ public class Login extends Fragment {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                clickedLogout=false;
                 loggedInFacebook=true;
+
                 // App code
                 editor = preferences.edit();
                 Toast.makeText(getContext(), "Successful Login", Toast.LENGTH_LONG).show();
@@ -298,13 +309,11 @@ public class Login extends Fragment {
             @Override
             public void onCancel() {
                 // App code
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE88");
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE9999");
             }
 
         });
@@ -439,7 +448,6 @@ public class Login extends Fragment {
 
                                 for (int k=0; k<MyApplication.agreedChats.size(); k++){
                                     if (MyApplication.agreedChats.get(k).getDateKey().equals(dataSnapshot.getKey())){
-                                        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
                                         MyApplication.agreedChats.remove(k);
                                     }
                                 }
@@ -591,6 +599,8 @@ public class Login extends Fragment {
 
     public void downloadUsers(){
 
+        Log.i("--All", "Downloading Users");
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users");
 
@@ -600,6 +610,9 @@ public class Login extends Fragment {
                 downloadAgreedChats();
                 downloadDates();
                 downloadCompletedDates();
+
+                Log.i("--All", "Done Downloading");
+                doneDownloading=true;
 
                 ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
             }

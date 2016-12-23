@@ -51,13 +51,21 @@ public class CompletedDatesAdapter extends BaseAdapter {
         holder.title.setText(MyApplication.completedDates.get(position).getDateTitle());
         holder.date.setText(MyApplication.completedDates.get(position).getDateOfDate());
 
+        if ((MyApplication.completedDates.get(position).getPoster().equals(MyApplication.currentUser.getId()) &&
+                !MyApplication.completedDates.get(position).isPosterKarma()) || (MyApplication.completedDates.get(position).
+                getTheDate().equals(MyApplication.currentUser.getId()) && !MyApplication.completedDates.get(position).isTheDateKarma())) {
+            holder.status.setText("Click to Set Karma Points!");
+        } else {
+            holder.status.setText("Karma Points Set!");
+        }
+
         for (int i=0; i < MyApplication.allUsers.size(); i++){
             if (MyApplication.allUsers.get(i).getId().equals(MyApplication.completedDates.get(position).getPoster())){
                 holder.createdBy.setText("");
             }
         }
 
-        holder.status.setText("Date Completed");
+
 
         return convertView;
     }
