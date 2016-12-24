@@ -39,7 +39,7 @@ public class ShowAllMessagesAdapter2 extends ArrayAdapter<AgreedChats>{
 
         this.context = context;
         agreedChatsArrayList = agreedChats;
-/*
+
         agreedChatsArrayList.clear();
         notifyDataSetChanged();
 
@@ -74,8 +74,6 @@ public class ShowAllMessagesAdapter2 extends ArrayAdapter<AgreedChats>{
 
             }
         });
-
-        */
     }
 
     @Override
