@@ -32,19 +32,23 @@ public class ShowAllMessagesAdapter2 extends ArrayAdapter<AgreedChats>{
     Context context;
     public static ArrayList<AgreedChats> agreedChatsArrayList = new ArrayList<>();
     public static ChildEventListener childEventListener;
+    public static DatabaseReference myRef;
 
     public ShowAllMessagesAdapter2(Context context, int resource, ArrayList<AgreedChats> agreedChats) {
         super(context, resource, agreedChats);
 
         this.context = context;
         agreedChatsArrayList = agreedChats;
+
+        agreedChatsArrayList.clear();
+        notifyDataSetChanged();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("AgreedChats/" + MyApplication.currentUser.getId());
+        myRef = database.getReference("AgreedChats/" + MyApplication.currentUser.getId());
 
         myRef.addChildEventListener(childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEEAdapter");
                 AgreedChats chat = dataSnapshot.getValue(AgreedChats.class);
                 agreedChatsArrayList.add(chat);
                 notifyDataSetChanged();
@@ -82,9 +86,25 @@ public class ShowAllMessagesAdapter2 extends ArrayAdapter<AgreedChats>{
         TextView title = (TextView)view.findViewById(R.id.titleOfDate);
         CircleImageView image = (CircleImageView)view.findViewById(R.id.profilePicAllMessages);
 
+        if (agreedChatsArrayList.get(position).getPoster().equals(MyApplication.currentUser.getId())) {
+            name.setText(MyApplication.userHashMap.get(agreedChatsArrayList.get(position).getRequester()).getName());
+            Picasso.with(context).load(MyApplication.userHashMap.get(agreedChatsArrayList.get(position).getRequester()).getProfilePic()).into(image);
+        } else {
+            name.setText(MyApplication.userHashMap.get(agreedChatsArrayList.get(position).getPoster()).getName());
+            Picasso.with(context).load(MyApplication.userHashMap.get(agreedChatsArrayList.get(position).getPoster()).getProfilePic()).into(image);
+        }
+
+        if (MyApplication.dateHashMap.containsKey(agreedChatsArrayList.get(position).getDateKey())) {
+            title.setText(MyApplication.dateHashMap.get(agreedChatsArrayList.get(position).getDateKey()).getDateTitle());
+        }
+
+        if (MyApplication.completedDatesHashMap.containsKey(agreedChatsArrayList.get(position).getDateKey())) {
+            title.setText(MyApplication.completedDatesHashMap.get(agreedChatsArrayList.get(position).getDateKey()).getDateTitle());
+        }
+
+        /*
         //for (int i=0; i < MyApplication.agreedChats.size(); i++){
         if (agreedChatsArrayList.get(position).getPoster().equals(MyApplication.currentUser.getId())){
-            //Log.i("--All", "Should be once");
             for (int j=0; j < MyApplication.allUsers.size(); j++){
                 if (MyApplication.allUsers.get(j).getId().equals(agreedChatsArrayList.get(position).getRequester())){
                     name.setText(MyApplication.allUsers.get(j).getName());
@@ -113,7 +133,7 @@ public class ShowAllMessagesAdapter2 extends ArrayAdapter<AgreedChats>{
             }
         }
         //}
-
+*/
         return view;
     }
 }

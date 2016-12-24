@@ -151,13 +151,11 @@ public class MessageFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        Log.i("--All", "On Stop");
         MessageAdapter.myRef.removeEventListener(MessageAdapter.childEventListener);
         MessageAdapter.messageArrayList.clear();
 
         if (!MyApplication.cameFromDateReview){
             MyApplication.otherPerson=null;
-            Log.i("--All", "Set to null");
         }
 
         MyApplication.cameFromDateReview=false;

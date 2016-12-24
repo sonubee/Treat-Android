@@ -25,7 +25,7 @@ public class ShowAllMessages extends Fragment {
 
     ShowAllMessagesAdapter2 adapter;
     ListView listView;
-    public static ArrayList<AgreedChats> agreedChatsArrayList = new ArrayList<>();
+    public static ArrayList<AgreedChats> agreedChatsArrayList;
 
     @Nullable
     @Override
@@ -38,7 +38,11 @@ public class ShowAllMessages extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        agreedChatsArrayList = new ArrayList<>();
+
         adapter = new ShowAllMessagesAdapter2(getContext(), R.id.showAllMessagesListview, agreedChatsArrayList);
+
+        adapter.notifyDataSetChanged();
 
         listView = (ListView) getActivity().findViewById(R.id.showAllMessagesListview);
         listView.setAdapter(adapter);
@@ -47,6 +51,23 @@ public class ShowAllMessages extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                MyApplication.dateSelectedKey = ShowAllMessagesAdapter2.agreedChatsArrayList.get(position).getDateKey();
+
+                if (MyApplication.dateHashMap.containsKey(agreedChatsArrayList.get(position).getDateKey())) {
+                    MyApplication.dateSelected = MyApplication.dateHashMap.get(ShowAllMessagesAdapter2.agreedChatsArrayList.get(position).getDateKey());
+                }
+                if (MyApplication.completedDatesHashMap.containsKey(agreedChatsArrayList.get(position).getDateKey())) {
+                    MyApplication.dateSelected = MyApplication.completedDatesHashMap.get(ShowAllMessagesAdapter2.agreedChatsArrayList.get(position).getDateKey());
+                }
+
+                if (ShowAllMessagesAdapter2.agreedChatsArrayList.get(position).getPoster().equals(MyApplication.currentUser.getId())) {
+                    MyApplication.otherPerson = MyApplication.userHashMap.get(ShowAllMessagesAdapter2.agreedChatsArrayList.get(position).getRequester());
+                } else {
+                    MyApplication.otherPerson = MyApplication.userHashMap.get(ShowAllMessagesAdapter2.agreedChatsArrayList.get(position).getPoster());
+                }
+
+                ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
+/*
                 for (int i = 0; i< MyApplication.allDates.size(); i++)
                 {
                     if (MyApplication.allDates.get(i).getKey().equals(ShowAllMessagesAdapter2.agreedChatsArrayList.get(position).getDateKey())){
@@ -74,8 +95,24 @@ public class ShowAllMessages extends Fragment {
                         }
                     }
                 }
+
+                */
                 ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "ShowAllMessages");
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.i("--All", "On Destroy from SAM");
+        ShowAllMessagesAdapter2.myRef.removeEventListener(ShowAllMessagesAdapter2.childEventListener);
+        ShowAllMessagesAdapter2.agreedChatsArrayList.clear();
+        agreedChatsArrayList.clear();
+        adapter.notifyDataSetChanged();
+        listView.setAdapter(null);
+        listView.invalidateViews();
+
     }
 }

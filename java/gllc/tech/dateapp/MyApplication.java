@@ -64,6 +64,7 @@ public class MyApplication extends Application {
     public static boolean hasDate = false;
     public static ArrayList<TheDate> completedDates = new ArrayList<>();
     public static HashMap<String, Boolean> karmaAccounted = new HashMap<>();
+    public static HashMap<String, TheDate> completedDatesHashMap = new HashMap<>();
     public static boolean foundUser = false;
 
     @Override

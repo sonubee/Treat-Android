@@ -66,7 +66,7 @@ public class CompletedDates extends Fragment {
 
                                     if (MyApplication.completedDates.get(position).getPoster().equals(MyApplication.currentUser.getId())) {
                                         MyApplication.completedDates.get(position).setPosterKarma(true);
-                                        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates/"+MyApplication.completedDates.get(position).
+                                        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates/"+ MyApplication.currentUser.getId() + "/" + MyApplication.completedDates.get(position).
                                                 getKey()+"/posterKarma");
                                         databaseReference.setValue(true);
 

@@ -366,9 +366,14 @@ public class Login extends Fragment {
                         DatabaseReference databaseReference = firebaseDatabase.getReference("Dates/"+value.getKey());
                         databaseReference.removeValue();
 
-                        DatabaseReference databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+value.getKey());
+                        //DatabaseReference databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+value.getKey());
+                        //databaseReference1.setValue(value);
+
+                        DatabaseReference databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+ value.getPoster() + "/" + value.getKey());
                         databaseReference1.setValue(value);
 
+                        databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+ value.getTheDate() + "/" + value.getKey());
+                        databaseReference1.setValue(value);
 
                         completed = true;
                     }
@@ -530,7 +535,7 @@ public class Login extends Fragment {
 
     public void downloadCompletedDates(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates");
+        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates/"+MyApplication.currentUser.getId());
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -540,6 +545,7 @@ public class Login extends Fragment {
                 //MyApplication.allDates.add(completedDate);
                 if (completedDate.getPoster().equals(MyApplication.currentUser.getId()) || completedDate.getTheDate().equals(MyApplication.currentUser.getId())) {
                     MyApplication.completedDates.add(completedDate);
+                    MyApplication.completedDatesHashMap.put(completedDate.getKey(), completedDate);
 
                     if (completedDate.isPosterKarma() && completedDate.isTheDateKarma()) {
                         int karma = MyApplication.currentUser.getKarmaPoints();
@@ -558,6 +564,15 @@ public class Login extends Fragment {
                         int karma = MyApplication.currentUser.getKarmaPoints();
                         MyApplication.currentUser.setKarmaPoints(karma++);
                         MyApplication.karmaAccounted.put(completedDate.getKey(), true);
+
+                        for (int i=0; i<MyApplication.completedDates.size(); i++) {
+                            if (MyApplication.completedDates.get(i).getPoster().equals(MyApplication.currentUser.getId()) ||
+                                    MyApplication.completedDates.get(i).getTheDate().equals(MyApplication.currentUser.getId())) {
+                                MyApplication.completedDates.set(i, completedDate);
+                            }
+                        }
+
+                        MyApplication.completedDatesHashMap.put(completedDate.getKey(), completedDate);
                     }
                 }
             }

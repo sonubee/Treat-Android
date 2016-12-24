@@ -317,7 +317,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     }
 
     public void saveUser(User user){
-        Log.i("--All", "Saving User: " + user.getProfilePic());
         saveUser = user;
     }
 
