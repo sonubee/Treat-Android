@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.Messages.MessageFragment;
 import gllc.tech.dateapp.MainActivity;
 import gllc.tech.dateapp.MyApplication;
@@ -43,7 +44,7 @@ public class ReviewProfileFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MyApplication.justPosted = false;
+        //MyApplication.justPosted = false;
         //MyApplication.otherPersonHolder = MyApplication.otherPerson;
     }
 
@@ -171,7 +172,10 @@ public class ReviewProfileFragment extends Fragment {
                 databaseReference = database.getReference("AgreedChats/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
                 databaseReference.setValue(agreedChats);
 
-                MyApplication.justPosted = true;
+                //MyApplication.justPosted = true;
+                new SendPush(MyApplication.otherPerson.getName()+" has opened chat with you!", MyApplication.otherPerson.getPushToken(),
+                        "Date: " + MyApplication.dateSelected.getDateTitle());
+
                 //MyApplication.agreedChats.add(agreedChats);
 
 

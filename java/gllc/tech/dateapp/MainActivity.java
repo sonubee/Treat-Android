@@ -38,6 +38,7 @@ import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
+import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
 import gllc.tech.dateapp.Objects.User;
@@ -272,6 +273,9 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
                 myRef = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
                 myRef.removeValue();
+
+                new SendPush(MyApplication.currentUser.getName() + " has selected you at the date for " + MyApplication.dateSelected.getDateTitle() + "!",
+                        MyApplication.otherPerson.getPushToken(), "You got a date!");
 
                 //Fragment dateReview = getSupportFragmentManager().findFragmentById(R.id.dateReview);
                 //Fragment reviewProfile = getSupportFragmentManager().findFragmentById(R.id.profileReview);

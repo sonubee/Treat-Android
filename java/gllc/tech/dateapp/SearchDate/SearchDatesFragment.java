@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.MyApplication;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
@@ -84,7 +85,14 @@ public class SearchDatesFragment extends Fragment {
                     DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" + MyApplication.currentUser.getId());
                     myRef2.setValue(MyApplication.currentUser.getProfilePic());
 
+
+                    new SendPush(MyApplication.currentUser.getName() + " has requested to be your date!",
+                            MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getPushToken(), "Date Request");
+
                     dateCounter++;
+
+
+
                     showDate();
                 }
             }

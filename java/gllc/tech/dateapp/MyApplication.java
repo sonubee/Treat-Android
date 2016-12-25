@@ -45,7 +45,7 @@ public class MyApplication extends Application {
     public static String myDateKey = "";
     public static ArrayList<TheDate> combinedDates = new ArrayList<>();
     //public static ArrayList<String> combinedDatesKeys = new ArrayList<>();
-    public static boolean justPosted = false;
+    //public static boolean justPosted = false;
     public static boolean visitedMessages=false;
     public static HashMap<String, TheDate> dateHashMap = new HashMap<>();
     public static HashMap<String, TheDate> pendingDatesHashMap = new HashMap<>();
