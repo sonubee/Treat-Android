@@ -44,7 +44,6 @@
 
     <EditText
         android:gravity="center"
-
         android:textColor="#619cc9"
         android:textColorHint="#619cc9"
         android:hint="Enter Short Description of Date"
@@ -55,12 +54,47 @@
         android:id="@+id/titleDate"
         android:layout_alignParentStart="true" />
 
+        <RadioGroup
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/titleDate"
+            android:orientation="horizontal"
+            android:id="@+id/chooseTreat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:checked="true"
+                android:textColor="#FFF"
+                android:id="@+id/noTreat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Treat"/>
+
+            <RadioButton
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:textColor="#FFF"
+                android:id="@+id/myTreat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Treat"
+                />
+
+            <RadioButton
+                android:textColor="#FFF"
+                android:id="@+id/yourTreat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Treat" />
+        </RadioGroup>
+
     <View
         android:id="@+id/separatorLine"
-        android:layout_below="@+id/titleDate"
+        android:layout_below="@+id/chooseTreat"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
+
 
     <ListView
         android:divider="#37ca44"
@@ -71,6 +105,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_below="@+id/separatorLine"
+        android:layout_below="@+id/chooseTreat"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
