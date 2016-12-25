@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.FacebookAlbums;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import gllc.tech.dateapp.MainActivity;
+import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.R;
 
 /**
  * Created by bhangoo on 12/16/2016.

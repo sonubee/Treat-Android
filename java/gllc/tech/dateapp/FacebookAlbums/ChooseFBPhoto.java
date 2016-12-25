@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.FacebookAlbums;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +15,11 @@ import android.widget.ImageView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
+import gllc.tech.dateapp.MainActivity;
+import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Profile;
+import gllc.tech.dateapp.R;
 
 /**
  * Created by bhangoo on 12/14/2016.

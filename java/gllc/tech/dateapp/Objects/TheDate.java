@@ -16,6 +16,7 @@ public class TheDate {
     ArrayList<EventsOfDate> events;
     boolean posterKarma;
     boolean theDateKarma;
+    String whoseTreat;
 
     public TheDate() {
     }

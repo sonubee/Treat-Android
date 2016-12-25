@@ -165,7 +165,7 @@
         android:layout_alignStart="@+id/textView6" />
 
     <CheckBox
-        android:buttonTint="@color/colorAccent"
+        android:buttonTint="#FFF"
         android:textColor="#FFF"
         android:text="Men"
         android:layout_width="wrap_content"

@@ -1,6 +1,5 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.FacebookAlbums;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import gllc.tech.dateapp.MainActivity;
+import gllc.tech.dateapp.Profile;
+import gllc.tech.dateapp.R;
 
 /**
  * Created by bhangoo on 12/15/2016.

@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.FacebookAlbums;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import gllc.tech.dateapp.Profile;
+import gllc.tech.dateapp.R;
 
 /**
  * Created by bhangoo on 12/15/2016.

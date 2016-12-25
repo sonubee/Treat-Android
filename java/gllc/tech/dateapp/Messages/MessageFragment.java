@@ -54,19 +54,6 @@ public class MessageFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         MyApplication.visitedMessages=true;
-/*
-        for (int i =0; i <MyApplication.agreedChats.size(); i++){
-            if (MyApplication.agreedChats.get(i).getDateKey().equals(MyApplication.dateSelectedKey)){
-                messageKey = MyApplication.agreedChats.get(i).getPoster() + MyApplication.agreedChats.get(i).getRequester();
-            }
-        }
-*/
-        //messageKey = MyApplication.dateSelected.getPoster() + MyApplication.dateSelected.getTheDate();
-        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE1"+MyApplication.dateSelected.getPoster());
-        //Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE2"+MyApplication.dateSelected.getTheDate());
-        //Log.i("--All", "Message Key: "+messageKey);
-
-
     }
 
     @Nullable
