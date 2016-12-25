@@ -1,6 +1,5 @@
 package gllc.tech.dateapp;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,7 +31,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
@@ -60,10 +58,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     @Override
     public void onInt(Bundle savedInstanceState) {
-
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-
-        Log.i("--All", "Token: " + refreshedToken);
 
         materialDesignSetup();
 
