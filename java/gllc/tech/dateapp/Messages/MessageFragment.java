@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.MainActivity;
 import gllc.tech.dateapp.MyApplication;
 import gllc.tech.dateapp.Objects.AgreedChats;
@@ -84,6 +85,8 @@ public class MessageFragment extends Fragment {
                 Message sendMessage = new Message(messageToSend.getText().toString(), MyApplication.currentUser.getId(), MyApplication.otherPerson.getId());
 
                 myRef.push().setValue(sendMessage);
+
+                new SendPush(sendMessage.getMessage(), MyApplication.otherPerson.getPushToken(), "Message From " + MyApplication.otherPerson.getName());
 
                 messageToSend.setText("");
             }

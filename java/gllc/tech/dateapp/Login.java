@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,6 +64,7 @@ public class Login extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthListener;
     boolean doneDownloading=false;
     JSONObject facebookLoginResponseJSONObject;
+    String refreshedToken;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,9 @@ public class Login extends Fragment {
         MyApplication.fullMatchesAsCreator.clear();
         MyApplication.fullMatchesAsDate.clear();
         MyApplication.pendingDates.clear();
+
+        refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.i("--All", "Token: " + refreshedToken);
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -116,8 +121,6 @@ public class Login extends Fragment {
             }
         };
 
-
-
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         try {
             if (accessToken.getToken() != null){
@@ -128,9 +131,6 @@ public class Login extends Fragment {
         } catch (Exception e){
             Log.i("--All", "Logged Out Already");
         }
-
-
-
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -615,7 +615,7 @@ public class Login extends Fragment {
                         MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
                                 firebaseUser.getUid(), facebookLoginResponseJSONObject.getString("gender"), "https://graph.facebook.com/" +
                                 facebookLoginResponseJSONObject.getString("id") + "/picture?type=large", facebookLoginResponseJSONObject.getString("id"),
-                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0);
+                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
@@ -649,6 +649,12 @@ public class Login extends Fragment {
                 if (downloadUser.getId().equals(firebaseUser.getUid())) {
                     MyApplication.currentUser = downloadUser;
                     MyApplication.foundUser=true;
+
+                    MyApplication.currentUser.setPushToken(refreshedToken);
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
+                    myRef.setValue(MyApplication.currentUser);
                 }
             }
 

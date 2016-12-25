@@ -17,11 +17,12 @@ public class User {
     String photo3;
     String photo4;
     int karmaPoints;
+    String pushToken;
 
     public User() {
     }
 
-    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4, int karmaPoints) {
+    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4, int karmaPoints, String pushToken) {
         this.name = name;
         this.email = email;
         this.id = id;
@@ -34,6 +35,7 @@ public class User {
         this.photo3 = photo3;
         this.photo4 = photo4;
         this.karmaPoints = karmaPoints;
+        this.pushToken = pushToken;
     }
 
     public String getName() {
@@ -131,4 +133,14 @@ public class User {
     public void setKarmaPoints(int karmaPoints) {
         this.karmaPoints = karmaPoints;
     }
+
+    public String getPushToken() {
+        return pushToken;
+    }
+
+    public void setPushToken(String pushToken) {
+        this.pushToken = pushToken;
+    }
+
+
 }

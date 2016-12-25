@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
@@ -75,6 +76,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 //.addApi(A)
                 .enableAutoManage(this, this)
                 .build();
+
+
     }
 
     @Override

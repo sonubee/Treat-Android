@@ -10,6 +10,7 @@ import android.util.Log;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.location.places.Place;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -66,12 +67,16 @@ public class MyApplication extends Application {
     public static HashMap<String, Boolean> karmaAccounted = new HashMap<>();
     public static HashMap<String, TheDate> completedDatesHashMap = new HashMap<>();
     public static boolean foundUser = false;
+    public static String pushToken;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        currentUser = new User("Name", "Email", "FID", "Gender", "Profile Pic", "ID", "Bio", "NA", "NA", "NA", "NA", 0);
+        pushToken = FirebaseInstanceId.getInstance().getToken();
+        Log.i("--All", "Token: " + pushToken);
+
+        //currentUser = new User("Name", "Email", "FID", "Gender", "Profile Pic", "ID", "Bio", "NA", "NA", "NA", "NA", 0, pushToken);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
