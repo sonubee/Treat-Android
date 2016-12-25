@@ -19,7 +19,6 @@ public class CompletedDatesAdapter extends BaseAdapter {
     CompletedDatesHolder holder = new CompletedDatesHolder();
 
     public CompletedDatesAdapter(Context context) {
-        Log.i("--All", "Completed Dates from Adapter: " + MyApplication.completedDates.size());
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
     }

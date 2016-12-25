@@ -66,9 +66,13 @@ public class CompletedDates extends Fragment {
 
                                     if (MyApplication.completedDates.get(position).getPoster().equals(MyApplication.currentUser.getId())) {
                                         MyApplication.completedDates.get(position).setPosterKarma(true);
-                                        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates/"+ MyApplication.currentUser.getId() + "/" + MyApplication.completedDates.get(position).
-                                                getKey()+"/posterKarma");
+                                        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates/"+ MyApplication.currentUser.getId() + "/" +
+                                                MyApplication.completedDates.get(position).getKey()+"/posterKarma");
                                         databaseReference.setValue(true);
+
+                                        DatabaseReference databaseReference2 = firebaseDatabase.getReference("CompletedDates/" + MyApplication.completedDates.get(position).
+                                                getTheDate() + "/" + MyApplication.completedDates.get(position).getKey()+"/posterKarma");
+                                        databaseReference2.setValue(true);
 
                                         if (MyApplication.completedDates.get(position).isPosterKarma() && MyApplication.completedDates.get(position).isTheDateKarma()) {
                                             int karma = MyApplication.currentUser.getKarmaPoints();
@@ -84,17 +88,21 @@ public class CompletedDates extends Fragment {
 
                                             int dateKarma = MyApplication.userHashMap.get(MyApplication.completedDates.get(position).getTheDate()).getKarmaPoints();
                                             dateKarma++;
-                                            DatabaseReference databaseReference2 = firebaseDatabase.getReference("Users/"+MyApplication.completedDates.get(position).
+                                            DatabaseReference databaseReference3 = firebaseDatabase.getReference("Users/"+MyApplication.completedDates.get(position).
                                                     getTheDate()+"/karmaPoints");
-                                            databaseReference2.setValue(dateKarma);
+                                            databaseReference3.setValue(dateKarma);
                                         }
                                     }
 
                                     if (MyApplication.completedDates.get(position).getTheDate().equals(MyApplication.currentUser.getId())) {
                                         MyApplication.completedDates.get(position).setTheDateKarma(true);
-                                        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates/"+MyApplication.completedDates.get(position).
-                                                getKey()+"/theDateKarma");
+                                        DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates/"+ MyApplication.currentUser.getId() + "/" +
+                                                MyApplication.completedDates.get(position).getKey()+"/theDateKarma");
                                         databaseReference.setValue(true);
+
+                                        DatabaseReference databaseReference3 = firebaseDatabase.getReference("CompletedDates/"+ MyApplication.completedDates.get(position).
+                                                getPoster() + "/" + MyApplication.completedDates.get(position).getKey()+"/theDateKarma");
+                                        databaseReference3.setValue(true);
 
                                         if (MyApplication.completedDates.get(position).isPosterKarma() && MyApplication.completedDates.get(position).isTheDateKarma()) {
                                             Log.i("--All", "Karma Here: " + MyApplication.currentUser.getKarmaPoints());
@@ -133,5 +141,11 @@ public class CompletedDates extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

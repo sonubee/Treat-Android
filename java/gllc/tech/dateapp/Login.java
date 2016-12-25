@@ -71,6 +71,7 @@ public class Login extends Fragment {
         //MyApplication.agreedChats.clear();
         MyApplication.allDates.clear();
         MyApplication.combinedDates.clear();
+        MyApplication.completedDates.clear();
         MyApplication.fullMatchesAsCreator.clear();
         MyApplication.fullMatchesAsDate.clear();
         MyApplication.pendingDates.clear();
