@@ -13,8 +13,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -46,7 +50,8 @@ public class Profile extends Fragment {
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
     ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;
-    TextView name, bio, karmaPoints;
+    CrystalRangeSeekbar ageSeekBar;
+    TextView name, bio, karmaPoints, ageRange;
     EditText enterBio;
     boolean editingBio = false;
     public static ArrayList<String> albumIds = new ArrayList<>();
@@ -79,6 +84,8 @@ public class Profile extends Fragment {
         photo3 = (ImageView)view.findViewById(R.id.supportImage2);
         photo4 = (ImageView)view.findViewById(R.id.supportImage3);
         karmaPoints = (TextView)view.findViewById(R.id.profileKarmaPoints);
+        ageSeekBar = (CrystalRangeSeekbar)view.findViewById(R.id.ageSeekBar);
+        ageRange = (TextView)view.findViewById(R.id.ageTangeTextView);
 
         //Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
 
@@ -237,6 +244,13 @@ public class Profile extends Fragment {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto4()).into(imageView);
                 }
                 dialog.show();
+            }
+        });
+
+        ageSeekBar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
+            @Override
+            public void valueChanged(Number minValue, Number maxValue) {
+                ageRange.setText(minValue + " - " + maxValue);
             }
         });
     }

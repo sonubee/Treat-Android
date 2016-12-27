@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:rsb="http://schemas.android.com/tools"
     android:id="@+id/profileLayout"
     android:background="#000">
 
@@ -190,22 +192,42 @@
         android:layout_marginLeft="30dp"
         />
 
-    <SeekBar
-        android:background="#662a8187"
+    <com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar
+        app:left_thumb_color_pressed="#FFF"
+        app:bar_color="#000"
+        app:bar_highlight_color="#16c745"
+        app:left_thumb_color="#515ebe"
         android:layout_marginRight="70dp"
+        android:id="@+id/distanceSeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView6"
-        android:layout_alignStart="@+id/menCheckBox"
-        android:id="@+id/distanceSeekBar" />
+        android:layout_alignStart="@+id/menCheckBox"/>
 
-    <SeekBar
-        android:background="#662a8187"
+    <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+        app:min_value="18"
+        app:max_value="55"
         android:layout_marginRight="70dp"
+        app:bar_color="#000"
+        app:bar_highlight_color="#16c745"
+        app:left_thumb_color="#515ebe"
+        app:right_thumb_color="#515ebe"
+        app:left_thumb_color_pressed="#FFF"
+        app:right_thumb_color_pressed="#FFF"
+        android:id="@+id/ageSeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView2"
-        android:layout_alignStart="@+id/distanceSeekBar"
-        android:id="@+id/ageSeekBar" />
+        android:layout_alignStart="@+id/distanceSeekBar"/>
+
+    <TextView
+        android:textColor="#FFF"
+        android:text="Age Range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/ageTangeTextView" />
+
 
 </RelativeLayout>
