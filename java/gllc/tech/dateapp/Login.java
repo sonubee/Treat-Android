@@ -21,7 +21,6 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,7 +45,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
@@ -161,7 +159,7 @@ public class Login extends Fragment {
                     downloadUsers(user);
 
                     //if (loggedInFacebook && doneDownloading) {
-                    //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Automation.Profile.class, R.id.container, "Profile");
                     //}
 
                 } else {
@@ -609,7 +607,7 @@ public class Login extends Fragment {
                 doneDownloading=true;
 
                 if (MyApplication.foundUser) {
-                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Automation.Profile.class, R.id.container, "Profile");
                 } else {
                     try {
                         MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
@@ -625,7 +623,7 @@ public class Login extends Fragment {
                         Log.i("--All", "Unable to Parse New Facebook User");
                     }
 
-                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Automation.Profile.class, R.id.container, "Profile");
                 }
 
                 //downloadAgreedChats();

@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     public static EditText titleDate;
     public static TextView header;
     public static int selectedMap;
+    RadioButton myTreat, yourTreat, noTreat;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,9 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
         enterDate = (EditText) view.findViewById(R.id.enterDate);
         titleDate = (EditText)view.findViewById(R.id.titleDate);
         header = (TextView)view.findViewById(R.id.headerDate);
+        yourTreat = (RadioButton)view.findViewById(R.id.yourTreat);
+        myTreat = (RadioButton)view.findViewById(R.id.myTreat);
+        noTreat = (RadioButton)view.findViewById(R.id.noTreat);
         enterDate.setInputType(InputType.TYPE_NULL);
         enterDate.requestFocus();
         setDateTimeField();
@@ -104,7 +109,18 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                     String currentDateandTime = sdf.format(new Date());
 
-                    TheDate newDate = new TheDate(MyApplication.currentUser.getId(), "NA", currentDateandTime, theDateString, titleDate.getText().toString(), "NA", listOfEvents, false, false);
+                    String whoseTreat = "";
+
+                    if (noTreat.isChecked()) {
+                        whoseTreat = "No Treat";
+                    } else if (yourTreat.isChecked()) {
+                        whoseTreat = "Your Treat";
+                    } else if (myTreat.isChecked()) {
+                        whoseTreat = "My Treat";
+                    }
+
+                    TheDate newDate = new TheDate(MyApplication.currentUser.getId(), "NA", currentDateandTime, theDateString, titleDate.getText().toString(), "NA",
+                            listOfEvents, false, false, whoseTreat);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference("Dates");

@@ -36,7 +36,7 @@ public class SearchDatesFragment extends Fragment {
     public static ListView listView;
     public static SearchDatesAdapter adapter;
     CircleImageView imageView;
-    TextView name, shortBioSearch, dateTitle;
+    TextView name, shortBioSearch, dateTitle, karmaPoints, whoseTreat;
     User viewUser;
     int dateCounter;
     ImageView yes,no;
@@ -56,7 +56,9 @@ public class SearchDatesFragment extends Fragment {
         imageView = (CircleImageView)view.findViewById(R.id.imageViewSearch);
         name = (TextView)view.findViewById(R.id.nameTextView);
         dateTitle = (TextView)view.findViewById(R.id.dateTitle);
+        karmaPoints = (TextView)view.findViewById(R.id.karmaPointsSearch);
         shortBioSearch = (TextView)view.findViewById(R.id.shortBioSearch);
+        whoseTreat = (TextView)view.findViewById(R.id.whoseTreatSearch);
         yes = (ImageView) view.findViewById(R.id.yesImageView);
         no = (ImageView) view.findViewById(R.id.noImageView);
 
@@ -131,6 +133,8 @@ public class SearchDatesFragment extends Fragment {
                         Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
                         name.setText(viewUser.getName());
                         shortBioSearch.setText(viewUser.getBio());
+                        karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
+                        whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
                     }
 
                     @Override
@@ -157,6 +161,7 @@ public class SearchDatesFragment extends Fragment {
             Toast.makeText(getContext(), "No More Dates", Toast.LENGTH_LONG).show();
 
             imageView.setVisibility(View.INVISIBLE);
+            karmaPoints.setVisibility(View.INVISIBLE);
             name.setVisibility(View.INVISIBLE);
             shortBioSearch.setVisibility(View.INVISIBLE);
             dateTitle.setVisibility(View.INVISIBLE);

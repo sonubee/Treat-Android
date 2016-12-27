@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.Automation;
 
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
@@ -31,6 +31,9 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.FacebookAlbums.DisplayFacebookAlbums;
+import gllc.tech.dateapp.MainActivity;
+import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.R;
 
 /**
  * Created by bhangoo on 12/11/2016.

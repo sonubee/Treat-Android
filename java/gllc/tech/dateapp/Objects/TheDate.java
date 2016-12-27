@@ -18,10 +18,7 @@ public class TheDate {
     boolean theDateKarma;
     String whoseTreat;
 
-    public TheDate() {
-    }
-
-    public TheDate(String poster, String theDate, String dateCreated, String dateOfDate, String dateTitle, String key, ArrayList<EventsOfDate> events, boolean posterKarma, boolean theDateKarma) {
+    public TheDate(String poster, String theDate, String dateCreated, String dateOfDate, String dateTitle, String key, ArrayList<EventsOfDate> events, boolean posterKarma, boolean theDateKarma, String whoseTreat) {
         this.poster = poster;
         this.theDate = theDate;
         this.dateCreated = dateCreated;
@@ -31,6 +28,10 @@ public class TheDate {
         this.events = events;
         this.posterKarma = posterKarma;
         this.theDateKarma = theDateKarma;
+        this.whoseTreat = whoseTreat;
+    }
+
+    public TheDate() {
     }
 
     public String getPoster() {
@@ -103,4 +104,11 @@ public class TheDate {
         this.theDateKarma = theDateKarma;
     }
 
+    public String getWhoseTreat() {
+        return whoseTreat;
+    }
+
+    public void setWhoseTreat(String whoseTreat) {
+        this.whoseTreat = whoseTreat;
+    }
 }

@@ -16,7 +16,7 @@
 
     <TextView
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:textColor="#38ac70"
         android:text="Name"
         android:layout_width="wrap_content"
@@ -36,16 +36,7 @@
      />
 
     <TextView
-        android:layout_margin="10dp"
-        android:textColor="#38ac70"
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/nameTextView"
-        android:layout_toEndOf="@+id/imageViewSearch"
-        android:id="@+id/shortBioSearch" />
-
-    <TextView
+        android:layout_marginTop="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#6ba2b1"
         android:text="Title of Date"
@@ -73,6 +64,37 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="125dp"/>
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_margin="5dp"
+        android:textColor="#38ac70"
+        android:text="Karma Points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameTextView"
+        android:layout_toEndOf="@+id/imageViewSearch"
+        android:id="@+id/karmaPointsSearch" />
+
+    <TextView
+        android:textColor="#38ac70"
+        android:text="Bio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/shortBioSearch"
+        android:layout_below="@+id/karmaPointsSearch"
+        android:layout_toEndOf="@+id/imageViewSearch"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_margin="5dp"
+        android:textColor="#38ac70"
+        android:text="Whose Treat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/shortBioSearch"
+        android:layout_toEndOf="@+id/imageViewSearch"
+        android:id="@+id/whoseTreatSearch" />
 
 
 </RelativeLayout>

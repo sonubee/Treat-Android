@@ -26,18 +26,15 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
+import gllc.tech.dateapp.Automation.Profile;
 import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
@@ -121,19 +118,19 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 4:
+                getSupportActionBar().setTitle("Completed Dates");
+                mFragment = new CompletedDates();
+                break;
+
+            case 5:
                 getSupportActionBar().setTitle("All Messages");
                 mFragment = new ShowAllMessages();
                 break;
 
-            case 5:
+            case 6:
                 LoginManager.getInstance().logOut();
                 getSupportActionBar().setTitle("Login");
                 mFragment = new Login();
-                break;
-
-            case 6:
-                getSupportActionBar().setTitle("Completed Dates");
-                mFragment = new CompletedDates();
                 break;
 
             default:
@@ -159,9 +156,9 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add("Post Date", R.drawable.event);
         mHelpLiveo.add("Search Dates", R.drawable.search);
         mHelpLiveo.add("Upcoming Dates", R.drawable.upcoming);
+        mHelpLiveo.add("Completed Dates", R.drawable.upcoming);
         mHelpLiveo.add("Messages", R.drawable.message);
         mHelpLiveo.add("Logout", R.drawable.logout);
-        mHelpLiveo.add("Completed Dates", R.drawable.upcoming);
 
 //        mHelpLiveo.addSubHeader(getString(R.string.categories)); //Item subHeader
         //mHelpLiveo.add(getString(R.string.starred), R.mipmap.ic_star_black_24dp);

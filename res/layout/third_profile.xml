@@ -197,7 +197,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView6"
         android:layout_alignStart="@+id/menCheckBox"
-        android:id="@+id/seekBar" />
+        android:id="@+id/distanceSeekBar" />
 
     <SeekBar
         android:background="#662a8187"
@@ -205,7 +205,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView2"
-        android:layout_alignStart="@+id/seekBar"
-        android:id="@+id/seekBar2" />
+        android:layout_alignStart="@+id/distanceSeekBar"
+        android:id="@+id/ageSeekBar" />
 
 </RelativeLayout>
