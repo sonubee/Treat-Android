@@ -159,7 +159,7 @@ public class Login extends Fragment {
                     downloadUsers(user);
 
                     //if (loggedInFacebook && doneDownloading) {
-                    //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Automation.Profile.class, R.id.container, "Profile");
+                    //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
                     //}
 
                 } else {
@@ -607,7 +607,7 @@ public class Login extends Fragment {
                 doneDownloading=true;
 
                 if (MyApplication.foundUser) {
-                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Automation.Profile.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
                 } else {
                     try {
                         MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
@@ -623,7 +623,7 @@ public class Login extends Fragment {
                         Log.i("--All", "Unable to Parse New Facebook User");
                     }
 
-                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Automation.Profile.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
                 }
 
                 //downloadAgreedChats();

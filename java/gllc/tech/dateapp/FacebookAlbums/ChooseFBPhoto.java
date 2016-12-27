@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import gllc.tech.dateapp.MainActivity;
 import gllc.tech.dateapp.MyApplication;
-import gllc.tech.dateapp.Automation.Profile;
+import gllc.tech.dateapp.Profile;
 import gllc.tech.dateapp.R;
 
 /**

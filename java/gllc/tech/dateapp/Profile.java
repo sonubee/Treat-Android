@@ -1,4 +1,4 @@
-package gllc.tech.dateapp.Automation;
+package gllc.tech.dateapp;
 
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
