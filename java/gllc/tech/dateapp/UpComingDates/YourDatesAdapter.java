@@ -66,13 +66,15 @@ public class YourDatesAdapter extends BaseAdapter {
 
         holder.date.setText(MyApplication.combinedDates.get(position).getDateOfDate());
 
+        holder.createdBy.setText("Created By: " + MyApplication.userHashMap.get(MyApplication.combinedDates.get(position).getPoster()).getName());
+/*
         for (int i=0; i < MyApplication.allUsers.size(); i++){
             if (MyApplication.allUsers.get(i).getId().equals(MyApplication.combinedDates.get(position).getPoster())){
                 //holder.createdBy.setText("Created By: "+MyApplication.allUsers.get(i).getName());
                 holder.createdBy.setText("");
             }
         }
-
+*/
         holder.title.setText(MyApplication.combinedDates.get(position).getDateTitle());
         holder.title.setTextColor(Color.CYAN);
 

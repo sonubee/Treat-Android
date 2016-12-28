@@ -643,7 +643,7 @@ public class Login extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User downloadUser = dataSnapshot.getValue(User.class);
-                MyApplication.allUsers.add(downloadUser);
+                //MyApplication.allUsers.add(downloadUser);
                 MyApplication.userHashMap.put(downloadUser.getId(), downloadUser);
                 if (downloadUser.getId().equals(firebaseUser.getUid())) {
                     MyApplication.currentUser = downloadUser;
@@ -660,13 +660,15 @@ public class Login extends Fragment {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
-
+                MyApplication.userHashMap.put(user.getId(), user);
+                /*
                 for (int i=0;i<MyApplication.allUsers.size();i++) {
                     if (MyApplication.allUsers.get(i).getId().equals(user.getId())) {
                         MyApplication.allUsers.set(i, user);
                         MyApplication.userHashMap.put(user.getId(), user);
                     }
                 }
+                */
             }
 
             @Override

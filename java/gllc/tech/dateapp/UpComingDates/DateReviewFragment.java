@@ -227,12 +227,15 @@ public class DateReviewFragment extends Fragment{
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //requestSelectedToReview = v.getTag().toString();
+
+                        MyApplication.otherPerson = MyApplication.userHashMap.get(v.getTag().toString());
+/*
                         for (int i=0; i <MyApplication.allUsers.size(); i++){
                             if (MyApplication.allUsers.get(i).getId().equals(v.getTag().toString())){
                                 MyApplication.otherPerson = MyApplication.allUsers.get(i);
                             }
                         }
+                        */
                         populateRequestsReference.removeEventListener(childEventListener);
                         profileUrl = new ArrayList<String>();
                         ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "ReviewProfileFragment");
