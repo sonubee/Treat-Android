@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SendPush;
@@ -70,7 +74,8 @@ public class SearchDatesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        downloadMatches();
+        searchAlready();
+
         yes.setImageResource(R.drawable.yes);
         no.setImageResource(R.drawable.no);
 
@@ -80,19 +85,16 @@ public class SearchDatesFragment extends Fragment {
 
                 if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    //DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
-                    //myRef.setValue(true);
+                    DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
+                    myRef.setValue(true);
 
                     DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" + MyApplication.currentUser.getId());
                     myRef2.setValue(MyApplication.currentUser.getProfilePic());
-
 
                     new SendPush(MyApplication.currentUser.getName() + " has requested to be your date!",
                             MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getPushToken(), "Date Request");
 
                     dateCounter++;
-
-
 
                     showDate();
                 }
@@ -104,15 +106,15 @@ public class SearchDatesFragment extends Fragment {
             public void onClick(View v) {
                 if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    //DatabaseReference myRef = database.getReference("Matches/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
-                    //myRef.setValue(false);
+                    DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
+                    myRef.setValue(false);
                     dateCounter++;
                     showDate();
                 }
             }
         });
 
-        showDate();
+        //showDate();
 
     }
 
@@ -120,46 +122,50 @@ public class SearchDatesFragment extends Fragment {
 
         if (dateCounter < MyApplication.allDates.size() && MyApplication.allDates.size() > 0){
 
+            if (!MyApplication.matchMap.containsKey(MyApplication.allDates.get(dateCounter).getKey())) {
+                if ((MyApplication.currentUser.isShowMen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("male") ||
+                        (MyApplication.currentUser.isShowWomen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("female")))) {
+                    if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())) {
+                        FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef2 = database2.getReference("Users/" + MyApplication.allDates.get(dateCounter).getPoster());
 
-            if ((MyApplication.currentUser.isShowMen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("male") ||
-                    (MyApplication.currentUser.isShowWomen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("female")))) {
-                if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())) {
-                    FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef2 = database2.getReference("Users/" + MyApplication.allDates.get(dateCounter).getPoster());
+                        myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                viewUser = dataSnapshot.getValue(User.class);
 
-                    myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            viewUser = dataSnapshot.getValue(User.class);
+                                Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
+                                name.setText(viewUser.getName());
+                                shortBioSearch.setText(viewUser.getBio());
+                                karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
+                                whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
+                            }
 
-                            Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
-                            name.setText(viewUser.getName());
-                            shortBioSearch.setText(viewUser.getBio());
-                            karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
-                            whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
-                        }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
 
-                        }
-                    });
+                        adapter = new SearchDatesAdapter(MyApplication.allDates.get(dateCounter).getEvents(), getContext());
 
-                    adapter = new SearchDatesAdapter(MyApplication.allDates.get(dateCounter).getEvents(), getContext());
+                        dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
 
-                    dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
+                        listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
+                        listView.setAdapter(adapter);
 
-                    listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
-                    listView.setAdapter(adapter);
-
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            MyApplication.cameFromSearchDates = true;
-                            Intent intent = new Intent(getActivity(), MapsActivity.class);
-                            startActivity(intent);
-                        }
-                    });
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                MyApplication.cameFromSearchDates = true;
+                                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                    } else {
+                        dateCounter++;
+                        showDate();
+                    }
                 } else {
                     dateCounter++;
                     showDate();
@@ -168,8 +174,6 @@ public class SearchDatesFragment extends Fragment {
                 dateCounter++;
                 showDate();
             }
-
-
         }
 
         else {
@@ -184,20 +188,50 @@ public class SearchDatesFragment extends Fragment {
             listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
             listView.setAdapter(null);
         }
-
-
     }
 
 
-
-    public void downloadMatches(){
+    public void searchAlready(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Matches/"+MyApplication.currentUser.getId());
+        DatabaseReference myRef = database.getReference("RequestedDate/"+MyApplication.currentUser.getId());
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showDate();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                MyApplication.matchMap.put(dataSnapshot.getKey(), (Boolean)dataSnapshot.getValue());
+                if (!MyApplication.dateHashMap.containsKey(dataSnapshot.getKey())) {
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                    DatabaseReference databaseReference = firebaseDatabase.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" + dataSnapshot.getKey());
+                    databaseReference.removeValue();
+                } else {
+                    MyApplication.matchMap.put(dataSnapshot.getKey(), (Boolean)dataSnapshot.getValue());
+                }
+
+                    /*
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                        Date strDate = sdf.parse(MyApplication.dateHashMap.get(dataSnapshot.getKey()).getDateOfDate());
+
+                        if (System.currentTimeMillis() > strDate.getTime()) {
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            DatabaseReference databaseReference = firebaseDatabase.getReference("RequestedDate/" + MyApplication.currentUser.getId() + " / " + dataSnapshot.getKey());
+                            databaseReference.removeValue();
+                        }
+                    } catch (Exception e) {
+                        Log.i("--All", "Error in searchAlready SearchDatesFragment: " + e.getMessage());
+                    }
+                    */
 
             }
 
@@ -222,9 +256,6 @@ public class SearchDatesFragment extends Fragment {
             }
         });
     }
-
-
-
 
 
 }

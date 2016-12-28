@@ -300,48 +300,6 @@ public class Login extends Fragment {
         });
     }
 
-/*
-    public void downloadAgreedChats(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("AgreedChats/" + MyApplication.currentUser.getId());
-
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                AgreedChats agreedChats = dataSnapshot.getValue(AgreedChats.class);
-
-                if (!agreedChats.getPoster().equals(MyApplication.currentUser.getId())){
-                    MyApplication.agreedChats.add(agreedChats);
-                }
-
-                if (agreedChats.getPoster().equals(MyApplication.currentUser.getId()) && !MyApplication.justPosted){
-                    MyApplication.agreedChats.add(agreedChats);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-    */
     public void downloadDates() {
 
         MyApplication.allDates.clear();
@@ -365,9 +323,6 @@ public class Login extends Fragment {
                         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                         DatabaseReference databaseReference = firebaseDatabase.getReference("Dates/"+value.getKey());
                         databaseReference.removeValue();
-
-                        //DatabaseReference databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+value.getKey());
-                        //databaseReference1.setValue(value);
 
                         DatabaseReference databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+ value.getPoster() + "/" + value.getKey());
                         databaseReference1.setValue(value);
@@ -630,7 +585,6 @@ public class Login extends Fragment {
                 //downloadAgreedChats();
                 downloadDates();
                 downloadCompletedDates();
-
             }
 
             @Override
@@ -687,4 +641,5 @@ public class Login extends Fragment {
             }
         });
     }
+
 }
