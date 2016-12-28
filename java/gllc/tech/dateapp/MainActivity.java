@@ -133,7 +133,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             default:
-                mFragment = new MainScreen();
+                getSupportActionBar().setTitle("Login");
+                mFragment = new Login();
                 break;
         }
 
