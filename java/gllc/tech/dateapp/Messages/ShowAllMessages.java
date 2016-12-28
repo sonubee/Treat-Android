@@ -66,7 +66,7 @@ public class ShowAllMessages extends Fragment {
                     MyApplication.otherPerson = MyApplication.userHashMap.get(ShowAllMessagesAdapter2.agreedChatsArrayList.get(position).getPoster());
                 }
 
-                ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
+                //((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
 /*
                 for (int i = 0; i< MyApplication.allDates.size(); i++)
                 {

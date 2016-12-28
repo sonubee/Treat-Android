@@ -63,8 +63,6 @@ public class SearchDatesFragment extends Fragment {
         yes = (ImageView) view.findViewById(R.id.yesImageView);
         no = (ImageView) view.findViewById(R.id.noImageView);
 
-
-
         return view;
     }
 
@@ -125,52 +123,53 @@ public class SearchDatesFragment extends Fragment {
 
             if ((MyApplication.currentUser.isShowMen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("male") ||
                     (MyApplication.currentUser.isShowWomen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("female")))) {
+                if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())) {
+                    FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef2 = database2.getReference("Users/" + MyApplication.allDates.get(dateCounter).getPoster());
 
-            }
+                    myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            viewUser = dataSnapshot.getValue(User.class);
 
-            if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())){
-                FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-                DatabaseReference myRef2 = database2.getReference("Users/" + MyApplication.allDates.get(dateCounter).getPoster());
+                            Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
+                            name.setText(viewUser.getName());
+                            shortBioSearch.setText(viewUser.getBio());
+                            karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
+                            whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
+                        }
 
-                myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        viewUser = dataSnapshot.getValue(User.class);
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                        Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
-                        name.setText(viewUser.getName());
-                        shortBioSearch.setText(viewUser.getBio());
-                        karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
-                        whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
-                    }
+                        }
+                    });
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    adapter = new SearchDatesAdapter(MyApplication.allDates.get(dateCounter).getEvents(), getContext());
 
-                    }
-                });
+                    dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
 
-                adapter = new SearchDatesAdapter(MyApplication.allDates.get(dateCounter).getEvents(), getContext());
+                    listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
+                    listView.setAdapter(adapter);
 
-                dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
-
-                listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
-                listView.setAdapter(adapter);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        MyApplication.cameFromSearchDates=true;
-                        Intent intent = new Intent(getActivity(), MapsActivity.class);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-            else {
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            MyApplication.cameFromSearchDates = true;
+                            Intent intent = new Intent(getActivity(), MapsActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    dateCounter++;
+                    showDate();
+                }
+            } else {
                 dateCounter++;
                 showDate();
             }
+
+
         }
 
         else {
@@ -181,6 +180,7 @@ public class SearchDatesFragment extends Fragment {
             name.setVisibility(View.INVISIBLE);
             shortBioSearch.setVisibility(View.INVISIBLE);
             dateTitle.setVisibility(View.INVISIBLE);
+            whoseTreat.setVisibility(View.INVISIBLE);
             listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
             listView.setAdapter(null);
         }

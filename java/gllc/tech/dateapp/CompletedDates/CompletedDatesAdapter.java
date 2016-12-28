@@ -52,6 +52,7 @@ public class CompletedDatesAdapter extends BaseAdapter {
         holder.title.setText(MyApplication.completedDates.get(position).getDateTitle());
         holder.date.setText(MyApplication.completedDates.get(position).getDateOfDate());
 
+        //checking if karma set yet by user
         if ((MyApplication.completedDates.get(position).getPoster().equals(MyApplication.currentUser.getId()) &&
                 !MyApplication.completedDates.get(position).isPosterKarma()) || (MyApplication.completedDates.get(position).
                 getTheDate().equals(MyApplication.currentUser.getId()) && !MyApplication.completedDates.get(position).isTheDateKarma())) {
@@ -60,13 +61,7 @@ public class CompletedDatesAdapter extends BaseAdapter {
             holder.status.setText("Karma Points Set!");
         }
 
-        for (int i=0; i < MyApplication.allUsers.size(); i++){
-            if (MyApplication.allUsers.get(i).getId().equals(MyApplication.completedDates.get(position).getPoster())){
-                holder.createdBy.setText("");
-            }
-        }
-
-
+        holder.createdBy.setText("Created By: " + MyApplication.userHashMap.get(MyApplication.completedDates.get(position).getPoster()).getName());
 
         return convertView;
     }

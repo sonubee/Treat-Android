@@ -159,7 +159,7 @@ public class ReviewProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //((MainActivity)getActivity()).changeToolbarText("Chat");
-                ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
+                //((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
                 ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "ReviewProfile");
                 AgreedChats agreedChats = new AgreedChats(MyApplication.currentUser.getId(), MyApplication.otherPerson.getId(), MyApplication.dateSelectedKey);
 

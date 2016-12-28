@@ -81,8 +81,6 @@ public class DateReviewFragment extends Fragment{
 
         adapter = new DateReviewAdapter(getContext(), MyApplication.dateSelected.getEvents());
 
-
-
         listView = (ListView) getActivity().findViewById(R.id.dateReviewListView);
         listView.setAdapter(adapter);
 
@@ -96,8 +94,6 @@ public class DateReviewFragment extends Fragment{
         });
 
         decideDate();
-
-
     }
 
     public void decideDate() {
@@ -115,8 +111,62 @@ public class DateReviewFragment extends Fragment{
     public void setupDate() {
         requestsOrMatch.setText("Your Date!");
 
+        if (!MyApplication.userHashMap.get(MyApplication.dateSelected.getTheDate()).getId().equals(MyApplication.currentUser.getId())) {
+            MyApplication.otherPerson = MyApplication.userHashMap.get(MyApplication.dateSelected.getTheDate());
+/*
+            Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
+            horizontalScrollView.setVisibility(View.INVISIBLE);
+            matchImage.setVisibility(View.VISIBLE);
+
+            ((MainActivity) getActivity()).saveUser(MyApplication.otherPerson);
+            matchImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.otherPerson = ((MainActivity) getActivity()).geteUser();
+                    Log.i("--All", "Set cameFromDateReview to true");
+                    MyApplication.cameFromDateReview = true;
+                    ((MainActivity) getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
+                }
+            });
+            */
+        } else {
+            MyApplication.otherPerson = MyApplication.userHashMap.get(MyApplication.dateSelected.getPoster());
+/*
+            Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
+            horizontalScrollView.setVisibility(View.INVISIBLE);
+            matchImage.setVisibility(View.VISIBLE);
+
+            ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
+            matchImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
+                    Log.i("--All", "Set cameFromDateReview to true");
+                    MyApplication.cameFromDateReview = true;
+                    ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
+                }
+            });
+            */
+        }
+
+        Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
+        horizontalScrollView.setVisibility(View.INVISIBLE);
+        matchImage.setVisibility(View.VISIBLE);
+
+        //((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
+        matchImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
+                Log.i("--All", "Set cameFromDateReview to true");
+                MyApplication.cameFromDateReview = true;
+                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
+            }
+        });
+/*
         for (int  i =0; i<MyApplication.allUsers.size(); i++){
-            if ((MyApplication.allUsers.get(i).getId().equals(MyApplication.dateSelected.getTheDate())) && !(MyApplication.dateSelected.getTheDate().equals(MyApplication.currentUser.getId()))){
+            if ((MyApplication.allUsers.get(i).getId().equals(MyApplication.dateSelected.getTheDate())) &&
+                    !(MyApplication.dateSelected.getTheDate().equals(MyApplication.currentUser.getId()))){
                 MyApplication.otherPerson = MyApplication.allUsers.get(i);
 
                 Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
@@ -135,7 +185,8 @@ public class DateReviewFragment extends Fragment{
                     }
                 });
             }
-            else if ((MyApplication.allUsers.get(i).getId().equals(MyApplication.dateSelected.getPoster())) && !(MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId()))){
+            else if ((MyApplication.allUsers.get(i).getId().equals(MyApplication.dateSelected.getPoster())) &&
+                    !(MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId()))){
                 MyApplication.otherPerson = MyApplication.allUsers.get(i);
                 ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
 
@@ -156,6 +207,7 @@ public class DateReviewFragment extends Fragment{
                 });
             }
         }
+        */
     }
 
     public void populateRequests(){
@@ -166,11 +218,9 @@ public class DateReviewFragment extends Fragment{
         populateRequestsReference.addChildEventListener(childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //ImageView imageView = new ImageView(getContext());
                 CircleImageView imageView = new CircleImageView(getContext());
                 profileUrl.add(dataSnapshot.getValue().toString());
                 Picasso.with(getContext()).load(dataSnapshot.getValue().toString()).into(imageView);
-                //imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
                 imageView.setTag(dataSnapshot.getKey());
 
