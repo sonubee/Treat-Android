@@ -122,6 +122,12 @@ public class SearchDatesFragment extends Fragment {
 
         if (dateCounter < MyApplication.allDates.size() && MyApplication.allDates.size() > 0){
 
+
+            if ((MyApplication.currentUser.isShowMen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("male") ||
+                    (MyApplication.currentUser.isShowWomen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("female")))) {
+
+            }
+
             if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())){
                 FirebaseDatabase database2 = FirebaseDatabase.getInstance();
                 DatabaseReference myRef2 = database2.getReference("Users/" + MyApplication.allDates.get(dateCounter).getPoster());
