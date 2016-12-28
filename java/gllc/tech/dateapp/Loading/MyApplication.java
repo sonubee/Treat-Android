@@ -28,24 +28,15 @@ public class MyApplication extends Application {
 
     public static User currentUser;
     public static ArrayList<TheDate> allDates = new ArrayList<>();
-    //public static ArrayList<String> allDatesKeys = new ArrayList<>();
-    //public static ArrayList<String> fullMatchesAsDateKeys = new ArrayList<>();
     public static ArrayList<TheDate> fullMatchesAsDate = new ArrayList<>();
     public static ArrayList<TheDate> fullMatchesAsCreator = new ArrayList<>();
-    //public static ArrayList<String> fullMatchesKeyAsCreator = new ArrayList<>();
     public static ArrayList<TheDate> pendingDates = new ArrayList<>();
-    //public static ArrayList<String> pendingDatesKeys = new ArrayList<>();
     public static HashMap<String, Boolean> matchMap = new HashMap<>();
     public static ArrayList<User> allUsers = new ArrayList<>();
-    //public static ArrayList<AgreedChats> agreedChats = new ArrayList<>();
     public static TheDate dateSelected = new TheDate();
     public static User otherPerson = new User();
     public static String dateSelectedKey = "";
-    public static TheDate myDate = new TheDate();
-    public static String myDateKey = "";
     public static ArrayList<TheDate> combinedDates = new ArrayList<>();
-    //public static ArrayList<String> combinedDatesKeys = new ArrayList<>();
-    //public static boolean justPosted = false;
     public static boolean visitedMessages=false;
     public static HashMap<String, TheDate> dateHashMap = new HashMap<>();
     public static HashMap<String, TheDate> pendingDatesHashMap = new HashMap<>();
@@ -54,9 +45,6 @@ public class MyApplication extends Application {
     public static HashMap<String, TheDate> combinesDatesHashMap = new HashMap<>();
     public static boolean cameFromDateReview = false;
     public static boolean cameFromSearchDates = false;
-    public static boolean refreshingFragments = false;
-    //public static User otherPersonHolder = null;
-    public static TheDate dateSelectedHolder = null;
     public static HashMap<String, User> userHashMap = new HashMap<>();
     public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     public static Place placeChosen;
@@ -76,8 +64,6 @@ public class MyApplication extends Application {
 
         pushToken = FirebaseInstanceId.getInstance().getToken();
         Log.i("--All", "Token: " + pushToken);
-
-        //currentUser = new User("Name", "Email", "FID", "Gender", "Profile Pic", "ID", "Bio", "NA", "NA", "NA", "NA", 0, pushToken);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);

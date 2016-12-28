@@ -11,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
+import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -47,6 +50,7 @@ public class Profile extends Fragment {
     ImageView photo2, photo3, photo4;
     ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;
     CrystalRangeSeekbar ageSeekBar;
+    CrystalSeekbar distanceSeekBar;
     TextView name, bio, karmaPoints, ageRange;
     EditText enterBio;
     boolean editingBio = false;
@@ -56,6 +60,7 @@ public class Profile extends Fragment {
     public static HashMap<String,String> albumIdToCoverPhoto = new HashMap<>();
     public static HashMap<String,String> albumIdToLink = new HashMap<>();
     public static int photoToReplace=0;
+    CheckBox showMen, showWomen;
 
     String albumId;
     int a=0,b=0,c=0;
@@ -81,7 +86,10 @@ public class Profile extends Fragment {
         photo4 = (ImageView)view.findViewById(R.id.supportImage3);
         karmaPoints = (TextView)view.findViewById(R.id.profileKarmaPoints);
         ageSeekBar = (CrystalRangeSeekbar)view.findViewById(R.id.ageSeekBar);
+        distanceSeekBar = (CrystalSeekbar)view.findViewById(R.id.distanceSeekBar);
         ageRange = (TextView)view.findViewById(R.id.ageTangeTextView);
+        showMen = (CheckBox)view.findViewById(R.id.menCheckBox);
+        showWomen = (CheckBox)view.findViewById(R.id.womenCheckBox);
 
         //Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
 
@@ -243,10 +251,38 @@ public class Profile extends Fragment {
             }
         });
 
+        distanceSeekBar.setPosition(20);
+
+        ageSeekBar.setMinStartValue(MyApplication.currentUser.getAgeMin());
+        ageSeekBar.setMaxStartValue(MyApplication.currentUser.getAgeMax());
+
         ageSeekBar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {
                 ageRange.setText(minValue + " - " + maxValue);
+            }
+        });
+
+        showMen.setChecked(MyApplication.currentUser.isShowMen());
+        showWomen.setChecked(MyApplication.currentUser.isShowWomen());
+
+        showMen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MyApplication.currentUser.setShowMen(isChecked);
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showMen");
+                databaseReference.setValue(isChecked);
+            }
+        });
+
+        showWomen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MyApplication.currentUser.setShowWomen(isChecked);
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showWomen");
+                databaseReference.setValue(isChecked);
             }
         });
     }

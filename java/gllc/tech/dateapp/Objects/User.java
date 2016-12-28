@@ -18,11 +18,13 @@ public class User {
     String photo4;
     int karmaPoints;
     String pushToken;
+    boolean showMen;
+    boolean showWomen;
+    int ageMin;
+    int ageMax;
 
-    public User() {
-    }
-
-    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4, int karmaPoints, String pushToken) {
+    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3,
+                String photo4, int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax) {
         this.name = name;
         this.email = email;
         this.id = id;
@@ -36,6 +38,13 @@ public class User {
         this.photo4 = photo4;
         this.karmaPoints = karmaPoints;
         this.pushToken = pushToken;
+        this.showMen = showMen;
+        this.showWomen = showWomen;
+        this.ageMin = ageMin;
+        this.ageMax = ageMax;
+    }
+
+    public User() {
     }
 
     public String getName() {
@@ -142,5 +151,35 @@ public class User {
         this.pushToken = pushToken;
     }
 
+    public boolean isShowMen() {
+        return showMen;
+    }
 
+    public void setShowMen(boolean showMen) {
+        this.showMen = showMen;
+    }
+
+    public boolean isShowWomen() {
+        return showWomen;
+    }
+
+    public void setShowWomen(boolean showWomen) {
+        this.showWomen = showWomen;
+    }
+
+    public int getAgeMin() {
+        return ageMin;
+    }
+
+    public void setAgeMin(int ageMin) {
+        this.ageMin = ageMin;
+    }
+
+    public int getAgeMax() {
+        return ageMax;
+    }
+
+    public void setAgeMax(int ageMax) {
+        this.ageMax = ageMax;
+    }
 }
