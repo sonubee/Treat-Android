@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import gllc.tech.dateapp.MainActivity;
-import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Loading.MainActivity;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.R;
 
 /**

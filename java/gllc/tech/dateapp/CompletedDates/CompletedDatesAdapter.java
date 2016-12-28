@@ -1,12 +1,14 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.CompletedDates;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import gllc.tech.dateapp.Loading.MyApplication;
+import gllc.tech.dateapp.R;
 
 /**
  * Created by bhangoo on 12/19/2016.

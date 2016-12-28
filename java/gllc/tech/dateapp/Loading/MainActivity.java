@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.Loading;
 
 import android.content.Context;
 import android.content.Intent;
@@ -35,11 +35,13 @@ import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
 import gllc.tech.dateapp.Automation.SendPush;
+import gllc.tech.dateapp.CompletedDates.CompletedDates;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.PostDate.CreateEvent;
 import gllc.tech.dateapp.PostDate.PostDateFragment;
+import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;

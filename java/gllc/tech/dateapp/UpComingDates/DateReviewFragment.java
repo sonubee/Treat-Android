@@ -27,10 +27,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import gllc.tech.dateapp.MainActivity;
+import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.Messages.MessageFragment;
-import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.R;
 
 /**

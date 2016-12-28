@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.Loading;
 
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
@@ -35,8 +33,6 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.FacebookAlbums.DisplayFacebookAlbums;
-import gllc.tech.dateapp.MainActivity;
-import gllc.tech.dateapp.MyApplication;
 import gllc.tech.dateapp.R;
 
 /**
@@ -67,7 +63,7 @@ public class Profile extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.third_profile, container, false);
+        View view = inflater.inflate(R.layout.profile, container, false);
 
         //preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 

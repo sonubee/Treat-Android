@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.Loading;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,6 +47,7 @@ import java.util.Date;
 
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
+import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
@@ -159,7 +160,7 @@ public class Login extends Fragment {
                     downloadUsers(user);
 
                     //if (loggedInFacebook && doneDownloading) {
-                    //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
                     //}
 
                 } else {
@@ -607,7 +608,7 @@ public class Login extends Fragment {
                 doneDownloading=true;
 
                 if (MyApplication.foundUser) {
-                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
                 } else {
                     try {
                         MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
@@ -623,7 +624,7 @@ public class Login extends Fragment {
                         Log.i("--All", "Unable to Parse New Facebook User");
                     }
 
-                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Profile.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
                 }
 
                 //downloadAgreedChats();

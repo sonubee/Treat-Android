@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.CompletedDates;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -16,6 +16,9 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import gllc.tech.dateapp.Loading.MyApplication;
+import gllc.tech.dateapp.R;
 
 /**
  * Created by bhangoo on 12/19/2016.

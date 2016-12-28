@@ -1,7 +1,6 @@
 package gllc.tech.dateapp.Messages;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.AgreedChats;
-import gllc.tech.dateapp.Objects.Message;
 import gllc.tech.dateapp.R;
 
 /**

@@ -12,8 +12,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import gllc.tech.dateapp.MainActivity;
-import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Loading.MainActivity;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.R;
 

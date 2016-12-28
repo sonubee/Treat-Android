@@ -13,9 +13,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-import gllc.tech.dateapp.MainActivity;
-import gllc.tech.dateapp.MyApplication;
-import gllc.tech.dateapp.Profile;
+import gllc.tech.dateapp.Loading.MainActivity;
+import gllc.tech.dateapp.Loading.MyApplication;
+import gllc.tech.dateapp.Loading.Profile;
 import gllc.tech.dateapp.R;
 
 /**

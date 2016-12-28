@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.Loading;
 
 import android.app.Application;
 import android.content.pm.PackageInfo;

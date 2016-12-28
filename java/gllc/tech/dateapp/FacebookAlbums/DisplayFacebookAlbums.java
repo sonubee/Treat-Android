@@ -20,8 +20,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import gllc.tech.dateapp.MainActivity;
-import gllc.tech.dateapp.Profile;
+import gllc.tech.dateapp.Loading.MainActivity;
+import gllc.tech.dateapp.Loading.Profile;
 import gllc.tech.dateapp.R;
 
 /**

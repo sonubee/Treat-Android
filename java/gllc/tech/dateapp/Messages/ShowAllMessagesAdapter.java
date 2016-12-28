@@ -1,19 +1,8 @@
 package gllc.tech.dateapp.Messages;
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import gllc.tech.dateapp.MyApplication;
-import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.UpComingDates.YourDatesAdapter;
 
 /**
  * Created by bhangoo on 12/7/2016.

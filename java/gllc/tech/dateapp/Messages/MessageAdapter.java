@@ -1,7 +1,6 @@
 package gllc.tech.dateapp.Messages;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.Message;
 import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
-import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
  * Created by bhangoo on 12/6/2016.

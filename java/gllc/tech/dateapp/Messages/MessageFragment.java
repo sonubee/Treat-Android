@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -26,15 +25,10 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SendPush;
-import gllc.tech.dateapp.MainActivity;
-import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.Message;
-import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
-import gllc.tech.dateapp.UpComingDates.ReviewProfileFragment;
-import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
  * Created by bhangoo on 12/6/2016.

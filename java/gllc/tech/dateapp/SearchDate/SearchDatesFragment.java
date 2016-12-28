@@ -24,7 +24,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.Automation.MapsActivity;
-import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
 
@@ -52,7 +52,7 @@ public class SearchDatesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_search_dates, container, false);
+        View view = inflater.inflate(R.layout.search_dates, container, false);
 
         imageView = (CircleImageView)view.findViewById(R.id.imageViewSearch);
         name = (TextView)view.findViewById(R.id.nameTextView);

@@ -31,9 +31,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import gllc.tech.dateapp.MainActivity;
+import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Automation.MapsActivity;
-import gllc.tech.dateapp.MyApplication;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.R;

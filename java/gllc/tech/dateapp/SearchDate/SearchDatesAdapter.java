@@ -45,7 +45,7 @@ public class SearchDatesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        convertView = layoutInflater.inflate(R.layout.new_listview_search_dates_adapter, null);
+        convertView = layoutInflater.inflate(R.layout.listview_search_dates_adapter, null);
 
         holder.time = (TextView) convertView.findViewById(R.id.timeTextview);
         holder.event = (TextView) convertView.findViewById(R.id.whereTextView);

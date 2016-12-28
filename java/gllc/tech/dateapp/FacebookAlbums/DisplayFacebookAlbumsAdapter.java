@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import gllc.tech.dateapp.Profile;
+import gllc.tech.dateapp.Loading.Profile;
 import gllc.tech.dateapp.R;
 
 /**
