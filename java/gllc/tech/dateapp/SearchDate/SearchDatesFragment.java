@@ -1,13 +1,13 @@
 package gllc.tech.dateapp.SearchDate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SendPush;
+import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.MyApplication;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
@@ -38,7 +39,7 @@ public class SearchDatesFragment extends Fragment {
     CircleImageView imageView;
     TextView name, shortBioSearch, dateTitle, karmaPoints, whoseTreat;
     User viewUser;
-    int dateCounter;
+    public static int dateCounter;
     ImageView yes,no;
 
     @Override
@@ -149,6 +150,15 @@ public class SearchDatesFragment extends Fragment {
 
                 listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
                 listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        MyApplication.cameFromSearchDates=true;
+                        Intent intent = new Intent(getActivity(), MapsActivity.class);
+                        startActivity(intent);
+                    }
+                });
             }
 
             else {

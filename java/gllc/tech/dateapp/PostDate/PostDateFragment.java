@@ -1,8 +1,6 @@
 package gllc.tech.dateapp.PostDate;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -35,12 +32,11 @@ import java.util.Date;
 import java.util.Locale;
 
 import gllc.tech.dateapp.MainActivity;
-import gllc.tech.dateapp.MapsActivity;
+import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.MyApplication;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
  * Created by bhangoo on 12/1/2016.

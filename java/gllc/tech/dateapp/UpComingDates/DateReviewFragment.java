@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.MainActivity;
-import gllc.tech.dateapp.MapsActivity;
+import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.Messages.MessageFragment;
 import gllc.tech.dateapp.MyApplication;
 import gllc.tech.dateapp.R;

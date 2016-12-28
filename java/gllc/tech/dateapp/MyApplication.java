@@ -53,6 +53,7 @@ public class MyApplication extends Application {
     public static HashMap<String, TheDate> fullMatchesAsDateHashMap = new HashMap<>();
     public static HashMap<String, TheDate> combinesDatesHashMap = new HashMap<>();
     public static boolean cameFromDateReview = false;
+    public static boolean cameFromSearchDates = false;
     public static boolean refreshingFragments = false;
     //public static User otherPersonHolder = null;
     public static TheDate dateSelectedHolder = null;

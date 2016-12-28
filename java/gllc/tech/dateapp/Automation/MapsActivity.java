@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.Automation;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,9 +16,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import gllc.tech.dateapp.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.PostDate.PostDateFragment;
+import gllc.tech.dateapp.R;
+import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
 
 /**
  * Created by bhangoo on 12/12/2016.
@@ -40,45 +43,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        ArrayList<EventsOfDate> allEvents = new ArrayList<>();
 
         if (MyApplication.cameFromPost) {
-            LatLng sydney = new LatLng(PostDateFragment.listOfPlaces.get(PostDateFragment.selectedMap).getLatLng().latitude,
-                    PostDateFragment.listOfPlaces.get(PostDateFragment.selectedMap).getLatLng().longitude);
-            mMap.addMarker(new MarkerOptions().position(sydney).title(PostDateFragment.listOfEvents.get(PostDateFragment.selectedMap).getAddress()));
-            mMap.setMinZoomPreference(13);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            allEvents = PostDateFragment.listOfEvents;
+        }
+
+        if (MyApplication.cameFromSearchDates) {
+            TheDate theDate = MyApplication.allDates.get(SearchDatesFragment.dateCounter);
+            allEvents = theDate.getEvents();
         }
 
         if (MyApplication.cameFromYourDates) {
-
             TheDate theDate = MyApplication.dateHashMap.get(MyApplication.dateSelectedKey);
-
-            ArrayList<EventsOfDate> allEvents;
-
             allEvents = theDate.getEvents();
-
-            ArrayList<Marker> allMarkers = new ArrayList<>();
-
-            for (int i=0; i<allEvents.size(); i++) {
-                LatLng latLng = new LatLng(allEvents.get(i).getLatitude(), allEvents.get(i).getLongitude());
-                allMarkers.add(mMap.addMarker(new MarkerOptions().position(latLng).title(allEvents.get(i).getPlaceName())));
-            }
-
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (Marker marker : allMarkers) {
-                builder.include(marker.getPosition());
-            }
-            LatLngBounds bounds = builder.build();
-
-            //int padding = 0; // offset from edges of the map in pixels
-            int width = getResources().getDisplayMetrics().widthPixels;
-            int height = getResources().getDisplayMetrics().heightPixels;
-            int padding = (int) (width * 0.25); // offset from edges of the map 12% of screen
-
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-
-            googleMap.moveCamera(cu);
         }
+
+        ArrayList<Marker> allMarkers = new ArrayList<>();
+
+        for (int i=0; i<allEvents.size(); i++) {
+            LatLng latLng = new LatLng(allEvents.get(i).getLatitude(), allEvents.get(i).getLongitude());
+            allMarkers.add(mMap.addMarker(new MarkerOptions().position(latLng).title(allEvents.get(i).getPlaceName())));
+        }
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : allMarkers) {
+            builder.include(marker.getPosition());
+        }
+        LatLngBounds bounds = builder.build();
+
+        //int padding = 0; // offset from edges of the map in pixels
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * 0.25); // offset from edges of the map 12% of screen
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+
+        googleMap.moveCamera(cu);
 
 
     }
@@ -88,5 +89,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onDestroy();
         MyApplication.cameFromPost=false;
         MyApplication.cameFromYourDates=false;
+        MyApplication.cameFromSearchDates=false;
     }
 }
