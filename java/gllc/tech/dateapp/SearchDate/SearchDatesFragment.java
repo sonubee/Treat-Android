@@ -3,6 +3,8 @@ package gllc.tech.dateapp.SearchDate;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -143,9 +145,13 @@ public class SearchDatesFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 viewUser = dataSnapshot.getValue(User.class);
 
-                                ArrayList<String> allImages = new ArrayList<>();
+                                final ArrayList<String> allImages = new ArrayList<>();
 
-                                allImages.add(viewUser.getProfilePic());
+                                if (viewUser.getPhoto1().equals("NA")) {
+                                    allImages.add(viewUser.getProfilePic());
+                                } else {
+                                    allImages.add(viewUser.getPhoto1());
+                                }
 
                                 if (!viewUser.getPhoto2().equals("NA")) {allImages.add(viewUser.getPhoto2());}
                                 if (!viewUser.getPhoto3().equals("NA")) {allImages.add(viewUser.getPhoto3());}
@@ -161,16 +167,35 @@ public class SearchDatesFragment extends Fragment {
                                     @Override
                                     public void onClick(View v) {
 
-                                        ImageView imageView1 = new ImageView(getContext());
-                                        Picasso.with(getContext()).load(viewUser.getPhoto1()).resize((MyApplication.screenWidth-150),
-                                                MyApplication.screenWidth-150).centerCrop().into(imageView1);
-
                                         final Dialog dialog = new Dialog(getContext());
                                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                                         dialog.setContentView(R.layout.full_image_horizontal);
 
                                         LinearLayout layout = (LinearLayout)dialog.findViewById(R.id.fullImageLinear);
+
+                                        //use a GradientDrawable with only one color set, to make it a solid color
+                                        GradientDrawable border = new GradientDrawable();
+                                        border.setColor(0xFFFFFFFF); //white background
+                                        border.setStroke(1, 0xFF000000); //black border with full opacity
+
+                                        layout.setBackground(border);
+
+                                        for (int i=0; i<allImages.size(); i++) {
+                                            ImageView imageView = new ImageView(getContext());
+                                            imageView.setPadding(10, 10, 10, 10);
+
+                                            Picasso.with(getContext()).load(allImages.get(i)).resize((MyApplication.screenWidth-150),
+                                                    MyApplication.screenHeight-250).centerCrop().into(imageView);
+
+                                            layout.addView(imageView);
+                                        }
+/*
+                                        ImageView imageView1 = new ImageView(getContext());
+                                        Picasso.with(getContext()).load(viewUser.getPhoto1()).resize((MyApplication.screenWidth-150),
+                                                MyApplication.screenWidth-150).centerCrop().into(imageView1);
+
+
                                         layout.addView(imageView1);
 
                                         ImageView imageView2 = new ImageView(getContext());
@@ -178,7 +203,7 @@ public class SearchDatesFragment extends Fragment {
                                                 MyApplication.screenWidth-100).centerCrop().into(imageView2);
 
                                         layout.addView(imageView2);
-
+*/
                                         dialog.show();
 
                                         /*

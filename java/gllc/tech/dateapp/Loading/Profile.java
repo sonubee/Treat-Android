@@ -282,6 +282,8 @@ public class Profile extends Fragment {
                 databaseReference.setValue(isChecked);
             }
         });
+
+        getProfilePhoto();
     }
 
     public void loadImages() {
@@ -391,6 +393,7 @@ public class Profile extends Fragment {
     public void getCoverPhotoPicture2(String coverPhotoId, final String albumIdToUse) {
         Bundle parameters = new Bundle();
         parameters.putString("fields", "images");
+        parameters.putString("redirect", "false");
         new GraphRequest(
                 AccessToken.getCurrentAccessToken(),
                 "/" + coverPhotoId,
@@ -421,4 +424,29 @@ public class Profile extends Fragment {
         ft.detach(this).attach(this).commit();
 
     }
+
+    public void getProfilePhoto() {
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "images");
+        parameters.putString("redirect", "redirect=false");
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + MyApplication.currentUser.getFid() + "/picture",
+                parameters,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        Log.i("--All", "Response: " + response.toString());
+                        JSONObject jsonObject = response.getJSONObject();
+                        try{
+                            //JSONArray imagesArrayJSON = jsonObject.getJSONArray("images");
+                            //albumIdToLink.put(albumIdToUse, imagesArrayJSON.getJSONObject(0).getString("source"));
+                        }catch (Exception e){
+                            Log.i("--All", "Error: " + e.getMessage());
+                        }
+                    }
+                }
+        ).executeAsync();
+    }
+
 }
