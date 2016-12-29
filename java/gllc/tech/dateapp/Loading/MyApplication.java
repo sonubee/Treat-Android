@@ -59,6 +59,8 @@ public class MyApplication extends Application {
     public static String pushToken;
     public static int screenHeight;
     public static int screenWidth;
+    public static final int ACCESS_FINE_LOCATION_VALUE = 9999;
+
 
     @Override
     public void onCreate() {

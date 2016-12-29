@@ -1,14 +1,20 @@
 package gllc.tech.dateapp.Loading;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,6 +30,7 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -47,7 +54,7 @@ import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
-public class MainActivity extends NavigationLiveo implements OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends NavigationLiveo implements OnItemClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
 
     private HelpLiveo mHelpLiveo;
     User saveUser;
@@ -56,6 +63,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     private GoogleApiClient mGoogleApiClient;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+
 
     @Override
     public void onInt(Bundle savedInstanceState) {
@@ -73,7 +81,9 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
-                //.addApi(A)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
                 .enableAutoManage(this, this)
                 .build();
 
@@ -83,7 +93,49 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         MyApplication.screenHeight = metrics.heightPixels;
         MyApplication.screenWidth = metrics.widthPixels;
 
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MyApplication.ACCESS_FINE_LOCATION_VALUE);
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MyApplication.ACCESS_FINE_LOCATION_VALUE);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+
     }
+
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+
 
     @Override
     public void onItemClick(int position) {
@@ -415,4 +467,53 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         ((Profile) fragment).reloadProfileFragment();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MyApplication.ACCESS_FINE_LOCATION_VALUE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay!
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+
+        Location mLastLocation;
+
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE22");
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE3333");
+            if (mLastLocation != null) {
+                String latitude = String.valueOf(mLastLocation.getLatitude());
+                String longitude = String.valueOf(mLastLocation.getLongitude());
+
+                Toast.makeText(this, "Latitude " + latitude + " - Longitude: " + longitude, Toast.LENGTH_LONG).show();
+                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+longitude);
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
 }
+
