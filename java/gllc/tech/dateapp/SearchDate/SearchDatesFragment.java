@@ -1,6 +1,8 @@
 package gllc.tech.dateapp.SearchDate;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,11 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.Automation.MapsActivity;
+import gllc.tech.dateapp.Automation.SwipeDetector;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
@@ -45,12 +51,15 @@ public class SearchDatesFragment extends Fragment {
     User viewUser;
     public static int dateCounter;
     ImageView yes,no;
+    SwipeDetector swipeDetector;
+    LinearLayout layout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         dateCounter = 0;
+        swipeDetector = new SwipeDetector();
     }
 
     @Nullable
@@ -134,11 +143,73 @@ public class SearchDatesFragment extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 viewUser = dataSnapshot.getValue(User.class);
 
+                                ArrayList<String> allImages = new ArrayList<>();
+
+                                allImages.add(viewUser.getProfilePic());
+
+                                if (!viewUser.getPhoto2().equals("NA")) {allImages.add(viewUser.getPhoto2());}
+                                if (!viewUser.getPhoto3().equals("NA")) {allImages.add(viewUser.getPhoto3());}
+                                if (!viewUser.getPhoto4().equals("NA")) {allImages.add(viewUser.getPhoto4());}
+
                                 Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
                                 name.setText(viewUser.getName());
                                 shortBioSearch.setText(viewUser.getBio());
                                 karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
                                 whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
+
+                                imageView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        ImageView imageView1 = new ImageView(getContext());
+                                        Picasso.with(getContext()).load(viewUser.getPhoto1()).resize((MyApplication.screenWidth-150),
+                                                MyApplication.screenWidth-150).centerCrop().into(imageView1);
+
+                                        final Dialog dialog = new Dialog(getContext());
+                                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                                        dialog.setContentView(R.layout.full_image_horizontal);
+
+                                        LinearLayout layout = (LinearLayout)dialog.findViewById(R.id.fullImageLinear);
+                                        layout.addView(imageView1);
+
+                                        ImageView imageView2 = new ImageView(getContext());
+                                        Picasso.with(getContext()).load(viewUser.getPhoto2()).resize((MyApplication.screenWidth-100),
+                                                MyApplication.screenWidth-100).centerCrop().into(imageView2);
+
+                                        layout.addView(imageView2);
+
+                                        dialog.show();
+
+                                        /*
+                                        final Dialog dialog = new Dialog(getContext());
+                                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                                        dialog.setContentView(R.layout.full_image);
+
+                                        final ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+
+                                        Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
+
+                                        imageView.setOnTouchListener(swipeDetector);
+
+                                        imageView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (swipeDetector.swipeDetected()) {
+                                                    if (swipeDetector.getAction() == SwipeDetector.Action.RL) {
+                                                        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+
+
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                        dialog.show();
+                                        */
+                                    }
+                                });
                             }
 
                             @Override

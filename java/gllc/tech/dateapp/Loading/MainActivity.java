@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -76,6 +77,11 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 .enableAutoManage(this, this)
                 .build();
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        MyApplication.screenHeight = metrics.heightPixels;
+        MyApplication.screenWidth = metrics.widthPixels;
 
     }
 

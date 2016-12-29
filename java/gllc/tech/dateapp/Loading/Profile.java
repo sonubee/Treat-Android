@@ -43,9 +43,6 @@ import gllc.tech.dateapp.R;
  */
 
 public class Profile extends Fragment {
-
-    //SharedPreferences preferences;
-    //SharedPreferences.Editor editor;
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
     ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;

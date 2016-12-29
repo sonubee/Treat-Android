@@ -57,6 +57,8 @@ public class MyApplication extends Application {
     public static HashMap<String, TheDate> completedDatesHashMap = new HashMap<>();
     public static boolean foundUser = false;
     public static String pushToken;
+    public static int screenHeight;
+    public static int screenWidth;
 
     @Override
     public void onCreate() {
