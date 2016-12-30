@@ -22,9 +22,10 @@ public class User {
     boolean showWomen;
     int ageMin;
     int ageMax;
+    int distance;
 
-    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3,
-                String photo4, int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax) {
+    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2,
+                String photo3, String photo4, int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax, int distance) {
         this.name = name;
         this.email = email;
         this.id = id;
@@ -42,7 +43,11 @@ public class User {
         this.showWomen = showWomen;
         this.ageMin = ageMin;
         this.ageMax = ageMax;
+        this.distance = distance;
     }
+
+
+
 
     public User() {
     }
@@ -181,5 +186,13 @@ public class User {
 
     public void setAgeMax(int ageMax) {
         this.ageMax = ageMax;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 }

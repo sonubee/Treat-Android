@@ -60,6 +60,8 @@ public class MyApplication extends Application {
     public static int screenHeight;
     public static int screenWidth;
     public static final int ACCESS_FINE_LOCATION_VALUE = 9999;
+    public static double latitude = 0;
+    public static double longitude = 0;
 
 
     @Override

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.renderscript.Double2;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -496,17 +497,16 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
         Location mLastLocation;
 
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE22");
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE3333");
             if (mLastLocation != null) {
                 String latitude = String.valueOf(mLastLocation.getLatitude());
                 String longitude = String.valueOf(mLastLocation.getLongitude());
 
+                MyApplication.latitude = Double.parseDouble(latitude);
+                MyApplication.longitude = Double.parseDouble(longitude);
+
                 Toast.makeText(this, "Latitude " + latitude + " - Longitude: " + longitude, Toast.LENGTH_LONG).show();
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+longitude);
             }
         }
     }

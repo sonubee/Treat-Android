@@ -569,7 +569,7 @@ public class Login extends Fragment {
                         MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
                                 firebaseUser.getUid(), facebookLoginResponseJSONObject.getString("gender"), "https://graph.facebook.com/" +
                                 facebookLoginResponseJSONObject.getString("id") + "/picture?type=large", facebookLoginResponseJSONObject.getString("id"),
-                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55);
+                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55, 100);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());

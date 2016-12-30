@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,12 +37,15 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gllc.tech.dateapp.Automation.GetDistance;
 import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.Automation.SwipeDetector;
 import gllc.tech.dateapp.Loading.MyApplication;
+import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
 
@@ -126,12 +135,13 @@ public class SearchDatesFragment extends Fragment {
         });
 
         //showDate();
-
     }
 
     public void showDate(){
 
         if (dateCounter < MyApplication.allDates.size() && MyApplication.allDates.size() > 0){
+
+            Toast.makeText(getContext(), "Distance is: " + getDistance(MyApplication.allDates.get(dateCounter).getEvents()) + " miles away", Toast.LENGTH_SHORT).show();
 
             if (!MyApplication.matchMap.containsKey(MyApplication.allDates.get(dateCounter).getKey())) {
                 if ((MyApplication.currentUser.isShowMen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("male") ||
@@ -351,6 +361,40 @@ public class SearchDatesFragment extends Fragment {
 
             }
         });
+    }
+
+    public Double getDistance(ArrayList<EventsOfDate> eventsOfDate) {
+
+        ArrayList<EventsOfDate> allEvents = eventsOfDate;
+
+        ArrayList<LatLng> points = new ArrayList<>();
+
+        for (int i=0; i<allEvents.size(); i++) {
+            LatLng latLng = new LatLng(allEvents.get(i).getLatitude(), allEvents.get(i).getLongitude());
+            points.add(latLng);
+        }
+
+        double latitude = 0;
+        double longitude = 0;
+        int n = points.size();
+
+        for (LatLng point : points) {
+            latitude += point.latitude;
+            longitude += point.longitude;
+        }
+
+        LatLng center = new LatLng(latitude/n, longitude/n);
+
+        Location locationA = new Location("point A");
+        locationA.setLatitude(center.latitude);
+        locationA.setLongitude(center.longitude);
+        Location locationB = new Location("point B");
+        locationB.setLatitude(MyApplication.latitude);
+        locationB.setLongitude(MyApplication.longitude);
+        Float floatDistance = locationA.distanceTo(locationB) ;
+        Double doubleDistance = floatDistance*0.000621371;
+
+        return doubleDistance;
     }
 
 
