@@ -506,7 +506,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 MyApplication.latitude = Double.parseDouble(latitude);
                 MyApplication.longitude = Double.parseDouble(longitude);
 
-                Toast.makeText(this, "Latitude " + latitude + " - Longitude: " + longitude, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Latitude " + latitude + " - Longitude: " + longitude, Toast.LENGTH_LONG).show();
             }
         }
     }

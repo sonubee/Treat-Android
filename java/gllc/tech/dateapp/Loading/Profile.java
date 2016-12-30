@@ -17,9 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
-import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
-import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -28,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,8 +44,6 @@ public class Profile extends Fragment {
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
     ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;
-    CrystalRangeSeekbar ageSeekBar;
-    CrystalSeekbar distanceSeekBar;
     TextView name, bio, karmaPoints, ageRange;
     EditText enterBio;
     boolean editingBio = false;
@@ -58,6 +54,7 @@ public class Profile extends Fragment {
     public static HashMap<String,String> albumIdToLink = new HashMap<>();
     public static int photoToReplace=0;
     CheckBox showMen, showWomen;
+    RangeSeekBar<Integer> distanceSeekBar, ageSeekBar;
 
     String albumId;
     int a=0,b=0,c=0;
@@ -68,7 +65,8 @@ public class Profile extends Fragment {
         View view = inflater.inflate(R.layout.profile, container, false);
 
         //preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
+        distanceSeekBar = (RangeSeekBar)view.findViewById(R.id.distanceSeekBar);
+        ageSeekBar = (RangeSeekBar)view.findViewById(R.id.ageSeekBar);
         profileImage = (CircleImageView)view.findViewById(R.id.userPicture);
         name = (TextView)view.findViewById(R.id.nameUser);
         editBio = (ImageView)view.findViewById(R.id.editButton);
@@ -82,8 +80,6 @@ public class Profile extends Fragment {
         photo3 = (ImageView)view.findViewById(R.id.supportImage2);
         photo4 = (ImageView)view.findViewById(R.id.supportImage3);
         karmaPoints = (TextView)view.findViewById(R.id.profileKarmaPoints);
-        ageSeekBar = (CrystalRangeSeekbar)view.findViewById(R.id.ageSeekBar);
-        distanceSeekBar = (CrystalSeekbar)view.findViewById(R.id.distanceSeekBar);
         ageRange = (TextView)view.findViewById(R.id.ageTangeTextView);
         showMen = (CheckBox)view.findViewById(R.id.menCheckBox);
         showWomen = (CheckBox)view.findViewById(R.id.womenCheckBox);
@@ -248,18 +244,6 @@ public class Profile extends Fragment {
             }
         });
 
-        distanceSeekBar.setPosition(20);
-
-        ageSeekBar.setMinStartValue(MyApplication.currentUser.getAgeMin());
-        ageSeekBar.setMaxStartValue(MyApplication.currentUser.getAgeMax());
-
-        ageSeekBar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
-            @Override
-            public void valueChanged(Number minValue, Number maxValue) {
-                ageRange.setText(minValue + " - " + maxValue);
-            }
-        });
-
         showMen.setChecked(MyApplication.currentUser.isShowMen());
         showWomen.setChecked(MyApplication.currentUser.isShowWomen());
 
@@ -280,6 +264,36 @@ public class Profile extends Fragment {
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showWomen");
                 databaseReference.setValue(isChecked);
+            }
+        });
+
+        distanceSeekBar.setSelectedMaxValue(MyApplication.currentUser.getDistance());
+        ageSeekBar.setSelectedMaxValue(MyApplication.currentUser.getAgeMax());
+        ageSeekBar.setSelectedMinValue(MyApplication.currentUser.getAgeMin());
+
+        distanceSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+                MyApplication.currentUser.setDistance(maxValue);
+
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/distance");
+                databaseReference.setValue(maxValue);
+            }
+        });
+
+        ageSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+                MyApplication.currentUser.setAgeMin(minValue);
+                MyApplication.currentUser.setAgeMax(maxValue);
+
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/ageMax");
+                databaseReference.setValue(maxValue);
+
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/ageMin");
+                databaseReference.setValue(minValue);
             }
         });
 
