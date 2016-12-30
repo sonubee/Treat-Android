@@ -11,6 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -44,6 +47,8 @@ import gllc.tech.dateapp.Automation.GetDistance;
 import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.Automation.SwipeDetector;
+import gllc.tech.dateapp.Loading.Filters;
+import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.User;
@@ -94,6 +99,7 @@ public class SearchDatesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
         searchAlready();
 
         yes.setImageResource(R.drawable.yes);
@@ -408,6 +414,27 @@ public class SearchDatesFragment extends Fragment {
 
         return doubleDistance;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+
+        inflater.inflate(R.menu.filter, menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.chooseFilters:
+
+                ((MainActivity)getActivity()).addFragments(Filters.class, R.id.container, "Filters");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
 }

@@ -156,15 +156,26 @@
         android:layout_alignStart="@+id/textView5" />
 
     <TextView
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginLeft="15dp"
         android:textColor="#FFF"
-        android:text="Ages: "
+        android:text="(Miles)"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/textView2"
         android:layout_below="@+id/textView6"
-        android:layout_alignStart="@+id/textView6" />
+        android:layout_alignStart="@+id/textView6"
+        android:id="@+id/textView" />
+
+    <org.florescu.android.rangeseekbar.RangeSeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="50dp"
+        android:id="@+id/distanceSeekBar"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_alignStart="@+id/menCheckBox"
+        app:singleThumb="true"
+        />
+
+
 
     <CheckBox
         android:buttonTint="#FFF"
@@ -192,15 +203,16 @@
         android:layout_marginLeft="30dp"
         />
 
-    <org.florescu.android.rangeseekbar.RangeSeekBar
-        android:layout_width="match_parent"
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF"
+        android:text="Ages: "
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="50dp"
-        android:id="@+id/distanceSeekBar"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_alignStart="@+id/menCheckBox"
-        app:singleThumb="true"
-        />
+        android:layout_marginTop="30dp"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/textView6"
+        android:layout_alignStart="@+id/textView6" />
 
     <org.florescu.android.rangeseekbar.RangeSeekBar
         android:layout_width="match_parent"
@@ -212,6 +224,8 @@
         app:absoluteMaxValue="55"
         app:absoluteMinValue="18" />
 
+
+
     <TextView
         android:textColor="#FFF"
         android:text="Age Range"
@@ -222,15 +236,7 @@
         android:visibility="invisible"
         android:id="@+id/ageTangeTextView" />
 
-    <TextView
-        android:layout_marginLeft="15dp"
-        android:textColor="#FFF"
-        android:text="(Miles)"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView6"
-        android:layout_alignStart="@+id/textView6"
-        android:id="@+id/textView" />
+
 
 
 </RelativeLayout>

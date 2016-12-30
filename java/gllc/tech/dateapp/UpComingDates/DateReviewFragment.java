@@ -403,14 +403,11 @@ public class DateReviewFragment extends Fragment{
                         databaseReference.removeValue();
                     }
                 }
-/*
-                for (int i=0; i<MyApplication.agreedChats.size(); i++){
 
-                    if (MyApplication.agreedChats.get(i).getDateKey().equals(MyApplication.dateSelectedKey)){
-                        MyApplication.agreedChats.remove(i);
-                    }
+                String dateId = MyApplication.dateHashMap.get(MyApplication.dateSelectedKey).getTheDate();
 
-                    String dateId = MyApplication.dateHashMap.get(MyApplication.dateSelectedKey).getTheDate();
+                if (!dateId.equals("NA")) {
+
                     MyApplication.otherPerson = MyApplication.userHashMap.get(dateId);
 
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -419,15 +416,10 @@ public class DateReviewFragment extends Fragment{
                     databaseReference1 = firebaseDatabase.getReference("AgreedChats/"+MyApplication.otherPerson.getId()+"/"+MyApplication.dateSelectedKey);
                     databaseReference1.removeValue();
                 }
-*/
-                String dateId = MyApplication.dateHashMap.get(MyApplication.dateSelectedKey).getTheDate();
-                MyApplication.otherPerson = MyApplication.userHashMap.get(dateId);
 
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference1 = firebaseDatabase.getReference("AgreedChats/"+MyApplication.currentUser.getId()+"/"+MyApplication.dateSelectedKey);
-                databaseReference1.removeValue();
-                databaseReference1 = firebaseDatabase.getReference("AgreedChats/"+MyApplication.otherPerson.getId()+"/"+MyApplication.dateSelectedKey);
-                databaseReference1.removeValue();
+                FirebaseDatabase fi
+
+
                 break;
         }
 
@@ -437,8 +429,6 @@ public class DateReviewFragment extends Fragment{
     @Override
     public void onDetach() {
         super.onDetach();
-
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE" + MyApplication.dateSelectedKey);
 
         if (!MyApplication.hasDate) {
             populateRequestsReference.removeEventListener(childEventListener);
