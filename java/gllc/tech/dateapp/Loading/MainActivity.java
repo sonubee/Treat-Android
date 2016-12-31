@@ -35,8 +35,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
@@ -62,8 +70,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     private float x1,x2;
     static final int MIN_DISTANCE = 150;
     private GoogleApiClient mGoogleApiClient;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
 
 
     @Override
@@ -75,8 +83,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
         Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mActionBarToolbar);
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -317,20 +323,68 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         //Log.i("--All", "OptionsSelected in activity called");
         switch (item.getItemId()) {
             case R.id.selectDate:
+
+                DatabaseReference pullRequests = database.getReference("Requests/"+MyApplication.dateSelectedKey);
+                final ArrayList<String> allRequests = new ArrayList<>();
+/*
+                pullRequests.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.i("--All", "Request: " + dataSnapshot.getValue());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+*/
+                pullRequests.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Log.i("--All", "Adding Child");
+                        allRequests.add(dataSnapshot.getKey());
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+
+
                 MyApplication.dateSelected.setTheDate(MyApplication.otherPerson.getId());
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("Dates/" +MyApplication.dateSelectedKey);
-                myRef.setValue(MyApplication.dateSelected);
-                Log.i("--All", "Selected Date");
-                myRef = database.getReference("FullMatches/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
-                myRef.setValue(MyApplication.dateSelected);
+                databaseReference = database.getReference("Dates/" +MyApplication.dateSelectedKey);
+                databaseReference.setValue(MyApplication.dateSelected);
 
-                myRef = database.getReference("FullMatches/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
-                myRef.setValue(MyApplication.dateSelected);
+                databaseReference = database.getReference("FullMatches/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                databaseReference.setValue(MyApplication.dateSelected);
 
-                myRef = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
-                myRef.removeValue();
+                databaseReference = database.getReference("FullMatches/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                databaseReference.setValue(MyApplication.dateSelected);
+
+                //databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
+                //databaseReference.removeValue();
 
                 new SendPush(MyApplication.currentUser.getName() + " has selected you at the date for " + MyApplication.dateSelected.getDateTitle() + "!",
                         MyApplication.otherPerson.getPushToken(), "You got a date!");

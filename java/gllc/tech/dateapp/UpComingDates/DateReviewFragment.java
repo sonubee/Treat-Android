@@ -47,6 +47,9 @@ public class DateReviewFragment extends Fragment{
     HorizontalScrollView horizontalScrollView;
     ChildEventListener childEventListener;
     DatabaseReference populateRequestsReference;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
+    ArrayList<String> allRequests = new ArrayList<>();
 
     //public static String requestSelectedToReview;
     public static ArrayList<String> profileUrl = new ArrayList<>();
@@ -113,41 +116,7 @@ public class DateReviewFragment extends Fragment{
 
         if (!MyApplication.userHashMap.get(MyApplication.dateSelected.getTheDate()).getId().equals(MyApplication.currentUser.getId())) {
             MyApplication.otherPerson = MyApplication.userHashMap.get(MyApplication.dateSelected.getTheDate());
-/*
-            Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
-            horizontalScrollView.setVisibility(View.INVISIBLE);
-            matchImage.setVisibility(View.VISIBLE);
-
-            ((MainActivity) getActivity()).saveUser(MyApplication.otherPerson);
-            matchImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyApplication.otherPerson = ((MainActivity) getActivity()).geteUser();
-                    Log.i("--All", "Set cameFromDateReview to true");
-                    MyApplication.cameFromDateReview = true;
-                    ((MainActivity) getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
-                }
-            });
-            */
-        } else {
-            MyApplication.otherPerson = MyApplication.userHashMap.get(MyApplication.dateSelected.getPoster());
-/*
-            Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
-            horizontalScrollView.setVisibility(View.INVISIBLE);
-            matchImage.setVisibility(View.VISIBLE);
-
-            ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
-            matchImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
-                    Log.i("--All", "Set cameFromDateReview to true");
-                    MyApplication.cameFromDateReview = true;
-                    ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
-                }
-            });
-            */
-        }
+        } else {MyApplication.otherPerson = MyApplication.userHashMap.get(MyApplication.dateSelected.getPoster());}
 
         Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
         horizontalScrollView.setVisibility(View.INVISIBLE);
@@ -163,86 +132,41 @@ public class DateReviewFragment extends Fragment{
                 ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
             }
         });
-/*
-        for (int  i =0; i<MyApplication.allUsers.size(); i++){
-            if ((MyApplication.allUsers.get(i).getId().equals(MyApplication.dateSelected.getTheDate())) &&
-                    !(MyApplication.dateSelected.getTheDate().equals(MyApplication.currentUser.getId()))){
-                MyApplication.otherPerson = MyApplication.allUsers.get(i);
-
-                Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
-                horizontalScrollView.setVisibility(View.GONE);
-                matchImage.setVisibility(View.VISIBLE);
-
-                ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
-                matchImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
-                        MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
-                        Log.i("--All", "Set cameFromDateReview to true");
-                        MyApplication.cameFromDateReview = true;
-                        ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
-                    }
-                });
-            }
-            else if ((MyApplication.allUsers.get(i).getId().equals(MyApplication.dateSelected.getPoster())) &&
-                    !(MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId()))){
-                MyApplication.otherPerson = MyApplication.allUsers.get(i);
-                ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
-
-                Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(matchImage);
-                horizontalScrollView.setVisibility(View.INVISIBLE);
-                matchImage.setVisibility(View.VISIBLE);
-
-                ((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
-
-                matchImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        MyApplication.cameFromDateReview = true;
-                        Log.i("--All", "Set cameFromDateReview to true");
-                        MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
-                        ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
-                    }
-                });
-            }
-        }
-        */
     }
 
     public void populateRequests(){
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        populateRequestsReference = database.getReference("Requests/" + MyApplication.dateSelectedKey);
+        populateRequestsReference = firebaseDatabase.getReference("Requests/" + MyApplication.dateSelectedKey);
 
         populateRequestsReference.addChildEventListener(childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                CircleImageView imageView = new CircleImageView(getContext());
-                profileUrl.add(dataSnapshot.getValue().toString());
-                Picasso.with(getContext()).load(dataSnapshot.getValue().toString()).into(imageView);
 
-                imageView.setTag(dataSnapshot.getKey());
+                allRequests.add(dataSnapshot.getKey());
 
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                if (!dataSnapshot.getValue().equals("Rejected")) {
 
-                        MyApplication.otherPerson = MyApplication.userHashMap.get(v.getTag().toString());
-/*
-                        for (int i=0; i <MyApplication.allUsers.size(); i++){
-                            if (MyApplication.allUsers.get(i).getId().equals(v.getTag().toString())){
-                                MyApplication.otherPerson = MyApplication.allUsers.get(i);
-                            }
+                    CircleImageView imageView = new CircleImageView(getContext());
+                    profileUrl.add(dataSnapshot.getValue().toString());
+                    Picasso.with(getContext()).load(dataSnapshot.getValue().toString()).into(imageView);
+
+                    imageView.setTag(dataSnapshot.getKey());
+
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            MyApplication.otherPerson = MyApplication.userHashMap.get(v.getTag().toString());
+
+                            populateRequestsReference.removeEventListener(childEventListener);
+                            profileUrl = new ArrayList<String>();
+                            ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "ReviewProfileFragment");
                         }
-                        */
-                        populateRequestsReference.removeEventListener(childEventListener);
-                        profileUrl = new ArrayList<String>();
-                        ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "ReviewProfileFragment");
-                    }
-                });
+                    });
 
-                layout.addView(imageView);
+                    layout.addView(imageView);
+                }
+
             }
 
             @Override
@@ -318,18 +242,17 @@ public class DateReviewFragment extends Fragment{
         switch (item.getItemId()) {
             case R.id.unmatchReviewDate:
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = database.getReference("Dates/" + MyApplication.dateSelectedKey + "/" + "theDate");
+                databaseReference = firebaseDatabase.getReference("Dates/" + MyApplication.dateSelectedKey + "/" + "theDate");
                 databaseReference.setValue("NA");
 
-                databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
+                databaseReference = firebaseDatabase.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
                 databaseReference.removeValue();
 
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference1 = firebaseDatabase.getReference("AgreedChats/"+MyApplication.currentUser.getId()+"/"+MyApplication.dateSelectedKey);
-                databaseReference1.removeValue();
-                databaseReference1 = firebaseDatabase.getReference("AgreedChats/"+MyApplication.otherPerson.getId()+"/"+MyApplication.dateSelectedKey);
-                databaseReference1.removeValue();
+                databaseReference = firebaseDatabase.getReference("AgreedChats/"+MyApplication.currentUser.getId()+"/"+MyApplication.dateSelectedKey);
+                databaseReference.removeValue();
+
+                databaseReference = firebaseDatabase.getReference("AgreedChats/"+MyApplication.otherPerson.getId()+"/"+MyApplication.dateSelectedKey);
+                databaseReference.removeValue();
 
                 if (MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId())) {
                     requestsOrMatch.setText("Your Requests");
@@ -363,27 +286,9 @@ public class DateReviewFragment extends Fragment{
 
                     MyApplication.otherPerson = null;
                     populateRequests();
-/*
-                    for (int i=0; i<MyApplication.agreedChats.size(); i++){
-                        if (MyApplication.agreedChats.get(i).getDateKey().equals(MyApplication.dateSelectedKey)){
-                            MyApplication.agreedChats.remove(i);
-                        }
-                    }*/
                 }
 
-                else{
-/*
-                    for (int i=0; i<MyApplication.combinedDates.size(); i++){
-                        if (MyApplication.combinedDates.get(i).getKey().equals(MyApplication.dateSelectedKey)){
-                            MyApplication.combinedDates.remove(i);
-                            MyApplication.combinesDatesHashMap.remove(MyApplication.dateSelectedKey);
-                        }
-                    }
-
-                    YourDatesFragment.adapter.notifyDataSetChanged();*/
-                    ((MainActivity)getActivity()).popBackStack();
-
-                }
+                else{((MainActivity)getActivity()).popBackStack();}
 
 
                 break;
@@ -391,6 +296,58 @@ public class DateReviewFragment extends Fragment{
 
         switch (item.getItemId()) {
             case R.id.cancelDate:
+
+                String dateId = MyApplication.dateHashMap.get(MyApplication.dateSelectedKey).getTheDate();
+
+                for (int i=0; i <allRequests.size(); i++) {
+                    databaseReference = firebaseDatabase.getReference("RequestedDate/"+allRequests.get(i)+"/"+MyApplication.dateSelectedKey);
+                    databaseReference.removeValue();
+                }
+
+                if (!dateId.equals("NA")) {
+
+                    MyApplication.otherPerson = MyApplication.userHashMap.get(dateId);
+
+                    databaseReference = firebaseDatabase.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                    databaseReference.removeValue();
+
+                    databaseReference = firebaseDatabase.getReference("AgreedChats/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                    databaseReference.removeValue();
+                } else {
+                    for (int i=0; i <allRequests.size(); i++) {
+                        databaseReference = firebaseDatabase.getReference("AgreedChats/"+allRequests.get(i)+"/"+MyApplication.dateSelectedKey);
+                        databaseReference.removeValue();
+                    }
+
+                    databaseReference = firebaseDatabase.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                    databaseReference.removeValue();
+                }
+
+                if (!dateId.equals("NA")) {
+
+                    MyApplication.otherPerson = MyApplication.userHashMap.get(dateId);
+
+                    databaseReference = firebaseDatabase.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                    databaseReference.removeValue();
+
+                    databaseReference = firebaseDatabase.getReference("AgreedChats/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                    databaseReference.removeValue();
+                } else {
+                    for (int i=0; i <allRequests.size(); i++) {
+                        databaseReference = firebaseDatabase.getReference("AgreedChats/"+allRequests.get(i)+"/"+MyApplication.dateSelectedKey);
+                        databaseReference.removeValue();
+                    }
+
+                    databaseReference = firebaseDatabase.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                    databaseReference.removeValue();
+                }
+
+                databaseReference = firebaseDatabase.getReference("Requests/"+MyApplication.dateSelectedKey);
+                databaseReference.removeValue();
+
+                databaseReference = firebaseDatabase.getReference("Messages/"+MyApplication.dateSelectedKey);
+                databaseReference.removeValue();
+
                 for (int i = 0; i < MyApplication.combinedDates.size(); i++){
                     if (MyApplication.combinedDates.get(i).getKey().equals(MyApplication.dateSelectedKey)){
                         MyApplication.combinedDates.remove(i);
@@ -398,31 +355,12 @@ public class DateReviewFragment extends Fragment{
                         YourDatesFragment.adapter.notifyDataSetChanged();
                         ((MainActivity)getActivity()).popBackStack();
 
-                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                        DatabaseReference databaseReference = firebaseDatabase.getReference("Dates/" + MyApplication.dateSelectedKey);
+                        databaseReference = firebaseDatabase.getReference("Dates/" + MyApplication.dateSelectedKey);
                         databaseReference.removeValue();
                     }
                 }
-
-                String dateId = MyApplication.dateHashMap.get(MyApplication.dateSelectedKey).getTheDate();
-
-                if (!dateId.equals("NA")) {
-
-                    MyApplication.otherPerson = MyApplication.userHashMap.get(dateId);
-
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                    DatabaseReference databaseReference1 = firebaseDatabase.getReference("AgreedChats/"+MyApplication.currentUser.getId()+"/"+MyApplication.dateSelectedKey);
-                    databaseReference1.removeValue();
-                    databaseReference1 = firebaseDatabase.getReference("AgreedChats/"+MyApplication.otherPerson.getId()+"/"+MyApplication.dateSelectedKey);
-                    databaseReference1.removeValue();
-                }
-
-                FirebaseDatabase fi
-
-
                 break;
         }
-
         return true;
     }
 
@@ -438,6 +376,7 @@ public class DateReviewFragment extends Fragment{
         MyApplication.dateSelectedKey="";
         MyApplication.cameFromDateReview = false;
         MyApplication.cameFromYourDates=false;
+        allRequests.clear();
         Log.i("--All", "Detach");
 
     }
@@ -446,6 +385,7 @@ public class DateReviewFragment extends Fragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
+
 
     }
 

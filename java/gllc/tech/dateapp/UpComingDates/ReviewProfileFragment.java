@@ -35,6 +35,8 @@ public class ReviewProfileFragment extends Fragment {
     TextView shortBio, karmaPoints;
     ImageView chatImage, removeImage;
     ImageView reviewPhoto2,reviewPhoto3,reviewPhoto4;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
 
     //public static User reviewPerson;
 
@@ -163,8 +165,7 @@ public class ReviewProfileFragment extends Fragment {
                 ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "ReviewProfile");
                 AgreedChats agreedChats = new AgreedChats(MyApplication.currentUser.getId(), MyApplication.otherPerson.getId(), MyApplication.dateSelectedKey);
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = database.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                databaseReference = database.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
                 databaseReference.setValue(agreedChats);
 
                 databaseReference = database.getReference("AgreedChats/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
@@ -184,9 +185,9 @@ public class ReviewProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
-                databaseReference.removeValue();
+
+                databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
+                databaseReference.setValue("Rejected");
 
                 DateReviewFragment.layout.removeAllViews();
                 ((MainActivity)getActivity()).refreshDateReview();
