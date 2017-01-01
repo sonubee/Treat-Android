@@ -74,7 +74,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View view = inflater.inflate(R.layout.message_adapter2, parent, false);
+        View view = inflater.inflate(R.layout.message_adapter, parent, false);
 
         TextView text = (TextView) view.findViewById(R.id.message_text);
 
