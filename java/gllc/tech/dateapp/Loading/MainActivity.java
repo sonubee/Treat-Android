@@ -61,6 +61,7 @@ import gllc.tech.dateapp.PostDate.CreateEvent;
 import gllc.tech.dateapp.PostDate.PostDateFragment;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
+import gllc.tech.dateapp.TestProfile;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
@@ -166,7 +167,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
             case 0:
                 getSupportActionBar().setTitle("Login");
-                mFragment = new Login();
+                mFragment = new TestProfile();
                 break;
 
             case 1:
