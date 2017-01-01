@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <View
+        android:id="@+id/separatorLine"
+        android:layout_below="@+id/chooseTreat"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/nameProfileReview"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name, Age"
+        android:textColor="#FFF"/>
+
+    <TextView
+        android:id="@+id/karmaPointsReview"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="# Karma Points"
+        android:textColor="#FFF"/>
+
+    <TextView
+
+        android:id="@+id/work"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Work"
+        android:textColor="#FFF"/>
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="School"
+        android:textColor="#FFF"/>
+
+    <View
+        android:id="@+id/separatorLine2"
+        android:layout_below="@+id/chooseTreat"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:id="@+id/shortBioProfileReview"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bio"
+        android:textColor="#FFF"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+
+</LinearLayout>

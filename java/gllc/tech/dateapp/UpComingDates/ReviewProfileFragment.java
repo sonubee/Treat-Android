@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -51,7 +52,11 @@ public class ReviewProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.profile_review, container, false);
+        View view = inflater.inflate(R.layout.profile_review2, container, false);
+
+        LinearLayout test = (LinearLayout)view.findViewById(R.id.addToThis);
+        LinearLayout second = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.profile_review_details, null);
+        test.addView(second);
 
         profilePic = (CircleImageView) view.findViewById(R.id.profileImage);
         reviewPhoto2 = (ImageView) view.findViewById(R.id.reviewPhoto2);

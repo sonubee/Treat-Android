@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_weight="10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/addToThis"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/placeholder"
+                    android:layout_margin="20dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:id="@+id/profileImage" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <RelativeLayout
+                        android:layout_margin="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+
+                            android:scaleType="centerCrop"
+                            android:id="@+id/reviewPhoto2"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/placeholder"/>
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_margin="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:scaleType="centerCrop"
+                            android:id="@+id/reviewPhoto3"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/placeholder"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_margin="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:scaleType="centerCrop"
+                            android:id="@+id/reviewPhoto4"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/placeholder"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_gravity="bottom"
+            android:background ="#5f676767"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/chatImage"
+                android:layout_marginLeft="100dp"
+                android:src="@drawable/yes"
+                android:layout_width="70dp"
+                android:layout_height="70dp" />
+
+            <ImageView
+                android:id="@+id/removeImage"
+                android:layout_marginRight="100dp"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:src="@drawable/no"
+                android:layout_width="70dp"
+                android:layout_height="70dp" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+
+
+</LinearLayout>
