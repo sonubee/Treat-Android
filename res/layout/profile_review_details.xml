@@ -12,6 +12,7 @@
         android:background="@android:color/darker_gray"/>
 
     <TextView
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/nameProfileReview"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
@@ -20,6 +21,7 @@
         android:textColor="#FFF"/>
 
     <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/karmaPointsReview"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
@@ -41,6 +43,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="School"
+        android:textColor="#FFF"/>
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="# Miles From Date(s)"
         android:textColor="#FFF"/>
 
     <View

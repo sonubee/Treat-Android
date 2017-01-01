@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +39,7 @@ import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 
 public class MessageFragment extends Fragment {
 
-    Button sendButton;
+    ImageView sendButton;
     EditText messageToSend;
     CircleImageView youImage, otherImage;
     public static MessageAdapter adapter;
@@ -60,7 +61,7 @@ public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.chat_screen, container, false);
 
-        sendButton = (Button)view.findViewById(R.id.sendButton);
+        sendButton = (ImageView) view.findViewById(R.id.sendButton);
         messageToSend = (EditText)view.findViewById(R.id.messageToSend);
         youImage = (CircleImageView) view.findViewById(R.id.youImage);
         otherImage = (CircleImageView) view.findViewById(R.id.otherImage);
@@ -113,6 +114,8 @@ public class MessageFragment extends Fragment {
 
             }
         });
+
+
 
     }
 

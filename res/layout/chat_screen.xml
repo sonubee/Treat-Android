@@ -35,10 +35,11 @@
         android:layout_alignStart="@+id/youImage"
         android:id="@+id/messageToSend" />
 
-    <Button
+    <ImageView
+        android:src="@drawable/send"
         android:text="Send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/otherImage"
         android:layout_alignEnd="@+id/otherImage"
         android:id="@+id/sendButton" />
