@@ -7,7 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/mainLinearLayout">
+        android:id="@+id/mainLinearLayout"
+        android:clickable="true"
+        android:focusableInTouchMode="true" >
 
 
         <RelativeLayout
@@ -43,14 +45,14 @@
                 android:layout_margin="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.333">
+                android:layout_weight="1">
 
                 <ImageView
 
                     android:scaleType="centerCrop"
                     android:id="@+id/supportImage1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:adjustViewBounds="true"
                     android:src="@drawable/placeholder"/>
 
@@ -69,13 +71,13 @@
                 android:layout_margin="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.333">
+                android:layout_weight="1">
 
                 <ImageView
                     android:scaleType="centerCrop"
                     android:id="@+id/supportImage2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:adjustViewBounds="true"
                     android:src="@drawable/placeholder"/>
 
@@ -93,13 +95,13 @@
                 android:layout_margin="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.333">
+                android:layout_weight="1">
 
                 <ImageView
                     android:scaleType="centerCrop"
                     android:id="@+id/supportImage3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:adjustViewBounds="true"
                     android:src="@drawable/placeholder"/>
 

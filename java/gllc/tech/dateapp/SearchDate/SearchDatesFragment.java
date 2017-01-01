@@ -1,3 +1,4 @@
+
 package gllc.tech.dateapp.SearchDate;
 
 import android.app.Dialog;
@@ -68,7 +69,6 @@ public class SearchDatesFragment extends Fragment {
     public static int dateCounter;
     ImageView yes,no;
     SwipeDetector swipeDetector;
-    LinearLayout layout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +92,8 @@ public class SearchDatesFragment extends Fragment {
         yes = (ImageView) view.findViewById(R.id.yesImageView);
         no = (ImageView) view.findViewById(R.id.noImageView);
 
+        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+
         return view;
     }
 
@@ -100,6 +102,7 @@ public class SearchDatesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
+
         searchAlready();
 
         yes.setImageResource(R.drawable.yes);
@@ -139,8 +142,6 @@ public class SearchDatesFragment extends Fragment {
                 }
             }
         });
-
-        //showDate();
     }
 
     public void showDate(){
@@ -322,6 +323,7 @@ public class SearchDatesFragment extends Fragment {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE3333");
                 showDate();
             }
 
@@ -412,11 +414,10 @@ public class SearchDatesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.chooseFilters:
-
                 ((MainActivity)getActivity()).addFragments(Filters.class, R.id.container, "Filters");
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
 

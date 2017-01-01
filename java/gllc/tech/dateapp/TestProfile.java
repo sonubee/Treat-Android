@@ -6,7 +6,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by bhangoo on 12/31/2016.
@@ -14,7 +22,18 @@ import android.widget.LinearLayout;
 
 public class TestProfile extends Fragment{
 
-    private ViewGroup mLinearLayout;
+    CircleImageView profileImage;
+    ImageView photo2, photo3, photo4;
+    ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;
+    TextView name, bio, karmaPoints, ageRange;
+    EditText enterBio;
+    boolean editingBio = false;
+    public static ArrayList<String> albumIds = new ArrayList<>();
+    public static ArrayList<String> albumNames = new ArrayList<>();
+    public static ArrayList<String> coverPhotosArray = new ArrayList<>();
+    public static HashMap<String,String> albumIdToCoverPhoto = new HashMap<>();
+    public static HashMap<String,String> albumIdToLink = new HashMap<>();
+    public static int photoToReplace=0;
 
     @Nullable
     @Override

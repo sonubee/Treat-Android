@@ -167,7 +167,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
             case 0:
                 getSupportActionBar().setTitle("Login");
-                mFragment = new TestProfile();
+                mFragment = new Login();
                 break;
 
             case 1:

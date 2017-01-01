@@ -11,6 +11,7 @@
 
 
         <TextView
+            android:id="@+id/nameUser"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
@@ -20,6 +21,7 @@
             android:layout_gravity="center"/>
 
         <TextView
+            android:id="@+id/profileKarmaPoints"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
@@ -49,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
-
+                android:id="@+id/bioEditText"
                 android:background="#31413f"
                 android:textColor="#FFF"
                 android:hint="About You"

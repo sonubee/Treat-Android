@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -43,18 +44,15 @@ import gllc.tech.dateapp.R;
 public class Profile extends Fragment {
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
-    ImageView editBio, editPhoto1, editPhoto2, editPhoto3, editPhoto4;
+    ImageView editPhoto1, editPhoto2, editPhoto3, editPhoto4;
     TextView name, bio, karmaPoints, ageRange;
     EditText enterBio;
-    boolean editingBio = false;
     public static ArrayList<String> albumIds = new ArrayList<>();
     public static ArrayList<String> albumNames = new ArrayList<>();
     public static ArrayList<String> coverPhotosArray = new ArrayList<>();
     public static HashMap<String,String> albumIdToCoverPhoto = new HashMap<>();
     public static HashMap<String,String> albumIdToLink = new HashMap<>();
     public static int photoToReplace=0;
-    CheckBox showMen, showWomen;
-    RangeSeekBar<Integer> distanceSeekBar, ageSeekBar;
 
     String albumId;
     int a=0,b=0,c=0;
@@ -62,14 +60,16 @@ public class Profile extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.profile, container, false);
+        View view = inflater.inflate(R.layout.new_profile, container, false);
 
-        //preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        distanceSeekBar = (RangeSeekBar)view.findViewById(R.id.distanceSeekBar);
-        ageSeekBar = (RangeSeekBar)view.findViewById(R.id.ageSeekBar);
+        LinearLayout test = (LinearLayout)view.findViewById(R.id.mainLinearLayout);
+        LinearLayout second = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.about_you, null);
+        test.addView(second);
+
+
         profileImage = (CircleImageView)view.findViewById(R.id.userPicture);
         name = (TextView)view.findViewById(R.id.nameUser);
-        editBio = (ImageView)view.findViewById(R.id.editButton);
+        //editBio = (ImageView)view.findViewById(R.id.editButton);
         editPhoto1 = (ImageView)view.findViewById(R.id.editButtonPhoto1);
         editPhoto2 = (ImageView)view.findViewById(R.id.editButtonPhoto2);
         editPhoto3 = (ImageView)view.findViewById(R.id.editButtonPhoto3);
@@ -81,10 +81,7 @@ public class Profile extends Fragment {
         photo4 = (ImageView)view.findViewById(R.id.supportImage3);
         karmaPoints = (TextView)view.findViewById(R.id.profileKarmaPoints);
         ageRange = (TextView)view.findViewById(R.id.ageTangeTextView);
-        showMen = (CheckBox)view.findViewById(R.id.menCheckBox);
-        showWomen = (CheckBox)view.findViewById(R.id.womenCheckBox);
 
-        //Picasso.with(getContext()).load("https://scontent.xx.fbcdn.net/v/t31.0-8/616355_10101220844195301_933715506_o.jpg?oh=d044b451beac88a1b86effb64c37dd45&oe=58E57F97").into(photo2);
 
         loadImages();
 
@@ -95,41 +92,22 @@ public class Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //name.setText(preferences.getString("name", "NA"));
         name.setText(MyApplication.currentUser.getName());
 
         karmaPoints.setText(MyApplication.currentUser.getKarmaPoints() + " Karma Points");
 
-        editBio.setImageResource(R.drawable.edit);
         editPhoto1.setImageResource(R.drawable.edit);
         editPhoto2.setImageResource(R.drawable.edit);
         editPhoto3.setImageResource(R.drawable.edit);
         editPhoto4.setImageResource(R.drawable.edit);
 
-//        bio.setText(preferences.getString("bio", "Enter Short Bio Here!"));
-        bio.setText(MyApplication.currentUser.getBio());
+        enterBio.setText(MyApplication.currentUser.getBio());
 
-        editBio.setOnClickListener(new View.OnClickListener() {
+        enterBio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (!editingBio) {
-                    //enterBio.setText(preferences.getString("bio",""));
-                    enterBio.setText(MyApplication.currentUser.getBio());
-                    bio.setVisibility(View.INVISIBLE);
-                    enterBio.setVisibility(View.VISIBLE);
-                    editBio.setImageResource(R.drawable.save);
-                    editingBio=true;
-                } else {
-                    //editor = preferences.edit();
-                    //editor.putString("bio", enterBio.getText().toString());
-                    //editor.apply();
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
                     MyApplication.currentUser.setBio(enterBio.getText().toString());
-                    bio.setText(enterBio.getText().toString());
-                    bio.setVisibility(View.VISIBLE);
-                    enterBio.setVisibility(View.INVISIBLE);
-                    editBio.setImageResource(R.drawable.edit);
-                    editingBio=false;
-
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                     DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/bio");
                     databaseReference.setValue(enterBio.getText().toString());
@@ -241,59 +219,6 @@ public class Profile extends Fragment {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto4()).into(imageView);
                 }
                 dialog.show();
-            }
-        });
-
-        showMen.setChecked(MyApplication.currentUser.isShowMen());
-        showWomen.setChecked(MyApplication.currentUser.isShowWomen());
-
-        showMen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MyApplication.currentUser.setShowMen(isChecked);
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showMen");
-                databaseReference.setValue(isChecked);
-            }
-        });
-
-        showWomen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MyApplication.currentUser.setShowWomen(isChecked);
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showWomen");
-                databaseReference.setValue(isChecked);
-            }
-        });
-
-        distanceSeekBar.setSelectedMaxValue(MyApplication.currentUser.getDistance());
-        ageSeekBar.setSelectedMaxValue(MyApplication.currentUser.getAgeMax());
-        ageSeekBar.setSelectedMinValue(MyApplication.currentUser.getAgeMin());
-
-        distanceSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
-            @Override
-            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-                MyApplication.currentUser.setDistance(maxValue);
-
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/distance");
-                databaseReference.setValue(maxValue);
-            }
-        });
-
-        ageSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
-            @Override
-            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-                MyApplication.currentUser.setAgeMin(minValue);
-                MyApplication.currentUser.setAgeMax(maxValue);
-
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/ageMax");
-                databaseReference.setValue(maxValue);
-
-                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/ageMin");
-                databaseReference.setValue(minValue);
             }
         });
 
