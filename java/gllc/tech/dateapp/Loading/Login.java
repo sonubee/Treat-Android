@@ -49,6 +49,7 @@ import java.util.Date;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
+import gllc.tech.dateapp.UpComingDates.YourDatesAdapter;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
@@ -388,13 +389,10 @@ public class Login extends Fragment {
                             if (MyApplication.combinedDates.get(j).getKey().equals(dataSnapshot.getKey())) {
                                 MyApplication.combinedDates.remove(j);
                                 MyApplication.combinesDatesHashMap.remove(dataSnapshot.getKey());
-/*
-                                for (int k=0; k<MyApplication.agreedChats.size(); k++){
-                                    if (MyApplication.agreedChats.get(k).getDateKey().equals(dataSnapshot.getKey())){
-                                        MyApplication.agreedChats.remove(k);
-                                    }
-                                }*/
-                                YourDatesFragment.adapter.notifyDataSetChanged();
+
+                                if (YourDatesFragment.adapter != null) {
+                                    YourDatesFragment.adapter.notifyDataSetChanged();
+                                }
                                 Log.i("--All", "Removing Match as Date");
                             }
                         }
@@ -409,7 +407,11 @@ public class Login extends Fragment {
                         MyApplication.fullMatchesAsDateHashMap.put(dataSnapshot.getKey(), theDate);
                         MyApplication.combinedDates.add(theDate);
                         MyApplication.combinesDatesHashMap.put(dataSnapshot.getKey(), theDate);
-                        YourDatesFragment.adapter.notifyDataSetChanged();
+
+                        if (YourDatesFragment.adapter != null) {
+                            YourDatesFragment.adapter.notifyDataSetChanged();
+                        }
+
                         Log.i("--All", "Adding Match as Date");
                     }
                 }
@@ -454,7 +456,10 @@ public class Login extends Fragment {
                 for (int i = 0; i < MyApplication.combinedDates.size(); i++) {
                     if (MyApplication.combinedDates.get(i).getKey().equals(dataSnapshot.getKey())) {
                         MyApplication.combinedDates.remove(i);
-                        YourDatesFragment.adapter.notifyDataSetChanged();
+
+                        if (YourDatesFragment.adapter != null) {
+                            YourDatesFragment.adapter.notifyDataSetChanged();
+                        }
                     }
                 }
 
@@ -598,7 +603,6 @@ public class Login extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User downloadUser = dataSnapshot.getValue(User.class);
-                //MyApplication.allUsers.add(downloadUser);
                 MyApplication.userHashMap.put(downloadUser.getId(), downloadUser);
                 if (downloadUser.getId().equals(firebaseUser.getUid())) {
                     MyApplication.currentUser = downloadUser;

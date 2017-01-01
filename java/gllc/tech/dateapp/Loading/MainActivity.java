@@ -42,6 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -320,117 +321,31 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //Log.i("--All", "OptionsSelected in activity called");
+        Log.i("--All", "OptionsSelected in activity called");
         switch (item.getItemId()) {
             case R.id.selectDate:
-
-                DatabaseReference pullRequests = database.getReference("Requests/"+MyApplication.dateSelectedKey);
-                final ArrayList<String> allRequests = new ArrayList<>();
-/*
-                pullRequests.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.i("--All", "Request: " + dataSnapshot.getValue());
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-*/
-                pullRequests.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Log.i("--All", "Adding Child");
-                        allRequests.add(dataSnapshot.getKey());
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-
-
-
-
+                /*
                 MyApplication.dateSelected.setTheDate(MyApplication.otherPerson.getId());
 
-                databaseReference = database.getReference("Dates/" +MyApplication.dateSelectedKey);
-                databaseReference.setValue(MyApplication.dateSelected);
+                this.databaseReference = database.getReference("Dates/" +MyApplication.dateSelectedKey);
+                this.databaseReference.setValue(MyApplication.dateSelected);
 
-                databaseReference = database.getReference("FullMatches/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
-                databaseReference.setValue(MyApplication.dateSelected);
+                this.databaseReference = database.getReference("FullMatches/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                this.databaseReference.setValue(MyApplication.dateSelected);
 
-                databaseReference = database.getReference("FullMatches/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
-                databaseReference.setValue(MyApplication.dateSelected);
+                this.databaseReference = database.getReference("FullMatches/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                this.databaseReference.setValue(MyApplication.dateSelected);
 
-                //databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
-                //databaseReference.removeValue();
 
                 new SendPush(MyApplication.currentUser.getName() + " has selected you at the date for " + MyApplication.dateSelected.getDateTitle() + "!",
                         MyApplication.otherPerson.getPushToken(), "You got a date!");
 
-                //Fragment dateReview = getSupportFragmentManager().findFragmentById(R.id.dateReview);
-                //Fragment reviewProfile = getSupportFragmentManager().findFragmentById(R.id.profileReview);
-                //Fragment messaging = getSupportFragmentManager().findFragmentById(R.id.messaging);
-                //Fragment dateReview = getSupportFragmentManager().findFragmentByTag("YourDates");
-                //Fragment reviewProfile = getSupportFragmentManager().findFragmentByTag("DateReview");
-                //Fragment messaging = getSupportFragmentManager().findFragmentByTag("ReviewProfile");
-                //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
                 FragmentManager manager = getSupportFragmentManager();
-                //Fragment fragment = manager.findFragmentById(R.id.yourDates);
                 Fragment fragment = manager.findFragmentByTag("DatesReview");
                 ((DateReviewFragment) fragment).setupDate();
-/*
-                MyApplication.otherPersonHolder = MyApplication.otherPerson;
-                MyApplication.dateSelectedHolder = MyApplication.dateSelected;
 
-                getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-                MyApplication.dateSelected = MyApplication.dateSelectedHolder;
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE4444"+MyApplication.dateSelected.getDateOfDate());
-                addFragments(DateReviewFragment.class, R.id.yourDates, "YourDates");
-                MyApplication.otherPerson = MyApplication.otherPersonHolder;
-                addFragments(ReviewProfileFragment.class, R.id.dateReview, "DateReview");
-
-                addFragments(MessageFragment.class, R.id.profileReview, "ReviewProfile");
-
-
-
-                //fragmentTransaction.remove(dateReview);
-                //fragmentTransaction.remove(reviewProfile);
-                //fragmentTransaction.detach(messaging);
-
-
-
-                //fragmentTransaction.add(dateReview, "DateReview");
-                //fragmentTransaction.add(reviewProfile, "ReviewProfile");
-                //fragmentTransaction.add(messaging, "Messaging");
-
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE111"+MyApplication.otherPerson.getProfilePic());
-                //addFragments(MessageFragment.class, R.id.profileReview, "ReviewProfile");
-                //fragmentTransaction.commit();*/
                 break;
+            */
         }
         return super.onOptionsItemSelected(item);
     }

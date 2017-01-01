@@ -3,6 +3,7 @@ package gllc.tech.dateapp.Messages;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.Message;
 import gllc.tech.dateapp.R;
+import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 
 /**
  * Created by bhangoo on 12/6/2016.
@@ -43,6 +45,8 @@ public class MessageFragment extends Fragment {
     public static ListView messageListview;
     public static ArrayList<Message> messageArrayList = new ArrayList<>();
     public static String messageKey = "";
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,6 +133,31 @@ public class MessageFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i("--All", "Selected Options Messaging");
 
+        switch (item.getItemId()) {
+            case R.id.selectDate:
+
+                MyApplication.dateSelected.setTheDate(MyApplication.otherPerson.getId());
+
+                databaseReference = database.getReference("Dates/" +MyApplication.dateSelectedKey);
+                databaseReference.setValue(MyApplication.dateSelected);
+
+                //databaseReference = database.getReference("FullMatches/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                //databaseReference.setValue(MyApplication.dateSelected);
+
+                //databaseReference = database.getReference("FullMatches/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                //databaseReference.setValue(MyApplication.dateSelected);
+
+
+                new SendPush(MyApplication.currentUser.getName() + " has selected you at the date for " + MyApplication.dateSelected.getDateTitle() + "!",
+                        MyApplication.otherPerson.getPushToken(), "You got a date!");
+
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                Fragment fragment = manager.findFragmentByTag("DatesReview");
+                ((DateReviewFragment) fragment).setupDate();
+
+                break;
+
+        }
         return super.onOptionsItemSelected(item);
     }
 

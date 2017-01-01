@@ -341,22 +341,6 @@ public class SearchDatesFragment extends Fragment {
                 } else {
                     MyApplication.matchMap.put(dataSnapshot.getKey(), (Boolean)dataSnapshot.getValue());
                 }
-
-                    /*
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                        Date strDate = sdf.parse(MyApplication.dateHashMap.get(dataSnapshot.getKey()).getDateOfDate());
-
-                        if (System.currentTimeMillis() > strDate.getTime()) {
-                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                            DatabaseReference databaseReference = firebaseDatabase.getReference("RequestedDate/" + MyApplication.currentUser.getId() + " / " + dataSnapshot.getKey());
-                            databaseReference.removeValue();
-                        }
-                    } catch (Exception e) {
-                        Log.i("--All", "Error in searchAlready SearchDatesFragment: " + e.getMessage());
-                    }
-                    */
-
             }
 
             @Override
