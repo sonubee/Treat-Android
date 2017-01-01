@@ -5,8 +5,10 @@
     android:background="#000">
 
     <TextView
-        android:layout_marginStart="5dp"
-        android:layout_margin="3dp"
+        android:layout_marginTop="5dp"
+        android:text="Text"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/message_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
