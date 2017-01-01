@@ -97,7 +97,11 @@ public class ShowAllMessages extends Fragment {
                 }
 
                 */
-                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "ShowAllMessages");
+                Bundle bundle = new Bundle();
+                bundle.putString("cameFrom", "ShowAllMessages");
+                bundle.putString("otherPerson", MyApplication.otherPerson.getId());
+
+                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "ShowAllMessages", bundle);
             }
         });
     }
@@ -106,7 +110,6 @@ public class ShowAllMessages extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        Log.i("--All", "On Destroy from SAM");
         ShowAllMessagesAdapter2.myRef.removeEventListener(ShowAllMessagesAdapter2.childEventListener);
         ShowAllMessagesAdapter2.agreedChatsArrayList.clear();
         agreedChatsArrayList.clear();

@@ -54,7 +54,7 @@ public class YourDatesFragment extends Fragment {
 
                 selectedMap = position;
 
-                ((MainActivity)getActivity()).addFragments(DateReviewFragment.class, R.id.container, "DatesReview");
+                ((MainActivity)getActivity()).addFragments(DateReviewFragment.class, R.id.container, "DatesReview", null);
             }
         });
     }

@@ -87,6 +87,7 @@
         </ScrollView>
 
         <RelativeLayout
+            android:id="@+id/transparentLayout"
             android:layout_gravity="bottom"
             android:background ="#5f676767"
             android:layout_weight="1"

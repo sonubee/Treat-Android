@@ -79,6 +79,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     public void onInt(Bundle savedInstanceState) {
 
+
         materialDesignSetup();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -275,10 +276,11 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         }
     };
 
-    public void addFragments(Class fragmentClass, int id, String tag) {
+    public void addFragments(Class fragmentClass, int id, String tag, Bundle bundle) {
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            fragment.setArguments(bundle);
         } catch (Exception e) {
             e.printStackTrace();
         }

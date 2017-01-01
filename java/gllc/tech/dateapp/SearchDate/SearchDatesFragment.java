@@ -414,7 +414,7 @@ public class SearchDatesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.chooseFilters:
-                ((MainActivity)getActivity()).addFragments(Filters.class, R.id.container, "Filters");
+                ((MainActivity)getActivity()).addFragments(Filters.class, R.id.container, "Filters", null);
                 break;
         }
         return true;

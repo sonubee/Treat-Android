@@ -129,7 +129,9 @@ public class DateReviewFragment extends Fragment{
                 //MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
                 Log.i("--All", "Set cameFromDateReview to true");
                 MyApplication.cameFromDateReview = true;
-                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment");
+                Bundle bundle = new Bundle();
+                bundle.putString("cameFrom", "DateReview");
+                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment", bundle);
             }
         });
     }
@@ -158,9 +160,13 @@ public class DateReviewFragment extends Fragment{
 
                             MyApplication.otherPerson = MyApplication.userHashMap.get(v.getTag().toString());
 
+                            Bundle bundle = new Bundle();
+                            bundle.putString("cameFrom", "DateReview");
+                            bundle.putString("otherPerson", MyApplication.otherPerson.getId());
+
                             populateRequestsReference.removeEventListener(childEventListener);
                             profileUrl = new ArrayList<String>();
-                            ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "ReviewProfileFragment");
+                            ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "ReviewProfileFragment", bundle);
                         }
                     });
 
@@ -368,8 +374,10 @@ public class DateReviewFragment extends Fragment{
     public void onDetach() {
         super.onDetach();
 
-        if (!MyApplication.hasDate) {
-            populateRequestsReference.removeEventListener(childEventListener);
+        if (MyApplication.dateSelected != null) {
+            if (MyApplication.dateSelected.getTheDate().equals("NA") && MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId())) {
+                populateRequestsReference.removeEventListener(childEventListener);
+            }
         }
 
         MyApplication.dateSelected = null;

@@ -27,11 +27,13 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SendPush;
+import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.Message;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
+import gllc.tech.dateapp.UpComingDates.ReviewProfileFragment;
 
 /**
  * Created by bhangoo on 12/6/2016.
@@ -48,6 +50,7 @@ public class MessageFragment extends Fragment {
     public static String messageKey = "";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
+    MenuInflater menuInflater;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,21 +118,46 @@ public class MessageFragment extends Fragment {
             }
         });
 
+        otherImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("cameFrom", "Messaging");
+                bundle.putString("otherPerson", MyApplication.otherPerson.getId());
 
-
+                ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "ReviewProfile", bundle);
+            }
+        });
     }
 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
+        menuInflater = inflater;
+
         menu.clear();
-        if (MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId())) {
+        if (MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId()) && MyApplication.dateSelected.getTheDate().equals("NA")) {
             inflater.inflate(R.menu.select_date, menu);
         } else {
             inflater.inflate(R.menu.empty_menu, menu);
         }
         //Log.i("--All", "Create Menu in Messaging");
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        menu.clear();
+
+        if (MyApplication.dateSelected.getPoster().equals(MyApplication.currentUser.getId()) && MyApplication.dateSelected.getTheDate().equals("NA")) {
+            menuInflater.inflate(R.menu.select_date, menu);
+        } else {
+            menuInflater.inflate(R.menu.empty_menu, menu);
+        }
+
     }
 
     @Override
@@ -144,19 +172,16 @@ public class MessageFragment extends Fragment {
                 databaseReference = database.getReference("Dates/" +MyApplication.dateSelectedKey);
                 databaseReference.setValue(MyApplication.dateSelected);
 
-                //databaseReference = database.getReference("FullMatches/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
-                //databaseReference.setValue(MyApplication.dateSelected);
-
-                //databaseReference = database.getReference("FullMatches/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
-                //databaseReference.setValue(MyApplication.dateSelected);
-
-
                 new SendPush(MyApplication.currentUser.getName() + " has selected you at the date for " + MyApplication.dateSelected.getDateTitle() + "!",
                         MyApplication.otherPerson.getPushToken(), "You got a date!");
 
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                Fragment fragment = manager.findFragmentByTag("DatesReview");
-                ((DateReviewFragment) fragment).setupDate();
+                if (getArguments().get("cameFrom").equals("ReviewProfile")) {
+                    FragmentManager manager = getActivity().getSupportFragmentManager();
+                    Fragment fragment = manager.findFragmentByTag("DatesReview");
+                    ((DateReviewFragment) fragment).setupDate();
+                }
+
+                getActivity().invalidateOptionsMenu();
 
                 break;
 

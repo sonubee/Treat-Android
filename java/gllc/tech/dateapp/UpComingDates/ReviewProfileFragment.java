@@ -5,12 +5,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,7 @@ import gllc.tech.dateapp.Messages.MessageFragment;
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.AgreedChats;
+import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
 
 /**
@@ -38,6 +41,7 @@ public class ReviewProfileFragment extends Fragment {
     ImageView reviewPhoto2,reviewPhoto3,reviewPhoto4;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
+    private User otherPerson;
 
     //public static User reviewPerson;
 
@@ -46,7 +50,7 @@ public class ReviewProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //MyApplication.justPosted = false;
-        //MyApplication.otherPersonHolder = MyApplication.otherPerson;
+        //otherPersonHolder = otherPerson;
     }
 
     @Nullable
@@ -57,6 +61,9 @@ public class ReviewProfileFragment extends Fragment {
         LinearLayout test = (LinearLayout)view.findViewById(R.id.addToThis);
         LinearLayout second = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.profile_review_details, null);
         test.addView(second);
+
+        String cameFrom = getArguments().getString("cameFrom");
+        otherPerson = MyApplication.userHashMap.get(getArguments().getString("otherPerson"));
 
         profilePic = (CircleImageView) view.findViewById(R.id.profileImage);
         reviewPhoto2 = (ImageView) view.findViewById(R.id.reviewPhoto2);
@@ -69,6 +76,15 @@ public class ReviewProfileFragment extends Fragment {
         karmaPoints = (TextView)view.findViewById(R.id.karmaPointsReview);
 
 
+
+        if (cameFrom.equals("Messaging")) {
+            chatImage.setVisibility(View.INVISIBLE);
+            removeImage.setVisibility(View.INVISIBLE);
+
+            RelativeLayout relativeLayout = (RelativeLayout)view.findViewById(R.id.transparentLayout);
+            relativeLayout.setVisibility(View.INVISIBLE);
+        }
+
         return view;
     }
 
@@ -76,21 +92,21 @@ public class ReviewProfileFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        karmaPoints.setText(MyApplication.otherPerson.getKarmaPoints() + " Karma Points");
+        karmaPoints.setText(otherPerson.getKarmaPoints() + " Karma Points");
 
-        if (MyApplication.otherPerson.getPhoto1().equals("NA")) {
-            Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(profilePic);
+        if (otherPerson.getPhoto1().equals("NA")) {
+            Picasso.with(getContext()).load(otherPerson.getProfilePic()).into(profilePic);
         } else {
-            Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto1()).into(profilePic);
+            Picasso.with(getContext()).load(otherPerson.getPhoto1()).into(profilePic);
         }
-        if (!MyApplication.otherPerson.getPhoto2().equals("NA")) {
-            Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto2()).into(reviewPhoto2);
+        if (!otherPerson.getPhoto2().equals("NA")) {
+            Picasso.with(getContext()).load(otherPerson.getPhoto2()).into(reviewPhoto2);
         }
-        if (!MyApplication.otherPerson.getPhoto3().equals("NA")) {
-            Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto3()).into(reviewPhoto3);
+        if (!otherPerson.getPhoto3().equals("NA")) {
+            Picasso.with(getContext()).load(otherPerson.getPhoto3()).into(reviewPhoto3);
         }
-        if (!MyApplication.otherPerson.getPhoto4().equals("NA")) {
-            Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto4()).into(reviewPhoto4);
+        if (!otherPerson.getPhoto4().equals("NA")) {
+            Picasso.with(getContext()).load(otherPerson.getPhoto4()).into(reviewPhoto4);
         }
 
         profilePic.setOnClickListener(new View.OnClickListener() {
@@ -102,10 +118,10 @@ public class ReviewProfileFragment extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
-                if (MyApplication.otherPerson.getPhoto1().equals("NA")) {
-                    Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApplication.otherPerson.getFid() + "/picture?type=large").into(imageView);
+                if (otherPerson.getPhoto1().equals("NA")) {
+                    Picasso.with(getContext()).load("https://graph.facebook.com/" + otherPerson.getFid() + "/picture?type=large").into(imageView);
                 } else {
-                    Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto1()).into(imageView);
+                    Picasso.with(getContext()).load(otherPerson.getPhoto1()).into(imageView);
                 }
                 dialog.show();
             }
@@ -120,8 +136,8 @@ public class ReviewProfileFragment extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
-                if (!MyApplication.otherPerson.getPhoto2().equals("NA")) {
-                    Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto2()).into(imageView);
+                if (!otherPerson.getPhoto2().equals("NA")) {
+                    Picasso.with(getContext()).load(otherPerson.getPhoto2()).into(imageView);
                 }
                 dialog.show();
             }
@@ -136,8 +152,8 @@ public class ReviewProfileFragment extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
-                if (!MyApplication.otherPerson.getPhoto3().equals("NA")) {
-                    Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto3()).into(imageView);
+                if (!otherPerson.getPhoto3().equals("NA")) {
+                    Picasso.with(getContext()).load(otherPerson.getPhoto3()).into(imageView);
                 }
                 dialog.show();
             }
@@ -152,32 +168,37 @@ public class ReviewProfileFragment extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
-                if (!MyApplication.otherPerson.getPhoto4().equals("NA")) {
-                    Picasso.with(getContext()).load(MyApplication.otherPerson.getPhoto4()).into(imageView);
+                if (!otherPerson.getPhoto4().equals("NA")) {
+                    Picasso.with(getContext()).load(otherPerson.getPhoto4()).into(imageView);
                 }
                 dialog.show();
             }
         });
 
-        shortBio.setText(MyApplication.otherPerson.getBio());
-        name.setText(MyApplication.otherPerson.getName());
+        shortBio.setText(otherPerson.getBio());
+        name.setText(otherPerson.getName());
 
         chatImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //((MainActivity)getActivity()).changeToolbarText("Chat");
-                //((MainActivity)getActivity()).saveUser(MyApplication.otherPerson);
-                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "ReviewProfile");
-                AgreedChats agreedChats = new AgreedChats(MyApplication.currentUser.getId(), MyApplication.otherPerson.getId(), MyApplication.dateSelectedKey);
+                //((MainActivity)getActivity()).saveUser(otherPerson);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("cameFrom", "ReviewProfile");
+                bundle.putString("otherPerson", otherPerson.getId());
+
+                ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "Messaging", bundle);
+                AgreedChats agreedChats = new AgreedChats(MyApplication.currentUser.getId(), otherPerson.getId(), MyApplication.dateSelectedKey);
 
                 databaseReference = database.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
                 databaseReference.setValue(agreedChats);
 
-                databaseReference = database.getReference("AgreedChats/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                databaseReference = database.getReference("AgreedChats/" + otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
                 databaseReference.setValue(agreedChats);
 
                 //MyApplication.justPosted = true;
-                new SendPush(MyApplication.otherPerson.getName()+" has opened chat with you!", MyApplication.otherPerson.getPushToken(),
+                new SendPush(otherPerson.getName()+" has opened chat with you!", otherPerson.getPushToken(),
                         "Date: " + MyApplication.dateSelected.getDateTitle());
 
                 //MyApplication.agreedChats.add(agreedChats);
@@ -191,7 +212,7 @@ public class ReviewProfileFragment extends Fragment {
             public void onClick(View v) {
 
 
-                databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + MyApplication.otherPerson.getId());
+                databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + otherPerson.getId());
                 databaseReference.setValue("Rejected");
 
                 DateReviewFragment.layout.removeAllViews();

@@ -1,5 +1,6 @@
 package gllc.tech.dateapp.Automation;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -37,6 +38,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        getActionBar().setTitle("Map of Events");
+        getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
     @Override
