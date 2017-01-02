@@ -45,6 +45,15 @@
         android:layout_below="@+id/subheaderText"
         android:layout_centerHorizontal="true" />
 
+    <com.weiwangcn.betterspinner.library.BetterSpinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:id="@+id/chooseActivity"
+        android:layout_below="@+id/subheaderText"
+        android:layout_centerHorizontal="true"
+        />
+
     <EditText
         android:layout_marginTop="5dp"
         android:gravity="center"

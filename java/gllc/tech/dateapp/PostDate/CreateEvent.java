@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -249,12 +250,9 @@ public class CreateEvent extends Fragment {
 
                     PostDateFragment.adapter.notifyDataSetChanged();
                     PostDateFragment.titleDate.setVisibility(View.VISIBLE);
-                    PostDateFragment.header.setText("Now Add a Short Description and Post the Date or Add another Event");
 
                     subheader.setText("");
                     subheader.setVisibility(View.VISIBLE);
-
-
 
                     ((MainActivity)getActivity()).popBackStack();
 

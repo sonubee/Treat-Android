@@ -277,8 +277,8 @@ public class SearchDatesFragment extends Fragment {
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    MyApplication.cameFromSearchDates = true;
                                     Intent intent = new Intent(getActivity(), MapsActivity.class);
+                                    intent.putExtra("cameFrom", "SearchDates");
                                     startActivity(intent);
                                 }
                             });

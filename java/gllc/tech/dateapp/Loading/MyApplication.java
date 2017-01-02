@@ -38,20 +38,13 @@ public class MyApplication extends Application {
     public static HashMap<String, TheDate> fullMatchesAsDateHashMap = new HashMap<>();
     public static HashMap<String, TheDate> combinesDatesHashMap = new HashMap<>();
     public static HashMap<String, Boolean> matchMap = new HashMap<>();
-    //public static ArrayList<User> allUsers = new ArrayList<>();
     public static TheDate dateSelected = new TheDate();
     public static User otherPerson = new User();
     public static String dateSelectedKey = "";
     public static boolean visitedMessages=false;
-    public static boolean cameFromDateReview = false;
-    public static boolean cameFromSearchDates = false;
     public static HashMap<String, User> userHashMap = new HashMap<>();
-    public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     public static Place placeChosen;
-    public static boolean cameFromPost = false;
-    public static boolean cameFromYourDates = false;
     public static String selectedImageUrl = "";
-    public static boolean hasDate = false;
     public static ArrayList<TheDate> completedDates = new ArrayList<>();
     public static HashMap<String, Boolean> karmaAccounted = new HashMap<>();
     public static HashMap<String, TheDate> completedDatesHashMap = new HashMap<>();
@@ -59,10 +52,10 @@ public class MyApplication extends Application {
     public static String pushToken;
     public static int screenHeight;
     public static int screenWidth;
-    public static final int ACCESS_FINE_LOCATION_VALUE = 9999;
     public static double latitude = 0;
     public static double longitude = 0;
-
+    public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    public static final int ACCESS_FINE_LOCATION_VALUE = 9999;
 
     @Override
     public void onCreate() {

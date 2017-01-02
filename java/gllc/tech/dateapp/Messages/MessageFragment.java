@@ -31,6 +31,7 @@ import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.Message;
+import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 import gllc.tech.dateapp.UpComingDates.ReviewProfileFragment;
@@ -51,6 +52,7 @@ public class MessageFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
     MenuInflater menuInflater;
+    private User otherPerson;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +65,8 @@ public class MessageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.chat_screen, container, false);
+
+        otherPerson = MyApplication.userHashMap.get(getArguments().getString("otherPerson"));
 
         sendButton = (ImageView) view.findViewById(R.id.sendButton);
         messageToSend = (EditText)view.findViewById(R.id.messageToSend);
@@ -81,21 +85,21 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                //DatabaseReference myRef = database.getReference("Messages/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                //DatabaseReference myRef = database.getReference("Messages/" + otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
                 DatabaseReference myRef = database.getReference("Messages/" + MyApplication.dateSelectedKey + "/" + messageKey);
 
-                Message sendMessage = new Message(messageToSend.getText().toString(), MyApplication.currentUser.getId(), MyApplication.otherPerson.getId());
+                Message sendMessage = new Message(messageToSend.getText().toString(), MyApplication.currentUser.getId(), otherPerson.getId());
 
                 myRef.push().setValue(sendMessage);
 
-                new SendPush(sendMessage.getMessage(), MyApplication.otherPerson.getPushToken(), "Message From " + MyApplication.otherPerson.getName());
+                new SendPush(sendMessage.getMessage(), otherPerson.getPushToken(), "Message From " + otherPerson.getName());
 
                 messageToSend.setText("");
             }
         });
 
         Picasso.with(getContext()).load(MyApplication.currentUser.getProfilePic()).into(youImage);
-        Picasso.with(getContext()).load(MyApplication.otherPerson.getProfilePic()).into(otherImage);
+        Picasso.with(getContext()).load(otherPerson.getProfilePic()).into(otherImage);
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("AgreedChats/"+MyApplication.currentUser.getId()+"/"+MyApplication.dateSelectedKey);
@@ -123,7 +127,7 @@ public class MessageFragment extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("cameFrom", "Messaging");
-                bundle.putString("otherPerson", MyApplication.otherPerson.getId());
+                bundle.putString("otherPerson", otherPerson.getId());
 
                 ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "ReviewProfile", bundle);
             }
@@ -167,13 +171,13 @@ public class MessageFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.selectDate:
 
-                MyApplication.dateSelected.setTheDate(MyApplication.otherPerson.getId());
+                MyApplication.dateSelected.setTheDate(otherPerson.getId());
 
                 databaseReference = database.getReference("Dates/" +MyApplication.dateSelectedKey);
                 databaseReference.setValue(MyApplication.dateSelected);
 
                 new SendPush(MyApplication.currentUser.getName() + " has selected you at the date for " + MyApplication.dateSelected.getDateTitle() + "!",
-                        MyApplication.otherPerson.getPushToken(), "You got a date!");
+                        otherPerson.getPushToken(), "You got a date!");
 
                 if (getArguments().get("cameFrom").equals("ReviewProfile")) {
                     FragmentManager manager = getActivity().getSupportFragmentManager();
@@ -195,11 +199,9 @@ public class MessageFragment extends Fragment {
         MessageAdapter.myRef.removeEventListener(MessageAdapter.childEventListener);
         MessageAdapter.messageArrayList.clear();
 
-        if (!MyApplication.cameFromDateReview){
-            MyApplication.otherPerson=null;
+        if (!getArguments().getString("cameFrom").equals("DateReview")) {
+            otherPerson=null;
         }
-
-        MyApplication.cameFromDateReview=false;
     }
 
     @Override

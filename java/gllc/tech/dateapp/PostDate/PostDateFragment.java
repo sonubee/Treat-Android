@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -46,16 +48,16 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     public static ArrayList<EventsOfDate> listOfEvents = new ArrayList<>();
     public static ArrayList<Place> listOfPlaces = new ArrayList<>();
     String theDateString ="";
-    Button postDate;
+    ImageView postDate;
     public static ListView listView;
     public static EventAdapter adapter;
     private EditText enterDate;
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
     public static EditText titleDate;
-    public static TextView header;
     public static int selectedMap;
     RadioButton myTreat, yourTreat, noTreat;
+    TextView noEvents;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,14 +72,15 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.post_date, container, false);
-        postDate = (Button)view.findViewById(R.id.postDate);
 
+        listView = (ListView) view.findViewById(R.id.eventListView);
+        postDate = (ImageView)view.findViewById(R.id.postDate);
         enterDate = (EditText) view.findViewById(R.id.enterDate);
         titleDate = (EditText)view.findViewById(R.id.titleDate);
-        header = (TextView)view.findViewById(R.id.headerDate);
         yourTreat = (RadioButton)view.findViewById(R.id.yourTreat);
         myTreat = (RadioButton)view.findViewById(R.id.myTreat);
         noTreat = (RadioButton)view.findViewById(R.id.noTreat);
+        noEvents = (TextView)view.findViewById(R.id.noEvents);
         enterDate.setInputType(InputType.TYPE_NULL);
         enterDate.requestFocus();
         setDateTimeField();
@@ -177,19 +180,30 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
 
         adapter = new EventAdapter(getContext(), listOfEvents);
 
-        listView = (ListView) getActivity().findViewById(R.id.eventListView);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedMap = position;
-                MyApplication.cameFromPost=true;
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
+                intent.putExtra("cameFrom", "PostDate");
                 startActivity(intent);
 
             }
         });
+
+
+        if (listOfEvents.size() == 0) {
+            listView.setVisibility(View.INVISIBLE);
+        } else {
+            noEvents.setVisibility(View.INVISIBLE);
+        }
+
+
+
+
+
     }
 
     @Override

@@ -57,7 +57,6 @@ public class DateReviewFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyApplication.cameFromDateReview = true;
     }
 
     @Nullable
@@ -90,8 +89,8 @@ public class DateReviewFragment extends Fragment{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MyApplication.cameFromYourDates=true;
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
+                intent.putExtra("cameFrom", "DateReview");
                 startActivity(intent);
             }
         });
@@ -100,15 +99,8 @@ public class DateReviewFragment extends Fragment{
     }
 
     public void decideDate() {
-
-        if (MyApplication.dateSelected.getTheDate().equals("NA")){
-            populateRequests();
-        }
-
-        else {
-            setupDate();
-            MyApplication.hasDate = true;
-        }
+        if (MyApplication.dateSelected.getTheDate().equals("NA")){populateRequests();}
+        else {setupDate();}
     }
 
     public void setupDate() {
@@ -127,10 +119,9 @@ public class DateReviewFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 //MyApplication.otherPerson = ((MainActivity)getActivity()).geteUser();
-                Log.i("--All", "Set cameFromDateReview to true");
-                MyApplication.cameFromDateReview = true;
                 Bundle bundle = new Bundle();
                 bundle.putString("cameFrom", "DateReview");
+                bundle.putString("otherPerson", MyApplication.otherPerson.getId());
                 ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "MessageFragment", bundle);
             }
         });
@@ -382,23 +373,9 @@ public class DateReviewFragment extends Fragment{
 
         MyApplication.dateSelected = null;
         MyApplication.dateSelectedKey="";
-        MyApplication.cameFromDateReview = false;
-        MyApplication.cameFromYourDates=false;
         allRequests.clear();
         Log.i("--All", "Detach");
 
     }
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 }

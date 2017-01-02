@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -78,14 +80,14 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     @Override
     public void onInt(Bundle savedInstanceState) {
-
-
         materialDesignSetup();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mActionBarToolbar);
+        mActionBarToolbar.setBackgroundColor(Color.BLACK);
+        mActionBarToolbar.setTitle("");
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -155,7 +157,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
         mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        MyApplication.hasDate = false;
         MyApplication.otherPerson = null;
         MyApplication.dateSelected = null;
         MyApplication.dateSelectedKey = "";
@@ -167,43 +168,35 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         switch (position) {
 
             case 0:
-                getSupportActionBar().setTitle("Login");
                 mFragment = new Login();
                 break;
 
             case 1:
-                getSupportActionBar().setTitle("Create The Date");
                 mFragment = new PostDateFragment();
                 break;
 
             case 2:
-                getSupportActionBar().setTitle("Search Dates");
                 mFragment = new SearchDatesFragment();
                 break;
 
             case 3:
-                getSupportActionBar().setTitle("Your Dates");
                 mFragment = new YourDatesFragment();
                 break;
 
             case 4:
-                getSupportActionBar().setTitle("Completed Dates");
                 mFragment = new CompletedDates();
                 break;
 
             case 5:
-                getSupportActionBar().setTitle("All Messages");
                 mFragment = new ShowAllMessages();
                 break;
 
             case 6:
                 LoginManager.getInstance().logOut();
-                getSupportActionBar().setTitle("Login");
                 mFragment = new Login();
                 break;
 
             default:
-                getSupportActionBar().setTitle("Login");
                 mFragment = new Login();
                 break;
         }
@@ -218,7 +211,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         //this.userName.setText("Check Out Other Features Below!");
         //this.userEmail.setText("Or Keep Chatting!");
 
-        this.userBackground.setImageResource(R.drawable.ic_user_background_first);
+        this.userBackground.setImageResource(R.drawable.ic_user_background_second);
 
         // Creating items navigation
         mHelpLiveo = new HelpLiveo();
@@ -229,14 +222,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add("Completed Dates", R.drawable.upcoming);
         mHelpLiveo.add("Messages", R.drawable.message);
         mHelpLiveo.add("Logout", R.drawable.logout);
-
-//        mHelpLiveo.addSubHeader(getString(R.string.categories)); //Item subHeader
-        //mHelpLiveo.add(getString(R.string.starred), R.mipmap.ic_star_black_24dp);
-        //mHelpLiveo.add(getString(R.string.sent_mail), R.drawable.bracelet2);
-        //mHelpLiveo.add(getString(R.string.trash), R.mipmap.ic_add_white_24dp);
-        //mHelpLiveo.add(getString(R.string.drafts), R.drawable.feedback);
-        //mHelpLiveo.add("About", R.drawable.about);
-//        mHelpLiveo.addSeparator(); // Item separator
 
         with(this, Navigation.THEME_DARK).
         //with(this, Navigation.THEME_LIGHT). add theme light

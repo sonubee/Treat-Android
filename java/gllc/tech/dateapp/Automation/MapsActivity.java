@@ -48,16 +48,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         ArrayList<EventsOfDate> allEvents = new ArrayList<>();
 
-        if (MyApplication.cameFromPost) {
+        if (getIntent().getStringExtra("cameFrom").equals("PostDate")) {
             allEvents = PostDateFragment.listOfEvents;
         }
 
-        if (MyApplication.cameFromSearchDates) {
+        if (getIntent().getStringExtra("cameFrom").equals("SearchDates")) {
             TheDate theDate = MyApplication.allDates.get(SearchDatesFragment.dateCounter);
             allEvents = theDate.getEvents();
         }
 
-        if (MyApplication.cameFromYourDates) {
+        if (getIntent().getStringExtra("cameFrom").equals("DateReview")) {
             TheDate theDate = MyApplication.dateHashMap.get(MyApplication.dateSelectedKey);
             allEvents = theDate.getEvents();
         }
@@ -84,14 +84,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         googleMap.moveCamera(cu);
 
+        if (allEvents.size() == 1) {googleMap.animateCamera(CameraUpdateFactory.zoomTo(11f));}
 
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MyApplication.cameFromPost=false;
-        MyApplication.cameFromYourDates=false;
-        MyApplication.cameFromSearchDates=false;
+
+
+
     }
 }
