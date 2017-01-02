@@ -36,17 +36,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp" />
 
-    <Spinner
-        android:background="#FFF"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="39dp"
-        android:id="@+id/chooseActivity"
-        android:layout_below="@+id/subheaderText"
-        android:layout_centerHorizontal="true" />
-
-    <com.weiwangcn.betterspinner.library.BetterSpinner
-        android:layout_width="match_parent"
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:hint="Choose Activity"
+        app:ms_background_color="#000"
+        android:textColor="#FFF"
+        android:textColorHint="#FFF"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="39dp"
         android:id="@+id/chooseActivity"

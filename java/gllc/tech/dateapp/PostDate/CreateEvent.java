@@ -2,6 +2,7 @@ package gllc.tech.dateapp.PostDate;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
@@ -36,7 +38,7 @@ import gllc.tech.dateapp.R;
 public class CreateEvent extends Fragment {
 
     Button clickNext;
-    Spinner chooseAcitivty;
+    MaterialSpinner chooseAcitivty;
     EditText other, specificEditText;
     String activity, specific, address, startTime, endTime;
     TextView header, subheader, getStartTime, getEndTime, specificTextView, activityTextView;
@@ -56,7 +58,7 @@ public class CreateEvent extends Fragment {
         startTime="";
         endTime="";
 
-        chooseAcitivty = (Spinner) view.findViewById(R.id.chooseActivity);
+        chooseAcitivty = (MaterialSpinner) view.findViewById(R.id.chooseActivity);
         clickNext = (Button)view.findViewById(R.id.nextActivity);
         other = (EditText)view.findViewById(R.id.otherField);
 
@@ -83,17 +85,19 @@ public class CreateEvent extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final String[] items = new String[]{"Walk", "Hike", "Movie", "Other"};
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, items);
-        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+        //final String[] items = new String[]{"Walk", "Hike", "Movie", "Other"};
+        //final ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
+        //adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
 
-        chooseAcitivty.setAdapter(adapter);
+        //chooseAcitivty.setAdapter(adapter);
 
-        chooseAcitivty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        chooseAcitivty.setItems("Walk", "Hike", "Movie", "Other");
+
+        chooseAcitivty.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?>arg0, View view, int arg2, long arg3) {
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                activity = chooseAcitivty.getText().toString();
 
-                activity = chooseAcitivty.getSelectedItem().toString();
                 if (activity.equals("Other")) {
                     other.setVisibility(View.VISIBLE);
                 }
@@ -101,12 +105,6 @@ public class CreateEvent extends Fragment {
                 if (!activity.equals("Other")) {
                     other.setVisibility(View.INVISIBLE);
                 }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-
             }
         });
 
@@ -154,7 +152,7 @@ public class CreateEvent extends Fragment {
                                     other.setVisibility(View.INVISIBLE);
                                     editActivity.setVisibility(View.INVISIBLE);
                                     activityTextView.setVisibility(View.VISIBLE);
-                                    activity = chooseAcitivty.getSelectedItem().toString();
+                                    activity = chooseAcitivty.getText().toString();
                                     if (activity.equals("Other")) {
                                         activity = other.getText().toString();
                                     }
