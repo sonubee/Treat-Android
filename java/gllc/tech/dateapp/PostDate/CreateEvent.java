@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,16 +42,15 @@ public class CreateEvent extends Fragment {
     MaterialSpinner chooseAcitivty;
     EditText other, specificEditText;
     String activity, specific, address, startTime, endTime;
-    TextView header, subheader, getStartTime, getEndTime, specificTextView, activityTextView;
+    TextView header, subheader, getStartTime, getEndTime;
     public static TextView addressTextView;
     ProgressBar progressBar;
-    View separatorBelowOther, separatorBelowSpecific, separatorBelowAddress, separatorBelowEndTime;
-    ImageView editActivity, editSpecific;
+    LinearLayout specificLayout, endTimeLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.create_event, container, false);
+        View view = inflater.inflate(R.layout.create_event2, container, false);
 
         activity="";
         specific ="";
@@ -58,25 +58,18 @@ public class CreateEvent extends Fragment {
         startTime="";
         endTime="";
 
+        endTimeLayout = (LinearLayout)view.findViewById(R.id.endTimeLayout);
+        specificLayout = (LinearLayout)view.findViewById(R.id.specificLayout);
         chooseAcitivty = (MaterialSpinner) view.findViewById(R.id.chooseActivity);
         clickNext = (Button)view.findViewById(R.id.nextActivity);
         other = (EditText)view.findViewById(R.id.otherField);
-
         specificEditText = (EditText)view.findViewById(R.id.enterLocation);
         addressTextView = (TextView) view.findViewById(R.id.enterAddress);
         header = (TextView)view.findViewById(R.id.headerText);
         subheader = (TextView)view.findViewById(R.id.subheaderText);
-        activityTextView = (TextView)view.findViewById(R.id.activityTextView);
         getEndTime = (TextView)view.findViewById(R.id.endTime);
         getStartTime = (TextView)view.findViewById(R.id.startTime);
-        specificTextView = (TextView)view.findViewById(R.id.specificTextView);
         progressBar = (ProgressBar)view.findViewById(R.id.progressBar2);
-        separatorBelowOther = (View)view.findViewById(R.id.separatorLineBelowOther);
-        separatorBelowSpecific = (View)view.findViewById(R.id.separatorLineBelowSpecific);
-        separatorBelowAddress = (View)view.findViewById(R.id.separatorLineBelowAddress);
-        separatorBelowEndTime = (View)view.findViewById(R.id.separatorLineBelowEndTime);
-        editActivity = (ImageView)view.findViewById(R.id.editActivity);
-        editSpecific = (ImageView)view.findViewById(R.id.editSpecific);
 
         return view;
     }
@@ -91,7 +84,7 @@ public class CreateEvent extends Fragment {
 
         //chooseAcitivty.setAdapter(adapter);
 
-        chooseAcitivty.setItems("Walk", "Hike", "Movie", "Other");
+        chooseAcitivty.setItems("Choose Activity", "Walk", "Hike", "Movie", "Other");
 
         chooseAcitivty.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
@@ -108,9 +101,6 @@ public class CreateEvent extends Fragment {
             }
         });
 
-        editActivity.setImageResource(R.drawable.save);
-        editSpecific.setImageResource(R.drawable.save);
-
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,72 +111,13 @@ public class CreateEvent extends Fragment {
                     specificEditText.setVisibility(View.VISIBLE);
                     header.setText("What's The Specific Activity?");
                     subheader.setText("(e.g. Mission Peak, Finding Dory, Golfland, Xmas in the Park");
-                    separatorBelowOther.setVisibility(View.VISIBLE);
                     progressBar.setProgress(20);
-                    activityTextView.setVisibility(View.VISIBLE);
-                    if (activity.equals("Other")) {
-                        activityTextView.setText(other.getText().toString());
-                    } else {
-                        activityTextView.setText(activity);
-                    }
 
-                    chooseAcitivty.setVisibility(View.INVISIBLE);
-                    other.setVisibility(View.INVISIBLE);
 
-                    activityTextView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            activityTextView.setVisibility(View.INVISIBLE);
-                            chooseAcitivty.setVisibility(View.VISIBLE);
-                            if (activity.equals("Other")) {
-                                other.setVisibility(View.VISIBLE);
-                            }
-
-                            editActivity.setVisibility(View.VISIBLE);
-
-                            editActivity.setVisibility(View.VISIBLE);
-                            editActivity.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    chooseAcitivty.setVisibility(View.INVISIBLE);
-                                    other.setVisibility(View.INVISIBLE);
-                                    editActivity.setVisibility(View.INVISIBLE);
-                                    activityTextView.setVisibility(View.VISIBLE);
-                                    activity = chooseAcitivty.getText().toString();
-                                    if (activity.equals("Other")) {
-                                        activity = other.getText().toString();
-                                    }
-                                }
-                            });
-                        }
-                    });
                 }
 
                 if (!activity.equals("") && !specificEditText.getText().toString().equals("")){
                     specific = specificEditText.getText().toString();
-
-                    specificEditText.setVisibility(View.INVISIBLE);
-                    specificTextView.setText(specific);
-                    specificTextView.setVisibility(View.VISIBLE);
-
-                    specificTextView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            specificTextView.setVisibility(View.INVISIBLE);
-                            specificEditText.setVisibility(View.VISIBLE);
-                            editSpecific.setVisibility(View.VISIBLE);
-
-                            editSpecific.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    specificTextView.setVisibility(View.VISIBLE);
-                                    specificEditText.setVisibility(View.INVISIBLE);
-                                    specific = specificEditText.getText().toString();
-                                    editSpecific.setVisibility(View.INVISIBLE);
-                                }
-                            });
-                        }
-                    });
 
                     addressTextView.setVisibility(View.VISIBLE);
 
@@ -209,7 +140,7 @@ public class CreateEvent extends Fragment {
                         }
                     });
 
-                    separatorBelowSpecific.setVisibility(View.VISIBLE);
+                    specificLayout.setBackgroundColor(Color.parseColor("#31413f"));
                     progressBar.setProgress(40);
                 }
 
@@ -219,7 +150,6 @@ public class CreateEvent extends Fragment {
                     subheader.setVisibility(View.INVISIBLE);
 
                     getStartTime.setVisibility(View.VISIBLE);
-                    separatorBelowAddress.setVisibility(View.VISIBLE);
                     progressBar.setProgress(60);
                 }
 
@@ -289,6 +219,7 @@ public class CreateEvent extends Fragment {
                         startTime = hourOfDay + ":"  + mm_precede + minute + AM_PM;
 
                         getEndTime.setVisibility(View.VISIBLE);
+                        endTimeLayout.setBackgroundColor(Color.parseColor("#31413f"));
                         progressBar.setProgress(80);
 
                         header.setText("Select End Time");

@@ -51,7 +51,7 @@
 
     <EditText
         android:layout_marginTop="5dp"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:textColor="#FFF"
         android:visibility="invisible"
         android:hint="Enter Other Activity"
@@ -63,18 +63,6 @@
         android:id="@+id/otherField"
         android:layout_below="@+id/chooseActivity"
         android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:visibility="invisible"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:textColor="#FFF"
-        android:layout_marginBottom="10dp"
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/separatorLineBelowOther"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/activityTextView" />
 
     <View
         android:visibility="invisible"
@@ -88,6 +76,7 @@
         android:background="@android:color/darker_gray"/>
 
     <EditText
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:visibility="invisible"
@@ -192,16 +181,6 @@
         android:layout_above="@+id/nextActivity"
         android:layout_centerHorizontal="true"
         android:id="@+id/progressBar2" />
-
-    <ImageView
-        android:layout_marginLeft="5dp"
-        android:visibility="invisible"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:srcCompat="@drawable/com_facebook_button_background"
-        android:layout_alignTop="@+id/chooseActivity"
-        android:layout_toEndOf="@+id/chooseActivity"
-        android:id="@+id/editActivity" />
 
     <ImageView
         android:visibility="invisible"
