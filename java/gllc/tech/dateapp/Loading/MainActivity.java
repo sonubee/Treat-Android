@@ -1,6 +1,7 @@
 package gllc.tech.dateapp.Loading;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +44,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.victor.loading.rotate.RotateLoading;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,8 +80,13 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     DatabaseReference databaseReference;
 
 
+
     @Override
-    public void onInt(Bundle savedInstanceState) {
+    public void onInt(Bundle savedInstanceState)
+    {
+
+
+
         materialDesignSetup();
 
         FacebookSdk.sdkInitialize(getApplicationContext());

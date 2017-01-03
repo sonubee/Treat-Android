@@ -1,5 +1,6 @@
 package gllc.tech.dateapp.Loading;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -66,6 +67,7 @@ public class Login extends Fragment {
     boolean doneDownloading=false;
     JSONObject facebookLoginResponseJSONObject;
     String refreshedToken;
+    public static ProgressDialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,6 +130,12 @@ public class Login extends Fragment {
                 Log.i("--All", "Logged In Already");
                 //upload/ProfilePhoto();
                 loginButton.setVisibility(View.INVISIBLE);
+                dialog=new ProgressDialog(getContext());
+                dialog.setMessage("Loading");
+                dialog.setCancelable(false);
+                dialog.setInverseBackgroundForced(false);
+                dialog.show();
+
             }
         } catch (Exception e){
             Log.i("--All", "Logged Out Already");
@@ -239,6 +247,11 @@ public class Login extends Fragment {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                dialog=new ProgressDialog(getContext());
+                dialog.setMessage("Loading");
+                dialog.setCancelable(false);
+                dialog.setInverseBackgroundForced(false);
+                dialog.show();
 
                 // App code
                 editor = preferences.edit();

@@ -45,7 +45,7 @@ public class Profile extends Fragment {
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
     ImageView editPhoto1, editPhoto2, editPhoto3, editPhoto4;
-    TextView name, bio, karmaPoints, ageRange;
+    TextView name, bio, karmaPoints, ageRange, gender;
     EditText enterBio;
     public static ArrayList<String> albumIds = new ArrayList<>();
     public static ArrayList<String> albumNames = new ArrayList<>();
@@ -67,6 +67,7 @@ public class Profile extends Fragment {
         test.addView(second);
 
 
+        gender = (TextView)view.findViewById(R.id.listGender);
         profileImage = (CircleImageView)view.findViewById(R.id.userPicture);
         name = (TextView)view.findViewById(R.id.nameUser);
         //editBio = (ImageView)view.findViewById(R.id.editButton);
@@ -92,8 +93,8 @@ public class Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        name.setText(MyApplication.currentUser.getName());
-
+        name.setText(MyApplication.currentUser.getName() + ", Age");
+        gender.setText(MyApplication.currentUser.getGender());
         karmaPoints.setText(MyApplication.currentUser.getKarmaPoints() + " Karma Points");
 
         editPhoto1.setImageResource(R.drawable.edit);
@@ -375,6 +376,7 @@ public class Profile extends Fragment {
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
+                        Login.dialog.hide();
                         Log.i("--All", "Response: " + response.toString());
                         JSONObject jsonObject = response.getJSONObject();
                         try{

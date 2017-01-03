@@ -93,10 +93,23 @@ public class CreateEvent extends Fragment {
 
                 if (activity.equals("Other")) {
                     other.setVisibility(View.VISIBLE);
+
+                    header.setText("First Choose Your Activity");
+                    subheader.setText("(e.g. Hike, Movie, Bowling, Walk, Coffee)");
+
+                    specificEditText.setVisibility(View.INVISIBLE);
+                    specificEditText.setText("");
+
+                    progressBar.setProgress(0);
                 }
 
                 if (!activity.equals("Other")) {
                     other.setVisibility(View.INVISIBLE);
+
+                    specificEditText.setVisibility(View.VISIBLE);
+                    header.setText("What's The Specific Activity?");
+                    subheader.setText("(e.g. Mission Peak, Finding Dory, Golfland, Xmas in the Park");
+                    progressBar.setProgress(20);
                 }
             }
         });
@@ -107,12 +120,18 @@ public class CreateEvent extends Fragment {
                 if (!activity.equals("")){
                     if (activity.equals("Other")) {
                         activity = other.getText().toString();
+
+                        specificEditText.setVisibility(View.VISIBLE);
+                        header.setText("What's The Specific Activity?");
+                        subheader.setText("(e.g. Mission Peak, Finding Dory, Golfland, Xmas in the Park");
+                        progressBar.setProgress(20);
                     }
+                    /*
                     specificEditText.setVisibility(View.VISIBLE);
                     header.setText("What's The Specific Activity?");
                     subheader.setText("(e.g. Mission Peak, Finding Dory, Golfland, Xmas in the Park");
                     progressBar.setProgress(20);
-
+*/
 
                 }
 
