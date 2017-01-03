@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.dd.processbutton.FlatButton;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -38,7 +39,7 @@ import gllc.tech.dateapp.R;
 
 public class CreateEvent extends Fragment {
 
-    Button clickNext;
+    FlatButton clickNext;
     MaterialSpinner chooseAcitivty;
     EditText other, specificEditText;
     String activity, specific, address, startTime, endTime;
@@ -61,7 +62,7 @@ public class CreateEvent extends Fragment {
         endTimeLayout = (LinearLayout)view.findViewById(R.id.endTimeLayout);
         specificLayout = (LinearLayout)view.findViewById(R.id.specificLayout);
         chooseAcitivty = (MaterialSpinner) view.findViewById(R.id.chooseActivity);
-        clickNext = (Button)view.findViewById(R.id.nextActivity);
+        clickNext = (FlatButton)view.findViewById(R.id.nextActivity);
         other = (EditText)view.findViewById(R.id.otherField);
         specificEditText = (EditText)view.findViewById(R.id.enterLocation);
         addressTextView = (TextView) view.findViewById(R.id.enterAddress);
@@ -84,7 +85,8 @@ public class CreateEvent extends Fragment {
 
         //chooseAcitivty.setAdapter(adapter);
 
-        chooseAcitivty.setItems("Choose Activity", "Walk", "Hike", "Movie", "Other");
+        chooseAcitivty.setItems("Choose Activity", "Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
+                "Hike", "Movie", "Walk", "Other");
 
         chooseAcitivty.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
@@ -103,13 +105,23 @@ public class CreateEvent extends Fragment {
                     progressBar.setProgress(0);
                 }
 
+                if (activity.equals("Choose Activity")) {
+                    specificEditText.setVisibility(View.INVISIBLE);
+                    specificEditText.setText("");
+
+                    header.setText("First Choose Your Activity");
+                    subheader.setText("(e.g. Hike, Movie, Bowling, Walk, Coffee)");
+                }
+
                 if (!activity.equals("Other")) {
                     other.setVisibility(View.INVISIBLE);
 
-                    specificEditText.setVisibility(View.VISIBLE);
-                    header.setText("What's The Specific Activity?");
-                    subheader.setText("(e.g. Mission Peak, Finding Dory, Golfland, Xmas in the Park");
-                    progressBar.setProgress(20);
+                    if (!activity.equals("Choose Activity")) {
+                        specificEditText.setVisibility(View.VISIBLE);
+                        header.setText("What's The Specific Activity?");
+                        subheader.setText("(e.g. Mission Peak, Finding Dory, Golfland, Xmas in the Park");
+                        progressBar.setProgress(20);
+                    }
                 }
             }
         });
@@ -117,7 +129,7 @@ public class CreateEvent extends Fragment {
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!activity.equals("")){
+                if (!activity.equals("") && !activity.equals("Choose Activity")){
                     if (activity.equals("Other")) {
                         activity = other.getText().toString();
 

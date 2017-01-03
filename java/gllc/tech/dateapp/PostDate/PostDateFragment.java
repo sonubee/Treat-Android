@@ -20,11 +20,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dd.processbutton.FlatButton;
 import com.google.android.gms.location.places.Place;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -50,16 +52,16 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     public static ArrayList<EventsOfDate> listOfEvents = new ArrayList<>();
     public static ArrayList<Place> listOfPlaces = new ArrayList<>();
     String theDateString ="";
-    ImageView postDate;
+    FlatButton postDate;
     public static ListView listView;
     public static EventAdapter adapter;
-    private EditText enterDate;
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
     public static EditText titleDate;
     public static int selectedMap;
     RadioButton myTreat, yourTreat, noTreat;
-    TextView noEvents;
+    TextView noEvents, enterDate;
+    LinearLayout enterDateLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,16 +77,15 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.post_date, container, false);
 
+        enterDateLayout = (LinearLayout)view.findViewById(R.id.enterDateLayout);
         listView = (ListView) view.findViewById(R.id.eventListView);
-        postDate = (ImageView)view.findViewById(R.id.postDate);
-        enterDate = (EditText) view.findViewById(R.id.enterDate);
+        postDate = (FlatButton)view.findViewById(R.id.postDate);
+        enterDate = (TextView) view.findViewById(R.id.enterDate);
         titleDate = (EditText)view.findViewById(R.id.titleDate);
         yourTreat = (RadioButton)view.findViewById(R.id.yourTreat);
         myTreat = (RadioButton)view.findViewById(R.id.myTreat);
         noTreat = (RadioButton)view.findViewById(R.id.noTreat);
         noEvents = (TextView)view.findViewById(R.id.noEvents);
-        enterDate.setInputType(InputType.TYPE_NULL);
-        enterDate.requestFocus();
         setDateTimeField();
 
         return view;
@@ -106,6 +107,8 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                     Toast.makeText(getContext(), "Enter the Date", Toast.LENGTH_LONG).show();
                 } else if (titleDate.getText().toString().equals("")) {
                     Toast.makeText(getContext(), "Enter a Title", Toast.LENGTH_LONG).show();
+                } else if (listOfEvents.size()==0){
+                    Toast.makeText(getContext(), "Add an Event", Toast.LENGTH_LONG).show();
                 } else {
                     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                     String currentDateandTime = sdf.format(new Date());
@@ -160,7 +163,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     }
 
     private void setDateTimeField() {
-        enterDate.setOnClickListener(this);
+        enterDateLayout.setOnClickListener(this);
 
         Calendar newCalendar = Calendar.getInstance();
 

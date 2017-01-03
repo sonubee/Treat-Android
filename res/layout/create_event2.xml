@@ -34,6 +34,7 @@
         android:layout_marginTop="39dp">
 
         <com.jaredrummler.materialspinner.MaterialSpinner
+            app:ms_dropdown_height="300dp"
             android:hint="Choose Activity"
             app:ms_background_color="#31413f"
             android:textColor="#FFF"
@@ -165,12 +166,17 @@
         android:layout_gravity="center_horizontal"
         android:id="@+id/progressBar2" />
 
-    <Button
-        android:text="Next"
+
+
+    <com.dd.processbutton.FlatButton
+        android:id="@+id/nextActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/nextActivity"
+        android:text="Next"
+        pb_colorNormal="@android:color/holo_blue_light"
+        pb_colorPressed="@android:color/holo_blue_dark"
+        android:textColor="@android:color/white"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="30dp"/>
 
 </LinearLayout>

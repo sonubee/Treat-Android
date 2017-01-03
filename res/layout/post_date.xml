@@ -7,32 +7,49 @@
     >
 
     <LinearLayout
-
         android:id="@+id/enterInfoLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
-            android:gravity="center"
-            android:textColor="#619cc9"
+        <LinearLayout
+            android:id="@+id/enterDateLayout"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/enterDate"
-            android:hint="Enter Date"
-            android:textColorHint="#619cc9"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:focusable="true"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:gravity="center"
+                android:textColor="#619cc9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/enterDate"
+                android:hint="Enter Date"
+                android:textColorHint="#619cc9"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/date"
+                />
+
+        </LinearLayout>
+
 
         <EditText
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center"
             android:textColor="#619cc9"
             android:textColorHint="#619cc9"
             android:hint="Title of Your Date"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:layout_gravity="center"
@@ -108,14 +125,18 @@
     </RelativeLayout>
 
 
-    <ImageView
-        android:src="@drawable/post"
+    <com.dd.processbutton.FlatButton
+        android:id="@+id/postDate"
+        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Post Date"
-        android:id="@+id/postDate"
+        android:text="Create Date"
+        pb_colorNormal="@android:color/holo_blue_light"
+        pb_colorPressed="@android:color/holo_blue_dark"
+        android:textColor="@android:color/white"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"/>
+
 
 </RelativeLayout>
