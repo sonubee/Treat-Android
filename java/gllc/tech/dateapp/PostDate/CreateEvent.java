@@ -276,6 +276,8 @@ public class CreateEvent extends Fragment {
                             mm_precede = "0";
                         }
 
+                        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+
                         getStartTime.setText( "Start Time: " + hourOfDay + ":" + mm_precede + minute + AM_PM);
                         startTime = hourOfDay + ":"  + mm_precede + minute + AM_PM;
 
