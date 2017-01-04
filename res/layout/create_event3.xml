@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:layout_marginTop="50dp"
+        ms_dropdown_height="300dp"
+        android:hint="Choose Activity"
+        ms_background_color="#31413f"
+        android:textColor="#FFF"
+        android:textColorHint="#FFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chooseActivity"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/eventTitle"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choice Here"
+        android:textColor="#FFF"/>
+
+    <ImageView
+
+        android:id="@+id/activityImage"
+        android:layout_marginTop="20dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/placeAddress"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        android:text="Address"/>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        android:text="Start Time"/>
+
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        android:text="End Time"/>
+
+    <com.dd.processbutton.FlatButton
+        android:layout_marginTop="60dp"
+        android:id="@+id/nextActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        pb_colorNormal="@android:color/holo_blue_light"
+        pb_colorPressed="@android:color/holo_blue_dark"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+
+</LinearLayout>

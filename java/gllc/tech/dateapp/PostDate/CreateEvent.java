@@ -1,6 +1,8 @@
 package gllc.tech.dateapp.PostDate;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -103,16 +105,43 @@ public class CreateEvent extends Fragment {
                     specificEditText.setText("");
 
                     progressBar.setProgress(0);
-                }
-
-                if (activity.equals("Choose Activity")) {
+                } else if (activity.equals("Choose Activity")) {
                     specificEditText.setVisibility(View.INVISIBLE);
                     specificEditText.setText("");
 
                     header.setText("First Choose Your Activity");
                     subheader.setText("(e.g. Hike, Movie, Bowling, Walk, Coffee)");
+                } if (activity.equals("Bowling")) {
+                    other.setVisibility(View.INVISIBLE);
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Bowling")
+                            .setMessage("Do you know where you want to go Bowling?")
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                }
+                            })
+
+
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
                 }
 
+                    if (!activity.equals("Choose Activity")) {
+                        specificEditText.setVisibility(View.VISIBLE);
+                        header.setText("What's The Specific Activity?");
+                        subheader.setText("(e.g. Mission Peak, Finding Dory, Golfland, Xmas in the Park");
+                        progressBar.setProgress(20);
+                    }
+
+
+/*
                 if (!activity.equals("Other")) {
                     other.setVisibility(View.INVISIBLE);
 
@@ -123,6 +152,7 @@ public class CreateEvent extends Fragment {
                         progressBar.setProgress(20);
                     }
                 }
+                */
             }
         });
 

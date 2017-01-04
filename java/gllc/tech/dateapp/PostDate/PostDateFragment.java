@@ -156,7 +156,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
         switch (item.getItemId()){
             case R.id.addEvent:
 
-                ((MainActivity)getActivity()).addFragments(CreateEvent.class, R.id.container, "PostDate", null);
+                ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", null);
         }
 
         return true;
