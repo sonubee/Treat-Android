@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -20,10 +23,12 @@ public class EventAdapter extends BaseAdapter{
     private LayoutInflater layoutInflater;
     private EventHolder holder = new EventHolder();
     ArrayList<EventsOfDate> listOfEvents = new ArrayList<>();
+    Context context;
 
     public EventAdapter(Context context, ArrayList<EventsOfDate> listOfEvents){
         layoutInflater = LayoutInflater.from(context);
         this.listOfEvents = listOfEvents;
+        this.context = context;
     }
 
     @Override
@@ -44,26 +49,26 @@ public class EventAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        convertView = layoutInflater.inflate(R.layout.event_adapter, null);
+        convertView = layoutInflater.inflate(R.layout.event_adapter2, null);
 
-        //holder.beginTime = (TextView) convertView.findViewById(R.id.beginTime);
-        holder.time = (TextView) convertView.findViewById(R.id.time);
-        holder.activity = (TextView) convertView.findViewById(R.id.activity);
-        //holder.specific = (TextView) convertView.findViewById(R.id.specific);
 
-        //holder.beginTime.setText(listOfEvents.get(position).getBeginTime());
-        //holder.specific.setText(listOfEvents.get(position).getSpecific());
+        holder.time = (TextView) convertView.findViewById(R.id.timeEventAdapter);
+        holder.activity = (TextView) convertView.findViewById(R.id.eventTitleEventAdapter);
+        holder.imageView = (ImageView)convertView.findViewById(R.id.imageEventAdapter);
+        holder.address = (TextView)convertView.findViewById(R.id.addressEventAdapter);
 
         holder.time.setText(listOfEvents.get(position).getBeginTime() + " - " + listOfEvents.get(position).getEndTime());
         holder.activity.setText(listOfEvents.get(position).getActivity() + " at " + listOfEvents.get(position).getSpecific());
+        holder.address.setText(listOfEvents.get(position).getAddress());
+        Picasso.with(context).load(listOfEvents.get(position).getPhoto()).into(holder.imageView);
 
         return convertView;
     }
 
     static class EventHolder {
-        TextView location;
         TextView activity;
-        TextView beginTime;
         TextView time;
+        ImageView imageView;
+        TextView address;
     }
 }

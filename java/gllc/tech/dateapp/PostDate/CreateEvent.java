@@ -234,7 +234,7 @@ public class CreateEvent extends Fragment {
                     latitude = MyApplication.placeChosen.getLatLng().latitude;
                     longitude = MyApplication.placeChosen.getLatLng().longitude;
 
-                    PostDateFragment.listOfEvents.add(new EventsOfDate(specific, activity, address, startTime, endTime, placeName, latitude, longitude));
+                    PostDateFragment.listOfEvents.add(new EventsOfDate(specific, activity, address, startTime, endTime, placeName, latitude, longitude, "NA"));
                     PostDateFragment.listOfPlaces.add(MyApplication.placeChosen);
 
                     PostDateFragment.adapter.notifyDataSetChanged();

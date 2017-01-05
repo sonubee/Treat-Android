@@ -52,7 +52,7 @@ public class CreateEvent3 extends Fragment {
 
     FlatButton clickNext;
     MaterialSpinner chooseAcitivty;
-    String prefix, main, suffix, address, startingTime, endingTime, fullEventTitle;
+    String prefix, main, suffix, address, startingTime, endingTime, fullEventTitle, photo;
     double latitude, longitude;
     TextView eventTitle, placeAddress, startTime, endTime;
     ImageView activityImage;
@@ -70,6 +70,7 @@ public class CreateEvent3 extends Fragment {
         endingTime = "";
         latitude=0.0;
         latitude=0.0;
+        photo = "NA";
 
         chooseAcitivty = (MaterialSpinner) view.findViewById(R.id.chooseActivity);
         eventTitle = (TextView) view.findViewById(R.id.eventTitle);
@@ -142,7 +143,7 @@ public class CreateEvent3 extends Fragment {
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostDateFragment.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude));
+                PostDateFragment.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo));
                 PostDateFragment.adapter.notifyDataSetChanged();
                 ((MainActivity)getActivity()).popBackStack();
             }
@@ -167,7 +168,7 @@ public class CreateEvent3 extends Fragment {
                             JSONObject jsonObject = new JSONObject(responseString);
                             JSONObject result = jsonObject.getJSONObject("result");
 
-                            String address = result.getString("formatted_address");
+                            address = result.getString("formatted_address");
 
                             JSONObject geometry = result.getJSONObject("geometry");
                             JSONObject location = geometry.getJSONObject("location");
@@ -200,7 +201,7 @@ public class CreateEvent3 extends Fragment {
 
     }
 
-    public void getPhoto(String photoReference) {
+    public void getPhoto(final String photoReference) {
 
         new AsyncHttpClient().post("https://maps.googleapis.com/maps/api/place/photo?key=AIzaSyDQbqcJuQtmi88_82Sq8Ixipv8NjpCMMeY&maxwidth=600&photoreference=" + photoReference, null,
                 new TextHttpResponseHandler() {
@@ -208,7 +209,10 @@ public class CreateEvent3 extends Fragment {
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
                         String segments[] = responseString.split("\"");
-                        Picasso.with(getContext()).load(segments[5]).into(activityImage);
+
+                        photo = segments[5];
+
+                        Picasso.with(getContext()).load(photo).into(activityImage);
 
                         getStartTime();
                     }
