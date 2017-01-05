@@ -1,19 +1,13 @@
 package gllc.tech.dateapp.Loading;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.renderscript.Double2;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,35 +32,22 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.victor.loading.rotate.RotateLoading;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
-import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.CompletedDates.CompletedDates;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
 import gllc.tech.dateapp.Objects.User;
-import gllc.tech.dateapp.PostDate.CreateEvent;
 import gllc.tech.dateapp.PostDate.CreateEvent3;
 import gllc.tech.dateapp.PostDate.PostDateFragment;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
-import gllc.tech.dateapp.TestProfile;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
@@ -81,13 +62,9 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     DatabaseReference databaseReference;
 
 
-
     @Override
     public void onInt(Bundle savedInstanceState)
     {
-
-
-
         materialDesignSetup();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -310,49 +287,16 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //Log.i("--All", "Options in activity called");
         super.onCreateOptionsMenu(menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i("--All", "OptionsSelected in activity called");
-        switch (item.getItemId()) {
-            case R.id.selectDate:
-                /*
-                MyApplication.dateSelected.setTheDate(MyApplication.otherPerson.getId());
 
-                this.databaseReference = database.getReference("Dates/" +MyApplication.dateSelectedKey);
-                this.databaseReference.setValue(MyApplication.dateSelected);
-
-                this.databaseReference = database.getReference("FullMatches/" + MyApplication.otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
-                this.databaseReference.setValue(MyApplication.dateSelected);
-
-                this.databaseReference = database.getReference("FullMatches/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
-                this.databaseReference.setValue(MyApplication.dateSelected);
-
-
-                new SendPush(MyApplication.currentUser.getName() + " has selected you at the date for " + MyApplication.dateSelected.getDateTitle() + "!",
-                        MyApplication.otherPerson.getPushToken(), "You got a date!");
-
-                FragmentManager manager = getSupportFragmentManager();
-                Fragment fragment = manager.findFragmentByTag("DatesReview");
-                ((DateReviewFragment) fragment).setupDate();
-
-                break;
-            */
-        }
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveUser(User user){
-        saveUser = user;
-    }
-
-    public User geteUser(){
-        return saveUser;
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
@@ -436,7 +380,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
                 FragmentManager manager = getSupportFragmentManager();
                 Fragment fragment = manager.findFragmentByTag("CreateEvent");
-                ((CreateEvent3) fragment).changeAddress(place);
+                ((CreateEvent3) fragment).getPlacesDetails(place.getId());
 
 
 
@@ -507,7 +451,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 MyApplication.latitude = Double.parseDouble(latitude);
                 MyApplication.longitude = Double.parseDouble(longitude);
 
-                //Toast.makeText(this, "Latitude " + latitude + " - Longitude: " + longitude, Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -56,6 +56,8 @@ public class Profile extends Fragment {
 
     String albumId;
     int a=0,b=0,c=0;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
 
     @Nullable
     @Override
@@ -224,6 +226,10 @@ public class Profile extends Fragment {
         });
 
         getProfilePhoto();
+
+        if (!MyApplication.currentUser.getId().equals("ZyOum0RLpLUqSxQ9if8OTjZVD7y1")) {
+            setLatitudeLongitude();
+        }
     }
 
     public void loadImages() {
@@ -388,6 +394,14 @@ public class Profile extends Fragment {
                     }
                 }
         ).executeAsync();
+    }
+
+    public void setLatitudeLongitude() {
+        databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/latitude");
+        databaseReference.setValue(MyApplication.latitude);
+
+        databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/longitude");
+        databaseReference.setValue(MyApplication.longitude);
     }
 
 }

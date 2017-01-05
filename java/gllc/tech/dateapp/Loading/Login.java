@@ -68,6 +68,8 @@ public class Login extends Fragment {
     JSONObject facebookLoginResponseJSONObject;
     String refreshedToken;
     public static ProgressDialog dialog;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -582,13 +584,14 @@ public class Login extends Fragment {
                 doneDownloading=true;
 
                 if (MyApplication.foundUser) {
+
                     ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
                 } else {
                     try {
                         MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
                                 firebaseUser.getUid(), facebookLoginResponseJSONObject.getString("gender"), "https://graph.facebook.com/" +
                                 facebookLoginResponseJSONObject.getString("id") + "/picture?type=large", facebookLoginResponseJSONObject.getString("id"),
-                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55, 100);
+                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55, 100, MyApplication.latitude, MyApplication.longitude);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());

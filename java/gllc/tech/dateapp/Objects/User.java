@@ -23,9 +23,11 @@ public class User {
     int ageMin;
     int ageMax;
     int distance;
+    double latitude;
+    double longitude;
 
-    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2,
-                String photo3, String photo4, int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax, int distance) {
+    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4,
+                int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax, int distance, double latitude, double longitude) {
         this.name = name;
         this.email = email;
         this.id = id;
@@ -44,10 +46,9 @@ public class User {
         this.ageMin = ageMin;
         this.ageMax = ageMax;
         this.distance = distance;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
-
-
-
 
     public User() {
     }
@@ -194,5 +195,21 @@ public class User {
 
     public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
