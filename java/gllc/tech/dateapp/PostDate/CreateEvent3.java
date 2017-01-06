@@ -338,7 +338,7 @@ public class CreateEvent3 extends Fragment {
                             }
 
                             AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
-                            builderSingle.setTitle("Some Nearby Suggestions:-");
+                            builderSingle.setTitle("Some Nearby Suggestions:");
 
                             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
 
