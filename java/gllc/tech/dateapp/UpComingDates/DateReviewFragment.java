@@ -31,6 +31,7 @@ import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.Messages.MessageFragment;
 import gllc.tech.dateapp.Loading.MyApplication;
+import gllc.tech.dateapp.PostDate.EventAdapter;
 import gllc.tech.dateapp.R;
 
 /**
@@ -40,7 +41,7 @@ import gllc.tech.dateapp.R;
 public class DateReviewFragment extends Fragment{
 
     ListView listView;
-    DateReviewAdapter adapter;
+    EventAdapter adapter;
     TextView textView, requestsOrMatch;
     public static LinearLayout layout;
     CircleImageView matchImage;
@@ -81,7 +82,7 @@ public class DateReviewFragment extends Fragment{
 
         textView.setText(MyApplication.dateSelected.getDateOfDate());
 
-        adapter = new DateReviewAdapter(getContext(), MyApplication.dateSelected.getEvents());
+        adapter = new EventAdapter(getContext(), MyApplication.dateSelected.getEvents());
 
         listView = (ListView) getActivity().findViewById(R.id.dateReviewListView);
         listView.setAdapter(adapter);
