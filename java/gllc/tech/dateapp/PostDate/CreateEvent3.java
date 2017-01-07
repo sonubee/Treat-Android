@@ -10,6 +10,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -93,6 +96,8 @@ public class CreateEvent3 extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         chooseAcitivty.setDropdownHeight(800);
         chooseAcitivty.setBackgroundColor(Color.parseColor("#31413f"));
         chooseAcitivty.setTextColor(Color.WHITE);
@@ -108,35 +113,21 @@ public class CreateEvent3 extends Fragment {
 
                 eventTitle.setVisibility(View.VISIBLE);
                 eventTitle.setText(main);
+                eventTitle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        whereToGo();
+                    }
+                });
+
                 chooseAcitivty.setVisibility(View.INVISIBLE);
 
                 if (main.equals("Minigolf") || main.equals("Dinner")) {
                     activityImage.setImageResource(R.drawable.minigolf);
                 }
 
-                new AlertDialog.Builder(getContext())
-                        .setTitle(main)
-                        .setMessage("Do You Know Where You Want To Go?")
-                        .setPositiveButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                makeSuggestions();
-                            }
-                        })
-                        .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    Intent intent =
-                                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                                                    .build(getActivity());
-                                    getActivity().startActivityForResult(intent, MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE);
-                                } catch (GooglePlayServicesRepairableException e) {
-                                    // TODO: Handle the error.
-                                } catch (GooglePlayServicesNotAvailableException e) {
-                                    // TODO: Handle the error.
-                                }
-                            }
-                        })
-                        .show();
+                whereToGo();
+
             }
         });
 
@@ -148,6 +139,50 @@ public class CreateEvent3 extends Fragment {
                 ((MainActivity)getActivity()).popBackStack();
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        menu.clear();
+        inflater.inflate(R.menu.create_event, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.resetEvent:
+                ((MainActivity)getActivity()).replaceFragments(CreateEvent3.class, R.id.container, "CreateEvent");
+        }
+
+        return true;
+    }
+
+    public void whereToGo() {
+
+        new AlertDialog.Builder(getContext())
+                .setTitle(main)
+                .setMessage("Do You Know Where You Want To Go?")
+                .setPositiveButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        makeSuggestions();
+                    }
+                })
+                .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            Intent intent =
+                                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                                            .build(getActivity());
+                            getActivity().startActivityForResult(intent, MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                        } catch (GooglePlayServicesRepairableException e) {
+                            // TODO: Handle the error.
+                        } catch (GooglePlayServicesNotAvailableException e) {
+                            // TODO: Handle the error.
+                        }
+                    }
+                })
+                .show();
     }
 
     public void getPlacesDetails(String placeId) {
@@ -214,6 +249,14 @@ public class CreateEvent3 extends Fragment {
 
                         Picasso.with(getContext()).load(photo).into(activityImage);
 
+                        startTime.setVisibility(View.VISIBLE);
+                        startTime.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getStartTime();
+                            }
+                        });
+
                         getStartTime();
                     }
 
@@ -250,9 +293,16 @@ public class CreateEvent3 extends Fragment {
                         mm_precede = "0";
                     }
 
-                    startTime.setVisibility(View.VISIBLE);
                     startTime.setText("Start Time: " + hourOfDay + ":" + mm_precede + minute + AM_PM);
                     startingTime = hourOfDay + ":" + mm_precede + minute + AM_PM;
+
+                    endTime.setVisibility(View.VISIBLE);
+                    endTime.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getEndTime();
+                        }
+                    });
 
                     getEndTime();
                 }
@@ -299,7 +349,7 @@ public class CreateEvent3 extends Fragment {
                     endTime.setText("End Time: " + hourOfDay + ":" + mm_precede + minute + AM_PM);
                     endingTime = hourOfDay + ":" + mm_precede + minute + AM_PM;
 
-                    endTime.setVisibility(View.VISIBLE);
+
                     clickNext.setText("Add Event!");
                     clickNext.setVisibility(View.VISIBLE);
                 }

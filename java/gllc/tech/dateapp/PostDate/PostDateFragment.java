@@ -2,9 +2,12 @@ package gllc.tech.dateapp.PostDate;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.design.widget.FloatingActionButton;
@@ -48,6 +51,7 @@ import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.R;
+import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
  * Created by bhangoo on 12/1/2016.
@@ -56,7 +60,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
 
     public static ArrayList<EventsOfDate> listOfEvents = new ArrayList<>();
     public static ArrayList<Place> listOfPlaces = new ArrayList<>();
-    String theDateString ="Enter Date", titleOfEvent ="";
+    String theDateString ="Enter Date", titleOfEvent ="", whoseTreat = "";
     FlatButton postDate;
     public static ListView listView;
     public static EventAdapter adapter;
@@ -118,7 +122,11 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
             @Override
             public void onClick(View v) {
 
-                if (titleOfEvent.equals("") && titleDate.getText().toString().equals("")) {
+                if (listOfEvents.size() < 1) {
+                    Toast.makeText(getContext(), "Please Click (+) Sign at Top to Add and Event First", Toast.LENGTH_LONG).show();
+                }
+
+                else if (titleOfEvent.equals("") && titleDate.getText().toString().equals("")) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
                     final EditText edittext = new EditText(getContext());
@@ -127,129 +135,79 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
 
                     alert.setView(edittext);
 
-                    alert.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            //What ever you want to do with the value
-                            titleDate.setVisibility(View.VISIBLE);
-                        }
-                    });
-
                     alert.setNegativeButton("Done", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            // what ever you want to do with No option.
+                            // what ever you want to do with No option.)
+
                             titleOfEvent = edittext.getText().toString();
-                            titleDate.setVisibility(View.VISIBLE);
-                            titleDate.setText(titleOfEvent);
 
-/*
-                            AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
-                            builderSingle.setTitle("Whose Treat?");
+                            if (titleOfEvent.equals("")) {
+                                Toast.makeText(getContext(), "Please Enter a Short Title", Toast.LENGTH_LONG).show();
+                            } else if (titleOfEvent.length() < 10 || titleOfEvent.length() > 50) {
+                                Toast.makeText(getContext(), "Please enter at Least 10 Characters, up to 50", Toast.LENGTH_LONG).show();
+                                titleOfEvent = "";
+                            } else {
+                                titleDate.setVisibility(View.VISIBLE);
+                                titleDate.setText(titleOfEvent);
 
-                            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
-
-                            ArrayList<String> names = new ArrayList<String>();
-                            names.add("test");
-
-                            for (int j = 0 ; j <names.size(); j++) {
-                                arrayAdapter.add(names.get(j));
+                                askTreat();
                             }
-
-                            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });
-                            builderSingle.show();
-*/
-
-
-                            AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
-                            builderSingle.setTitle("Whose Treat?");
-                            //builderSingle.setMessage("Will Anyone Cover the Date?");
-
-                            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
-
-
-                            arrayAdapter.add("My Treat");
-                            arrayAdapter.add("Your Treat");
-                            arrayAdapter.add("NA");
-
-                            Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+arrayAdapter.getCount());
-                            Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+arrayAdapter.getItem(0));
-
-                            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String whoseTreat = "";
-
-                                    if (which == 0) {
-                                        whoseTreat = "My Treat";
-                                    } else if (which == 1) {
-                                        whoseTreat = "Your Treat";
-                                    } else if (which == 2) {
-                                        whoseTreat = "NA";
-                                    }
-
-                                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                                    String currentDateandTime = sdf.format(new Date());
-
-                                    String titleToUse;
-
-                                    if (titleOfEvent.equals("")) {
-                                        titleToUse = titleDate.getText().toString();
-                                    } else {
-                                        titleToUse = titleOfEvent;
-                                    }
-
-                                    TheDate newDate = new TheDate(MyApplication.currentUser.getId(), "NA", currentDateandTime, theDateString, titleToUse, "NA",
-                                            listOfEvents, false, false, whoseTreat);
-
-
-                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                    DatabaseReference myRef = database.getReference("Dates");
-                                    myRef.push().setValue(newDate);
-
-                                    listOfPlaces = new ArrayList<Place>();
-                                    listOfEvents = new ArrayList<>();
-
-                                    ((MainActivity)getActivity()).replaceFragments(PostDateFragment.class, R.id.container, "PostDateFragment");
-                                    Toast.makeText(getContext(), "Posted! Check Your Upcoming Dates", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                            builderSingle.show();
-
-
                         }
                     });
 
                     alert.show();
-                }
-
-
-
-
-                if (theDateString.equals("Enter Date") && titleDate.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Enter the Date and a Title", Toast.LENGTH_LONG).show();
-                } else if (theDateString.equals("Enter Date")) {
-                    Toast.makeText(getContext(), "Enter the Date", Toast.LENGTH_LONG).show();
-                } else if (titleDate.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Enter a Title", Toast.LENGTH_LONG).show();
-                } else if (listOfEvents.size()==0){
-                    Toast.makeText(getContext(), "Add an Event", Toast.LENGTH_LONG).show();
                 } else {
+                    askTreat();
+                }
+            }
+        });
+    }
+
+    public void askTreat() {
+
+
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
+        builderSingle.setTitle("Finally, Whose Treat?");
+        //builderSingle.setMessage("Will Anyone Cover the Date?");
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
+
+        arrayAdapter.add("My Treat");
+        arrayAdapter.add("Your Treat");
+        arrayAdapter.add("NA");
+        arrayAdapter.add("What's this?");
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+
+                if (which == 3) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                    alert.setTitle("Whose Treat");
+                    alert.setMessage("Date Creators can choose who will cover the date. If you cover the date, you can get twice " +
+                            "as many Karma Points. Choose \"NA\" if it's a free date or both pay");
+
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            askTreat();
+                        }
+                    });
+
+                    alert.show();
+
+                } else {
+
+                    if (which == 0) {
+                        whoseTreat = "My Treat";
+                    } else if (which == 1) {
+                        whoseTreat = "Your Treat";
+                    } else if (which == 2) {
+                        whoseTreat = "NA";
+                    }
+
                     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                     String currentDateandTime = sdf.format(new Date());
-
-                    String whoseTreat = "";
-
-                    if (noTreat.isChecked()) {
-                        whoseTreat = "NA";
-                    } else if (yourTreat.isChecked()) {
-                        whoseTreat = "Your Treat";
-                    } else if (myTreat.isChecked()) {
-                        whoseTreat = "My Treat";
-                    }
 
                     String titleToUse;
 
@@ -262,6 +220,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                     TheDate newDate = new TheDate(MyApplication.currentUser.getId(), "NA", currentDateandTime, theDateString, titleToUse, "NA",
                             listOfEvents, false, false, whoseTreat);
 
+
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference("Dates");
                     myRef.push().setValue(newDate);
@@ -269,11 +228,31 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                     listOfPlaces = new ArrayList<Place>();
                     listOfEvents = new ArrayList<>();
 
-                    ((MainActivity)getActivity()).replaceFragments(PostDateFragment.class, R.id.container, "PostDateFragment");
-                    Toast.makeText(getContext(), "Posted! Check Your Upcoming Dates", Toast.LENGTH_LONG).show();
+                    final ProgressDialog pleaseWait;
+                    pleaseWait = new ProgressDialog(getContext());
+                    pleaseWait.setMessage("Please Wait");
+                    pleaseWait.setCancelable(false);
+                    pleaseWait.setInverseBackgroundForced(false);
+                    pleaseWait.show();
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Do something after 5s = 5000ms
+                            ((MainActivity)getActivity()).replaceFragments(YourDatesFragment.class, R.id.container, "YourDatesFragment");
+                            Toast.makeText(getContext(), "Posted! Here Are Your Upcoming Dates", Toast.LENGTH_LONG).show();
+                            pleaseWait.hide();
+                        }
+                    }, 1000);
+
+
+
                 }
+
             }
         });
+        builderSingle.show();
     }
 
     @Override
