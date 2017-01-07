@@ -45,6 +45,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import gllc.tech.dateapp.DisplayBothDates;
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
@@ -240,7 +241,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            ((MainActivity)getActivity()).replaceFragments(YourDatesFragment.class, R.id.container, "YourDatesFragment");
+                            ((MainActivity)getActivity()).replaceFragments(DisplayBothDates.class, R.id.container, "DisplayBothDates");
                             Toast.makeText(getContext(), "Posted! Here Are Your Upcoming Dates", Toast.LENGTH_LONG).show();
                             pleaseWait.hide();
                         }

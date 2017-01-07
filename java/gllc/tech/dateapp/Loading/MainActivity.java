@@ -41,6 +41,7 @@ import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
 import gllc.tech.dateapp.CompletedDates.CompletedDates;
+import gllc.tech.dateapp.DisplayBothDates;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
 import gllc.tech.dateapp.Objects.User;
@@ -165,18 +166,16 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 3:
-                mFragment = new YourDatesFragment();
+                //mFragment = new YourDatesFragment();
+                mFragment = new DisplayBothDates();
                 break;
 
             case 4:
-                mFragment = new CompletedDates();
-                break;
-
-            case 5:
+                //mFragment = new CompletedDates();
                 mFragment = new ShowAllMessages();
                 break;
 
-            case 6:
+            case 5:
                 LoginManager.getInstance().logOut();
                 mFragment = new Login();
                 break;
@@ -203,8 +202,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         mHelpLiveo.add("Profile", R.drawable.profile);
         mHelpLiveo.add("Post Date", R.drawable.event);
         mHelpLiveo.add("Search Dates", R.drawable.search);
-        mHelpLiveo.add("Upcoming Dates", R.drawable.upcoming);
-        mHelpLiveo.add("Completed Dates", R.drawable.upcoming);
+        mHelpLiveo.add("Your Dates", R.drawable.upcoming);
         mHelpLiveo.add("Messages", R.drawable.message);
         mHelpLiveo.add("Logout", R.drawable.logout);
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import gllc.tech.dateapp.FirstFragment;
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.R;
@@ -57,6 +58,12 @@ public class YourDatesFragment extends Fragment {
                 ((MainActivity)getActivity()).addFragments(DateReviewFragment.class, R.id.container, "DatesReview", null);
             }
         });
+    }
+
+    public static YourDatesFragment newInstance() {
+
+        YourDatesFragment f = new YourDatesFragment();
+               return f;
     }
 
 }

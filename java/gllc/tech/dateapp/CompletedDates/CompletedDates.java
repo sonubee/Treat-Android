@@ -151,4 +151,10 @@ public class CompletedDates extends Fragment {
         super.onDestroy();
 
     }
+
+    public static CompletedDates newInstance() {
+
+        CompletedDates f = new CompletedDates();
+        return f;
+    }
 }
