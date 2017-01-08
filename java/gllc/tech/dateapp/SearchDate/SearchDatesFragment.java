@@ -53,6 +53,7 @@ import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.User;
+import gllc.tech.dateapp.PostDate.EventAdapter;
 import gllc.tech.dateapp.R;
 
 /**
@@ -62,7 +63,8 @@ import gllc.tech.dateapp.R;
 public class SearchDatesFragment extends Fragment {
 
     public static ListView listView;
-    public static SearchDatesAdapter adapter;
+    //public static SearchDatesAdapter adapter;
+    EventAdapter adapter;
     CircleImageView imageView;
     TextView name, shortBioSearch, dateTitle, karmaPoints, whoseTreat;
     User viewUser;
@@ -181,7 +183,7 @@ public class SearchDatesFragment extends Fragment {
 
                                     Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
                                     name.setText(viewUser.getName());
-                                    shortBioSearch.setText(viewUser.getBio());
+                                    shortBioSearch.setText("Bio: " + viewUser.getBio());
                                     karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
                                     whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
 
@@ -265,7 +267,7 @@ public class SearchDatesFragment extends Fragment {
                                 }
                             });
 
-                            adapter = new SearchDatesAdapter(MyApplication.allDates.get(dateCounter).getEvents(), getContext());
+                            adapter = new EventAdapter(getContext(),MyApplication.allDates.get(dateCounter).getEvents());
 
                             dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
 

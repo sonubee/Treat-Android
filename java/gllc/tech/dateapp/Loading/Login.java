@@ -151,29 +151,7 @@ public class Login extends Fragment {
                 if (user != null) {
                     Log.i("--All", "Logged in through Firebase");
                     // User is signed in
-/*
-                    if (preferences.getString("id", "NA").equals("NA")) {
-                        Log.i("--All", "Inside Not Found");
-                        MyApplication.currentUser = new User(preferences.getString("name", "NA"), preferences.getString("email", "NA"), user.getUid(),
-                                preferences.getString("gender", "NA"), preferences.getString("profilePic", "NA"), preferences.getString("fid", "NA"),
-                                preferences.getString("bio", "NA"), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
-                                preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"), preferences.getInt("karmaPoints", 0));
-
-                        editor = preferences.edit();
-                        editor.putString("id", user.getUid());
-                        editor.apply();
-
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
-                        myRef.setValue(MyApplication.currentUser);
-                    }
-*/
-
                     downloadUsers(user);
-
-                    //if (loggedInFacebook && doneDownloading) {
-                    //    ((MainActivity)getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
-                    //}
 
                 } else {
                     // User is signed out
@@ -241,7 +219,7 @@ public class Login extends Fragment {
 
     public void setupFacebookLogin(){
 
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends", "user_photos"));
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends", "user_photos", "user_birthday", "user_education_history"));
         // If using in a fragment
         loginButton.setFragment(this);
 
@@ -270,36 +248,14 @@ public class Login extends Fragment {
                             public void onCompleted(
                                     JSONObject object,
                                     GraphResponse response) {
-
+                                Log.i("--All", "Response1: " + object.toString());
                                 facebookLoginResponseJSONObject = object;
                                 loginButton.setVisibility(View.INVISIBLE);
-                                /*
-                                try {
-                                    editor.putString("accessToken", accessToken.getToken());
-                                    editor.putString("email",object.getString("email"));
-                                    editor.putString("fid", object.getString("id"));
-                                    editor.putString("name", object.getString("name"));
-                                    editor.putString("gender", object.getString("gender"));
-                                    editor.putString("profilePic", "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large");
-                                    editor.apply();
-
-                                    if (preferences.getString("id", "NA").equals("NA")) {
-                                        MyApplication.currentUser = new User(object.getString("name"), object.getString("email"), "NA", preferences.getString("gender", ""),
-                                                "https://graph.facebook.com/" + object.getString("id") + "/picture?type=large", object.getString("id"),
-                                                preferences.getString("bio", ""), preferences.getString("photo1", "NA"), preferences.getString("photo2", "NA"),
-                                                preferences.getString("photo3", "NA"), preferences.getString("photo4", "NA"), preferences.getInt("karmaPoints", 0));
-                                    }
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                */
                             }
                         });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,birthday,gender");
+                parameters.putString("fields", "id,name,email,birthday,gender,education");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -586,12 +542,22 @@ public class Login extends Fragment {
                 if (MyApplication.foundUser) {
 
                     ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
+
+                    try {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("Users/" + MyApplication.currentUser.getId() + "/birthday");
+                        myRef.setValue(facebookLoginResponseJSONObject.getString("birthday"));
+                    } catch (Exception e) {
+
+                    }
+
                 } else {
                     try {
                         MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
                                 firebaseUser.getUid(), facebookLoginResponseJSONObject.getString("gender"), "https://graph.facebook.com/" +
                                 facebookLoginResponseJSONObject.getString("id") + "/picture?type=large", facebookLoginResponseJSONObject.getString("id"),
-                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55, 100, MyApplication.latitude, MyApplication.longitude);
+                                "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55, 100, MyApplication.latitude,
+                                MyApplication.longitude, "NA", "NA", "NA");
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
@@ -604,7 +570,6 @@ public class Login extends Fragment {
                     ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
                 }
 
-                //downloadAgreedChats();
                 downloadDates();
                 downloadCompletedDates();
             }

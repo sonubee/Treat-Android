@@ -1,21 +1,26 @@
 package gllc.tech.dateapp.Loading;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -31,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,8 +51,9 @@ public class Profile extends Fragment {
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
     ImageView editPhoto1, editPhoto2, editPhoto3, editPhoto4;
-    TextView name, bio, karmaPoints, ageRange, gender;
+    TextView name, bio, karmaPoints, ageRange, gender, school;
     EditText enterBio;
+    RelativeLayout chooseSchool;
     public static ArrayList<String> albumIds = new ArrayList<>();
     public static ArrayList<String> albumNames = new ArrayList<>();
     public static ArrayList<String> coverPhotosArray = new ArrayList<>();
@@ -84,7 +91,8 @@ public class Profile extends Fragment {
         photo4 = (ImageView)view.findViewById(R.id.supportImage3);
         karmaPoints = (TextView)view.findViewById(R.id.profileKarmaPoints);
         ageRange = (TextView)view.findViewById(R.id.ageTangeTextView);
-
+        school = (TextView)view.findViewById(R.id.schoolProfile);
+        chooseSchool = (RelativeLayout)view.findViewById(R.id.chooseSchool);
 
         loadImages();
 
@@ -95,9 +103,20 @@ public class Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        name.setText(MyApplication.currentUser.getName() + ", Age");
-        gender.setText(MyApplication.currentUser.getGender());
+        name.setText(MyApplication.currentUser.getName());
+
+        gender.setText(MyApplication.currentUser.getGender().substring(0,1).toUpperCase() + MyApplication.currentUser.getGender().substring(1));
         karmaPoints.setText(MyApplication.currentUser.getKarmaPoints() + " Karma Points");
+
+        if (MyApplication.currentUser.getSchool().equals("NA")) {
+            school.setText("Select One Here");
+        } else if (MyApplication.currentUser.getSchool().equals("None")) {
+            school.setText("None Chosen");
+        }else {
+            school.setText(MyApplication.currentUser.getSchool());
+        }
+
+        setBirthdate();
 
         editPhoto1.setImageResource(R.drawable.edit);
         editPhoto2.setImageResource(R.drawable.edit);
@@ -230,6 +249,15 @@ public class Profile extends Fragment {
         if (!MyApplication.currentUser.getId().equals("ZyOum0RLpLUqSxQ9if8OTjZVD7y1")) {
             setLatitudeLongitude();
         }
+
+        chooseSchool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getEducation();
+            }
+        });
+
+
     }
 
     public void loadImages() {
@@ -403,5 +431,82 @@ public class Profile extends Fragment {
         databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/longitude");
         databaseReference.setValue(MyApplication.longitude);
     }
+
+    private String getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
+    }
+
+
+    public void getEducation() {
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "education");
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + MyApplication.currentUser.getFid(),
+                parameters,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+
+                        try{
+                            ArrayList<String> educationList = new ArrayList<String>();
+                            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
+
+                            JSONObject education = response.getJSONObject();
+                            JSONArray educationArray = education.getJSONArray("education");
+
+                            for (int i=0; i<educationArray.length(); i++) {
+                                JSONObject schoolData = educationArray.getJSONObject(i);
+                                JSONObject school = schoolData.getJSONObject("school");
+
+                                arrayAdapter.add(school.getString("name"));
+                            }
+
+                            arrayAdapter.add("None");
+
+                            AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
+                            builderSingle.setTitle("Which School to Display?");
+
+                            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(final DialogInterface dialog, int which) {
+                                    school.setText(arrayAdapter.getItem(which));
+
+                                    databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId() +"/school");
+                                    databaseReference.setValue(arrayAdapter.getItem(which));
+                                }
+                            });
+
+                            builderSingle.show();
+
+
+                        }catch (Exception e){
+                            Log.i("--All", "Error: " + e.getMessage());
+                        }
+                    }
+                }
+        ).executeAsync();
+    }
+
+    public void setBirthdate() {
+        String segments[] = MyApplication.currentUser.getBirthdate().split("/");
+        name.append(", "  + getAge(Integer.parseInt(segments[2]), Integer.parseInt(segments[0]), Integer.parseInt(segments[1])));
+    }
+
+
 
 }

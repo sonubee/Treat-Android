@@ -25,9 +25,13 @@ public class User {
     int distance;
     double latitude;
     double longitude;
+    String birthdate;
+    String school;
+    String work;
 
-    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4,
-                int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax, int distance, double latitude, double longitude) {
+    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3,
+                String photo4, int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax, int distance, double latitude,
+                double longitude, String birthdate, String school, String work) {
         this.name = name;
         this.email = email;
         this.id = id;
@@ -48,6 +52,9 @@ public class User {
         this.distance = distance;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.birthdate = birthdate;
+        this.school = school;
+        this.work = work;
     }
 
     public User() {
@@ -211,5 +218,29 @@ public class User {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getWork() {
+        return work;
+    }
+
+    public void setWork(String work) {
+        this.work = work;
     }
 }

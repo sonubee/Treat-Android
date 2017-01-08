@@ -8,7 +8,7 @@
         android:layout_margin="10dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait"
+        android:src="@drawable/placeholder"
         android:layout_marginStart="25dp"
         android:id="@+id/imageViewSearch"
         android:layout_alignParentTop="true"
@@ -17,7 +17,7 @@
     <TextView
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_margin="5dp"
-        android:textColor="#38ac70"
+        android:textColor="#279ca9"
         android:text="Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,7 +50,6 @@
         android:src="@drawable/no"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:srcCompat="@drawable/back"
         android:id="@+id/noImageView"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="125dp" />
@@ -59,16 +58,14 @@
         android:src="@drawable/yes"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:srcCompat="@drawable/back"
         android:id="@+id/yesImageView"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="125dp"/>
 
     <TextView
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_margin="5dp"
-        android:textColor="#38ac70"
+        android:layout_marginLeft="5dp"
+        android:textColor="#279ca9"
         android:text="Karma Points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,7 +74,7 @@
         android:id="@+id/karmaPointsSearch" />
 
     <TextView
-        android:textColor="#38ac70"
+        android:textColor="#279ca9"
         android:text="Bio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,12 +85,12 @@
 
     <TextView
         android:layout_margin="5dp"
-        android:textColor="#38ac70"
+        android:textColor="#279ca9"
         android:text="Whose Treat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/shortBioSearch"
-        android:layout_toEndOf="@+id/imageViewSearch"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/imageViewSearch"
         android:id="@+id/whoseTreatSearch" />
 
 

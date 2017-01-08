@@ -103,12 +103,14 @@
             />
 
         <RelativeLayout
+            android:id="@+id/chooseSchool"
             android:clickable="true"
             android:background="#31413f"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/schoolProfile"
                 android:layout_margin="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
