@@ -46,14 +46,14 @@
     <HorizontalScrollView
         android:id="@+id/requestsScroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:layout_below="@+id/requests"
         android:layout_centerHorizontal="true">
 
         <LinearLayout
             android:id="@+id/requestsLinear"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:orientation="horizontal" />
     </HorizontalScrollView>
 

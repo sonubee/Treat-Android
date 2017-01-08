@@ -130,6 +130,8 @@ public class DateReviewFragment extends Fragment{
 
     public void populateRequests(){
 
+        requestsOrMatch.setText("No Requests Yet!");
+
         populateRequestsReference = firebaseDatabase.getReference("Requests/" + MyApplication.dateSelectedKey);
 
         populateRequestsReference.addChildEventListener(childEventListener = new ChildEventListener() {
@@ -161,6 +163,11 @@ public class DateReviewFragment extends Fragment{
                             ((MainActivity)getActivity()).addFragments(ReviewProfileFragment.class, R.id.container, "ReviewProfileFragment", bundle);
                         }
                     });
+
+                    requestsOrMatch.setText("Possible Dates");
+
+
+
 
                     layout.addView(imageView);
                 }

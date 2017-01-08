@@ -40,7 +40,7 @@ public class DisplayBothDates extends Fragment {
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
 
-        private String tabTitles[] = new String[] { "Upcoming Dates", "Completes Dates"};
+        private String tabTitles[] = new String[] { "Upcoming Dates", "Completed Dates"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
