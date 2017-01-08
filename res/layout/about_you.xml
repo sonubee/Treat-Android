@@ -144,55 +144,6 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Control Your Profile"
-            android:textColor="#FFF"
-            />
-
-        <RelativeLayout
-            android:clickable="true"
-            android:background="#31413f"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Don't Show My Age"
-                android:textColor="#FFF"/>
-
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:clickable="true"
-            android:background="#31413f"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Make My Distance Invisible"
-                android:textColor="#FFF"/>
-
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"/>
-
-        </RelativeLayout>
-
     </LinearLayout>
 
 </LinearLayout>

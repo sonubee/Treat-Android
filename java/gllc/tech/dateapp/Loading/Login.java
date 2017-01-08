@@ -49,6 +49,7 @@ import java.util.Date;
 
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
+import gllc.tech.dateapp.ProfileViewPager;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.UpComingDates.YourDatesAdapter;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
@@ -219,7 +220,7 @@ public class Login extends Fragment {
 
     public void setupFacebookLogin(){
 
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_friends", "user_photos", "user_birthday", "user_education_history"));
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile", "user_photos", "user_birthday", "user_education_history"));
         // If using in a fragment
         loginButton.setFragment(this);
 
@@ -292,6 +293,12 @@ public class Login extends Fragment {
                     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                     Date strDate = sdf.parse(value.getDateOfDate());
                     if (System.currentTimeMillis() > strDate.getTime()) {
+
+                        SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+                        SimpleDateFormat parseFormat = new SimpleDateFormat("hh:mm a");
+                        //Date date = parseFormat.parse("10:30 PM");
+                        Date date = parseFormat.parse(value.getEvents().get(0).getEndTime());
+                        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+parseFormat.format(date) + " = " + displayFormat.format(date));
 
                         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                         DatabaseReference databaseReference = firebaseDatabase.getReference("Dates/"+value.getKey());
@@ -541,7 +548,8 @@ public class Login extends Fragment {
 
                 if (MyApplication.foundUser) {
 
-                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
+                    //((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile");
 
                     try {
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -567,7 +575,7 @@ public class Login extends Fragment {
                         Log.i("--All", "Unable to Parse New Facebook User");
                     }
 
-                    ((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile");
                 }
 
                 downloadDates();

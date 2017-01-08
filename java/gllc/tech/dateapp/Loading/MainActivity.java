@@ -48,6 +48,7 @@ import gllc.tech.dateapp.Messages.ShowAllMessages;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.PostDate.CreateEvent3;
 import gllc.tech.dateapp.PostDate.PostDateFragment;
+import gllc.tech.dateapp.ProfileViewPager;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
@@ -409,7 +410,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     public void changePhotos() {
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentByTag("Profile");
-        ((Profile) fragment).reloadProfileFragment();
+        ((ProfileViewPager) fragment).reloadProfileFragment();
     }
 
     @Override

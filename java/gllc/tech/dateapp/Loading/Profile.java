@@ -393,11 +393,6 @@ public class Profile extends Fragment {
         ).executeAsync();
     }
 
-    public void reloadProfileFragment() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
-
-    }
 
     public void getProfilePhoto() {
         Bundle parameters = new Bundle();
@@ -507,6 +502,10 @@ public class Profile extends Fragment {
         name.append(", "  + getAge(Integer.parseInt(segments[2]), Integer.parseInt(segments[0]), Integer.parseInt(segments[1])));
     }
 
+    public static Profile newInstance() {
 
+        Profile f = new Profile();
+        return f;
+    }
 
 }

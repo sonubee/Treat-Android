@@ -1,4 +1,4 @@
-package gllc.tech.dateapp.Loading;
+package gllc.tech.dateapp.SearchDate;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.R;
 
 /**
@@ -103,5 +104,11 @@ public class Filters extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public static Filters newInstance() {
+
+        Filters f = new Filters();
+        return f;
     }
 }
