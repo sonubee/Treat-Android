@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import gllc.tech.dateapp.Objects.EventsOfDate;
@@ -22,9 +24,12 @@ public class SearchDatesAdapter extends BaseAdapter {
     ArrayList<EventsOfDate> eventsOfDates;
     private LayoutInflater layoutInflater;
     EventDetail holder = new EventDetail();
+    Context context;
+
     public SearchDatesAdapter(ArrayList<EventsOfDate> eventsOfDate, Context context) {
         layoutInflater = LayoutInflater.from(context);
         this.eventsOfDates = eventsOfDate;
+        this.context = context;
     }
 
     @Override
@@ -49,9 +54,11 @@ public class SearchDatesAdapter extends BaseAdapter {
 
         holder.time = (TextView) convertView.findViewById(R.id.timeTextview);
         holder.event = (TextView) convertView.findViewById(R.id.whereTextView);
+        holder.eventImage = (ImageView)convertView.findViewById(R.id.eventImage);
 
         holder.time.setText(eventsOfDates.get(position).getBeginTime() + " - " + eventsOfDates.get(position).getEndTime());
         holder.event.setText(eventsOfDates.get(position).getActivity() + " at " + eventsOfDates.get(position).getSpecific());
+        Picasso.with(context).load(eventsOfDates.get(position).getPhoto()).into(holder.eventImage);
 
         return convertView;
     }

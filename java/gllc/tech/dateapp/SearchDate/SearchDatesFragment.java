@@ -92,8 +92,6 @@ public class SearchDatesFragment extends Fragment {
         yes = (ImageView) view.findViewById(R.id.yesImageView);
         no = (ImageView) view.findViewById(R.id.noImageView);
 
-        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
-
         return view;
     }
 
