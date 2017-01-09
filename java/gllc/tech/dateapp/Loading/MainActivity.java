@@ -338,33 +338,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Login.callbackManager.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-                Log.i("--All", "Place: " + place.getName());
-                MyApplication.placeChosen = place;
-                if (place.getAddress().toString().contains(place.getName())) {
-                    CreateEvent.addressTextView.setText(place.getAddress().toString().replaceFirst(",","\n"));
-                } else {
-                    CreateEvent.addressTextView.setText(place.getName() + System.getProperty("line.separator") + place.getAddress().toString().replaceFirst(",",".\n"));
-                }
-
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(this, data);
-                // TODO: Handle the error.
-                Log.i("--All", status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
-        }
-    }
-*/
 
 
     @Override
@@ -383,14 +357,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 ((CreateEvent3) fragment).getPlacesDetails(place.getId());
 
 
-
-                /*
-                if (place.getAddress().toString().contains(place.getName())) {
-                    CreateEvent.addressTextView.setText(place.getAddress().toString().replaceFirst(",","\n"));
-                } else {
-                    CreateEvent.addressTextView.setText(place.getName() + System.getProperty("line.separator") + place.getAddress().toString().replaceFirst(",",".\n"));
-                }
-*/
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.

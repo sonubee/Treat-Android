@@ -25,15 +25,24 @@
         android:layout_toEndOf="@+id/imageViewSearch"
         android:id="@+id/nameTextView" />
 
-    <ListView
-        android:id="@+id/newSearchDatesListview"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/relativeListViewSearch"
+        android:background="@drawable/layout_bg"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dateTitle"
         android:layout_alignParentStart="true"
-        android:layout_margin="10dp"
-        android:layout_above="@+id/noImageView"
-     />
+        android:layout_above="@+id/noImageView">
+        <ListView
+            android:layout_margin="10dp"
+
+            android:id="@+id/newSearchDatesListview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </RelativeLayout>
+
 
     <TextView
         android:layout_marginTop="10dp"

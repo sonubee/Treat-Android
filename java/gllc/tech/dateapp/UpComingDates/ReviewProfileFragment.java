@@ -42,15 +42,13 @@ public class ReviewProfileFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
     private User otherPerson;
+    String dateKey;
 
     //public static User reviewPerson;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //MyApplication.justPosted = false;
-        //otherPersonHolder = otherPerson;
     }
 
     @Nullable
@@ -64,6 +62,7 @@ public class ReviewProfileFragment extends Fragment {
 
         String cameFrom = getArguments().getString("cameFrom");
         otherPerson = MyApplication.userHashMap.get(getArguments().getString("otherPerson"));
+        dateKey = getArguments().getString("dateSelectedKey");
 
         profilePic = (CircleImageView) view.findViewById(R.id.profileImage);
         reviewPhoto2 = (ImageView) view.findViewById(R.id.reviewPhoto2);
@@ -74,6 +73,28 @@ public class ReviewProfileFragment extends Fragment {
         chatImage = (ImageView)view.findViewById(R.id.chatImage);
         removeImage = (ImageView)view.findViewById(R.id.removeImage);
         karmaPoints = (TextView)view.findViewById(R.id.karmaPointsReview);
+
+        RelativeLayout relativeLayout1 = new RelativeLayout(getContext());
+        relativeLayout1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        ImageView imageView = new ImageView(getContext());
+        imageView.setImageResource(R.drawable.chat);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(150, 150);
+        lp.setMargins(100, 0, 0, 0);
+        imageView.setLayoutParams(lp);
+
+        relativeLayout1.addView(imageView);
+
+        ImageView noChat = new ImageView(getContext());
+        noChat.setImageResource(R.drawable.no);
+        RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(150, 150);
+        lp2.addRule(RelativeLayout.ALIGN_PARENT_END);
+        lp2.setMargins(0,0,100,0);
+        noChat.setLayoutParams(lp2);
+
+        relativeLayout1.addView(noChat);
+
+        test.addView(relativeLayout1);
 
 
 
@@ -189,19 +210,18 @@ public class ReviewProfileFragment extends Fragment {
                 bundle.putString("otherPerson", otherPerson.getId());
 
                 ((MainActivity)getActivity()).addFragments(MessageFragment.class, R.id.container, "Messaging", bundle);
-                AgreedChats agreedChats = new AgreedChats(MyApplication.currentUser.getId(), otherPerson.getId(), MyApplication.dateSelectedKey);
+                AgreedChats agreedChats = new AgreedChats(MyApplication.currentUser.getId(), otherPerson.getId(), dateKey);
 
-                databaseReference = database.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + MyApplication.dateSelectedKey);
+                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+MyApplication.currentUser.getId());
+
+                databaseReference = database.getReference("AgreedChats/" + MyApplication.currentUser.getId() + "/" + dateKey);
                 databaseReference.setValue(agreedChats);
 
-                databaseReference = database.getReference("AgreedChats/" + otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
+                databaseReference = database.getReference("AgreedChats/" + otherPerson.getId() + "/" + dateKey);
                 databaseReference.setValue(agreedChats);
 
-                //MyApplication.justPosted = true;
                 new SendPush(otherPerson.getName()+" has opened chat with you!", otherPerson.getPushToken(),
-                        "Date: " + MyApplication.dateSelected.getDateTitle());
-
-                //MyApplication.agreedChats.add(agreedChats);
+                        "Date: " + MyApplication.dateHashMap.get(dateKey).getDateTitle());
 
 
             }
@@ -212,7 +232,7 @@ public class ReviewProfileFragment extends Fragment {
             public void onClick(View v) {
 
 
-                databaseReference = database.getReference("Requests/" + MyApplication.dateSelectedKey + "/" + otherPerson.getId());
+                databaseReference = database.getReference("Requests/" + dateKey + "/" + otherPerson.getId());
                 databaseReference.setValue("Rejected");
 
                 DateReviewFragment.layout.removeAllViews();

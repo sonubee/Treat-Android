@@ -85,7 +85,6 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                //DatabaseReference myRef = database.getReference("Messages/" + otherPerson.getId() + "/" + MyApplication.dateSelectedKey);
                 DatabaseReference myRef = database.getReference("Messages/" + MyApplication.dateSelectedKey + "/" + messageKey);
 
                 Message sendMessage = new Message(messageToSend.getText().toString(), MyApplication.currentUser.getId(), otherPerson.getId());

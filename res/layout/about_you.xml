@@ -5,6 +5,7 @@
     android:background="#000">
 
     <LinearLayout
+        android:background="@drawable/layout_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -47,6 +48,8 @@
             android:textColor="#FFF"/>
 
         <RelativeLayout
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="#31413f"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -64,6 +67,8 @@
         </RelativeLayout>
 
         <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="#31413f"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,6 +84,7 @@
             android:text="Current Work"/>
 
         <RelativeLayout
+            android:layout_margin="5dp"
             android:clickable="true"
             android:background="#31413f"
             android:layout_width="match_parent"
@@ -103,6 +109,7 @@
             />
 
         <RelativeLayout
+            android:layout_margin="5dp"
             android:id="@+id/chooseSchool"
             android:clickable="true"
             android:background="#31413f"
@@ -129,6 +136,7 @@
             />
 
         <RelativeLayout
+            android:layout_margin="5dp"
             android:clickable="true"
             android:background="#31413f"
             android:layout_width="match_parent"

@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class SearchDatesFragment extends Fragment {
     public static int dateCounter;
     ImageView yes,no;
     SwipeDetector swipeDetector;
+    RelativeLayout relativeListView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class SearchDatesFragment extends Fragment {
         whoseTreat = (TextView)view.findViewById(R.id.whoseTreatSearch);
         yes = (ImageView) view.findViewById(R.id.yesImageView);
         no = (ImageView) view.findViewById(R.id.noImageView);
+        relativeListView = (RelativeLayout)view.findViewById(R.id.relativeListViewSearch);
 
         return view;
     }
@@ -300,6 +303,7 @@ public class SearchDatesFragment extends Fragment {
             shortBioSearch.setVisibility(View.INVISIBLE);
             dateTitle.setVisibility(View.INVISIBLE);
             whoseTreat.setVisibility(View.INVISIBLE);
+            relativeListView.setVisibility(View.INVISIBLE);
             listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
             listView.setAdapter(null);
         }

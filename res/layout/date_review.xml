@@ -7,14 +7,15 @@
 
 
     <TextView
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:textColor="#59719f"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="#90a4ca"
         android:text="Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/showDate" />
+        android:id="@+id/showDate"
+        android:layout_marginBottom="5dp"/>
 
     <View
         android:layout_below="@+id/showDate"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#000">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:scaleType="centerCrop"
+        android:layout_margin="10dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/placeholder"
+        android:id="@+id/imageEventAdapter"/>
+
+    <TextView
+
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:id="@+id/eventTitleEventAdapter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title Here"
+        android:textColor="#FFF"
+        android:layout_toEndOf="@id/imageEventAdapter"/>
+
+    <TextView
+        android:id="@+id/timeEventAdapter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        android:layout_below="@id/eventTitleEventAdapter"
+        android:text="Time"
+        android:layout_alignStart="@id/eventTitleEventAdapter"/>
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/addressEventAdapter"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/imageEventAdapter"
+        android:text="Adress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"/>
+
+</RelativeLayout>

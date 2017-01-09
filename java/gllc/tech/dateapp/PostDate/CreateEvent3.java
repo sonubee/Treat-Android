@@ -55,7 +55,7 @@ public class CreateEvent3 extends Fragment {
 
     FlatButton clickNext;
     MaterialSpinner chooseAcitivty;
-    String prefix, main, suffix, address, startingTime, endingTime, fullEventTitle, photo;
+    String prefix, main, suffix, address, startingTime, endingTime, fullEventTitle, photo, city;
     double latitude, longitude;
     TextView eventTitle, placeAddress, startTime, endTime;
     ImageView activityImage;
@@ -74,6 +74,7 @@ public class CreateEvent3 extends Fragment {
         latitude=0.0;
         latitude=0.0;
         photo = "NA";
+        city = "";
 
         chooseAcitivty = (MaterialSpinner) view.findViewById(R.id.chooseActivity);
         eventTitle = (TextView) view.findViewById(R.id.eventTitle);
@@ -134,7 +135,7 @@ public class CreateEvent3 extends Fragment {
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostDateFragment.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo));
+                PostDateFragment.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
                 PostDateFragment.adapter.notifyDataSetChanged();
                 ((MainActivity)getActivity()).popBackStack();
             }
@@ -204,6 +205,11 @@ public class CreateEvent3 extends Fragment {
                             JSONObject result = jsonObject.getJSONObject("result");
 
                             address = result.getString("formatted_address");
+
+                            String segments[] = result.getString("vicinity").split(",");
+
+                            city = segments[1];
+
 
                             JSONObject geometry = result.getJSONObject("geometry");
                             JSONObject location = geometry.getJSONObject("location");

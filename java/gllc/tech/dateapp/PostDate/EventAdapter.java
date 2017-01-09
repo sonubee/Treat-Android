@@ -49,7 +49,7 @@ public class EventAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        convertView = layoutInflater.inflate(R.layout.event_adapter2, null);
+        convertView = layoutInflater.inflate(R.layout.event_adapter3, null);
 
 
         holder.time = (TextView) convertView.findViewById(R.id.timeEventAdapter);
@@ -59,7 +59,7 @@ public class EventAdapter extends BaseAdapter{
 
         holder.time.setText(listOfEvents.get(position).getBeginTime() + " - " + listOfEvents.get(position).getEndTime());
         holder.activity.setText(listOfEvents.get(position).getActivity() + " at " + listOfEvents.get(position).getSpecific());
-        holder.address.setText(listOfEvents.get(position).getAddress());
+        holder.address.setText(listOfEvents.get(position).getCity());
         Picasso.with(context).load(listOfEvents.get(position).getPhoto()).into(holder.imageView);
 
         return convertView;

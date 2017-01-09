@@ -55,7 +55,10 @@ public class YourDatesFragment extends Fragment {
 
                 selectedMap = position;
 
-                ((MainActivity)getActivity()).addFragments(DateReviewFragment.class, R.id.container, "DatesReview", null);
+                Bundle bundle = new Bundle();
+                bundle.putString("dateSelectedKey", MyApplication.dateSelectedKey);
+
+                ((MainActivity)getActivity()).addFragments(DateReviewFragment.class, R.id.container, "DatesReview", bundle);
             }
         });
     }

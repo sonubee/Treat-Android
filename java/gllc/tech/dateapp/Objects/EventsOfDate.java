@@ -14,11 +14,13 @@ public class EventsOfDate {
     double latitude;
     double longitude;
     String photo;
+    String city;
 
     public EventsOfDate() {
     }
 
-    public EventsOfDate(String specific, String activity, String address, String beginTime, String endTime, String placeName, double latitude, double longitude, String photo) {
+    public EventsOfDate(String specific, String activity, String address, String beginTime, String endTime, String placeName, double latitude, double longitude,
+                        String photo, String city) {
         this.specific = specific;
         this.activity = activity;
         this.address = address;
@@ -28,6 +30,7 @@ public class EventsOfDate {
         this.latitude = latitude;
         this.longitude = longitude;
         this.photo = photo;
+        this.city = city;
     }
 
     public String getSpecific() {
@@ -102,4 +105,11 @@ public class EventsOfDate {
         this.photo = photo;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 }
