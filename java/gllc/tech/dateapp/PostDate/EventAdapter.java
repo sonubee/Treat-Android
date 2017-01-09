@@ -57,6 +57,8 @@ public class EventAdapter extends BaseAdapter{
         holder.imageView = (ImageView)convertView.findViewById(R.id.imageEventAdapter);
         holder.address = (TextView)convertView.findViewById(R.id.addressEventAdapter);
 
+
+
         holder.time.setText(listOfEvents.get(position).getBeginTime() + " - " + listOfEvents.get(position).getEndTime());
         holder.activity.setText(listOfEvents.get(position).getActivity() + " at " + listOfEvents.get(position).getSpecific());
         holder.address.setText(listOfEvents.get(position).getCity());
