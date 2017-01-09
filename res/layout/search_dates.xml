@@ -93,7 +93,7 @@
         android:layout_margin="5dp" />
 
     <TextView
-        android:layout_margin="5dp"
+        android:layout_marginEnd="5dp"
         android:textColor="#279ca9"
         android:text="Whose Treat"
         android:layout_width="wrap_content"
@@ -101,6 +101,16 @@
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/imageViewSearch"
         android:id="@+id/whoseTreatSearch" />
+
+    <TextView
+        android:layout_marginEnd="5dp"
+        android:textColor="#279ca9"
+        android:text="Distance From You"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/whoseTreatSearch"
+        android:id="@+id/distanceFromYou" />
 
 
 </RelativeLayout>

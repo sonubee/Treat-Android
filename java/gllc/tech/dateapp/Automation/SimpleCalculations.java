@@ -17,7 +17,7 @@ import gllc.tech.dateapp.Objects.User;
 
 public class SimpleCalculations {
 
-    public static double GetTheDistance(ArrayList<EventsOfDate> eventsOfDate) {
+    public static int GetTheDistance(ArrayList<EventsOfDate> eventsOfDate) {
 
         ArrayList<EventsOfDate> allEvents = eventsOfDate;
 
@@ -48,7 +48,7 @@ public class SimpleCalculations {
         Float distance = locationA.distanceTo(locationB) ;
         Double distance2 = distance*0.000621371;
 
-        return distance2;
+        return Integer.parseInt(String.format("%.0f", distance2));
     }
 
     public static int getAge(User user){

@@ -54,7 +54,7 @@ public class SearchDatesFragment extends Fragment {
     //public static SearchDatesAdapter adapter;
     EventAdapter adapter;
     CircleImageView imageView;
-    TextView name, shortBioSearch, dateTitle, karmaPoints, whoseTreat;
+    TextView name, shortBioSearch, dateTitle, karmaPoints, whoseTreat, distance;
     User viewUser;
     public static int dateCounter;
     ImageView yes,no;
@@ -83,6 +83,7 @@ public class SearchDatesFragment extends Fragment {
         yes = (ImageView) view.findViewById(R.id.yesImageView);
         no = (ImageView) view.findViewById(R.id.noImageView);
         relativeListView = (RelativeLayout)view.findViewById(R.id.relativeListViewSearch);
+        distance = (TextView)view.findViewById(R.id.distanceFromYou);
 
         return view;
     }
@@ -143,7 +144,8 @@ public class SearchDatesFragment extends Fragment {
             User otherPerson = MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster());
 
             if (!MyApplication.matchMap.containsKey(MyApplication.allDates.get(dateCounter).getKey())) {
-                if (SimpleCalculations.GetTheDistance(MyApplication.allDates.get(dateCounter).getEvents()) < MyApplication.currentUser.getDistance()) {
+                if ((SimpleCalculations.GetTheDistance(MyApplication.allDates.get(dateCounter).getEvents()) < MyApplication.currentUser.getDistance()) ||
+                        MyApplication.currentUser.getId().equals(MyApplication.myId)) {
                     if ((MyApplication.currentUser.isShowMen() && otherPerson.getGender().equals("male") || (MyApplication.currentUser.isShowWomen() &&
                             otherPerson.getGender().equals("female")))) {
                         if (!otherPerson.isGaveFullBirthday() || ((SimpleCalculations.getAge(otherPerson) > MyApplication.currentUser.getAgeMin()) &&
@@ -178,9 +180,13 @@ public class SearchDatesFragment extends Fragment {
 
                                         Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
                                         name.setText(viewUser.getName());
+                                        if (viewUser.isGaveFullBirthday()) {
+                                            name.append(", " + SimpleCalculations.getAge(viewUser));
+                                        }
                                         shortBioSearch.setText("Bio: " + viewUser.getBio());
                                         karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
                                         whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
+                                        distance.setText(SimpleCalculations.GetTheDistance(MyApplication.allDates.get(dateCounter).getEvents()) + " Miles from You");
 
                                         imageView.setOnClickListener(new View.OnClickListener() {
                                             @Override
