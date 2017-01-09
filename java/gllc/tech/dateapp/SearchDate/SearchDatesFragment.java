@@ -5,11 +5,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,10 +36,10 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SendPush;
 import gllc.tech.dateapp.Automation.MapsActivity;
+import gllc.tech.dateapp.Automation.SimpleCalculations;
 import gllc.tech.dateapp.Automation.SwipeDetector;
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
-import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.PostDate.EventAdapter;
 import gllc.tech.dateapp.R;
@@ -107,7 +104,8 @@ public class SearchDatesFragment extends Fragment {
 
                 if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
+                    DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" +
+                            MyApplication.allDates.get(dateCounter).getKey());
                     myRef.setValue(true);
 
                     DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" + MyApplication.currentUser.getId());
@@ -128,7 +126,8 @@ public class SearchDatesFragment extends Fragment {
             public void onClick(View v) {
                 if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" + MyApplication.allDates.get(dateCounter).getKey());
+                    DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" +
+                            MyApplication.allDates.get(dateCounter).getKey());
                     myRef.setValue(false);
                     dateCounter++;
                     showDate();
@@ -141,141 +140,108 @@ public class SearchDatesFragment extends Fragment {
 
         if (dateCounter < MyApplication.allDates.size() && MyApplication.allDates.size() > 0){
 
-            //Toast.makeText(getContext(), "Distance is: " + getDistance(MyApplication.allDates.get(dateCounter).getEvents()) + " miles away", Toast.LENGTH_SHORT).show();
+            User otherPerson = MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster());
 
             if (!MyApplication.matchMap.containsKey(MyApplication.allDates.get(dateCounter).getKey())) {
-                if (getDistance(MyApplication.allDates.get(dateCounter).getEvents()) < MyApplication.currentUser.getDistance()) {
-                    if ((MyApplication.currentUser.isShowMen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("male") ||
-                            (MyApplication.currentUser.isShowWomen() && MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getGender().equals("female")))) {
-                        if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())) {
-                            FirebaseDatabase database2 = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef2 = database2.getReference("Users/" + MyApplication.allDates.get(dateCounter).getPoster());
+                if (SimpleCalculations.GetTheDistance(MyApplication.allDates.get(dateCounter).getEvents()) < MyApplication.currentUser.getDistance()) {
+                    if ((MyApplication.currentUser.isShowMen() && otherPerson.getGender().equals("male") || (MyApplication.currentUser.isShowWomen() &&
+                            otherPerson.getGender().equals("female")))) {
+                        if (!otherPerson.isGaveFullBirthday() || ((SimpleCalculations.getAge(otherPerson) > MyApplication.currentUser.getAgeMin()) &&
+                                SimpleCalculations.getAge(otherPerson) < MyApplication.currentUser.getAgeMax())) {
+                            if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())) {
 
-                            myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    viewUser = dataSnapshot.getValue(User.class);
+                                FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+                                DatabaseReference myRef2 = database2.getReference("Users/" + MyApplication.allDates.get(dateCounter).getPoster());
 
-                                    final ArrayList<String> allImages = new ArrayList<>();
+                                myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        viewUser = dataSnapshot.getValue(User.class);
 
-                                    if (viewUser.getPhoto1().equals("NA")) {
-                                        allImages.add(viewUser.getProfilePic());
-                                    } else {
-                                        allImages.add(viewUser.getPhoto1());
-                                    }
+                                        final ArrayList<String> allImages = new ArrayList<>();
 
-                                    if (!viewUser.getPhoto2().equals("NA")) {
-                                        allImages.add(viewUser.getPhoto2());
-                                    }
-                                    if (!viewUser.getPhoto3().equals("NA")) {
-                                        allImages.add(viewUser.getPhoto3());
-                                    }
-                                    if (!viewUser.getPhoto4().equals("NA")) {
-                                        allImages.add(viewUser.getPhoto4());
-                                    }
+                                        if (viewUser.getPhoto1().equals("NA")) {
+                                            allImages.add(viewUser.getProfilePic());
+                                        } else {
+                                            allImages.add(viewUser.getPhoto1());
+                                        }
 
-                                    Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
-                                    name.setText(viewUser.getName());
-                                    shortBioSearch.setText("Bio: " + viewUser.getBio());
-                                    karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
-                                    whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
-
-                                    imageView.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            final Dialog dialog = new Dialog(getContext());
-                                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                                            dialog.setContentView(R.layout.full_image_horizontal);
-
-                                            LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.fullImageLinear);
-
-                                            //use a GradientDrawable with only one color set, to make it a solid color
-                                            GradientDrawable border = new GradientDrawable();
-                                            border.setColor(0xFFFFFFFF); //white background
-                                            border.setStroke(1, 0xFF000000); //black border with full opacity
-
-                                            layout.setBackground(border);
-
-                                            for (int i = 0; i < allImages.size(); i++) {
-                                                ImageView imageView = new ImageView(getContext());
-                                                imageView.setPadding(10, 10, 10, 10);
-
-                                                Picasso.with(getContext()).load(allImages.get(i)).resize((MyApplication.screenWidth - 150),
-                                                        MyApplication.screenHeight - 250).centerCrop().into(imageView);
-
-                                                layout.addView(imageView);
-                                            }
-/*
-                                        ImageView imageView1 = new ImageView(getContext());
-                                        Picasso.with(getContext()).load(viewUser.getPhoto1()).resize((MyApplication.screenWidth-150),
-                                                MyApplication.screenWidth-150).centerCrop().into(imageView1);
-
-
-                                        layout.addView(imageView1);
-
-                                        ImageView imageView2 = new ImageView(getContext());
-                                        Picasso.with(getContext()).load(viewUser.getPhoto2()).resize((MyApplication.screenWidth-100),
-                                                MyApplication.screenWidth-100).centerCrop().into(imageView2);
-
-                                        layout.addView(imageView2);
-*/
-                                            dialog.show();
-
-                                        /*
-                                        final Dialog dialog = new Dialog(getContext());
-                                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                                        dialog.setContentView(R.layout.full_image);
-
-                                        final ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                                        if (!viewUser.getPhoto2().equals("NA")) {
+                                            allImages.add(viewUser.getPhoto2());
+                                        }
+                                        if (!viewUser.getPhoto3().equals("NA")) {
+                                            allImages.add(viewUser.getPhoto3());
+                                        }
+                                        if (!viewUser.getPhoto4().equals("NA")) {
+                                            allImages.add(viewUser.getPhoto4());
+                                        }
 
                                         Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
-
-                                        imageView.setOnTouchListener(swipeDetector);
+                                        name.setText(viewUser.getName());
+                                        shortBioSearch.setText("Bio: " + viewUser.getBio());
+                                        karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
+                                        whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
 
                                         imageView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                if (swipeDetector.swipeDetected()) {
-                                                    if (swipeDetector.getAction() == SwipeDetector.Action.RL) {
-                                                        Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
 
+                                                final Dialog dialog = new Dialog(getContext());
+                                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                                                dialog.setContentView(R.layout.full_image_horizontal);
 
-                                                    }
+                                                LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.fullImageLinear);
+
+                                                //use a GradientDrawable with only one color set, to make it a solid color
+                                                GradientDrawable border = new GradientDrawable();
+                                                border.setColor(0xFFFFFFFF); //white background
+                                                border.setStroke(1, 0xFF000000); //black border with full opacity
+
+                                                layout.setBackground(border);
+
+                                                for (int i = 0; i < allImages.size(); i++) {
+                                                    ImageView imageView = new ImageView(getContext());
+                                                    imageView.setPadding(10, 10, 10, 10);
+
+                                                    Picasso.with(getContext()).load(allImages.get(i)).resize((MyApplication.screenWidth - 150),
+                                                            MyApplication.screenHeight - 250).centerCrop().into(imageView);
+
+                                                    layout.addView(imageView);
                                                 }
+
+                                                dialog.show();
                                             }
                                         });
+                                    }
 
-                                        dialog.show();
-                                        */
-                                        }
-                                    });
-                                }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    }
+                                });
 
-                                }
-                            });
+                                adapter = new EventAdapter(getContext(),MyApplication.allDates.get(dateCounter).getEvents());
 
-                            adapter = new EventAdapter(getContext(),MyApplication.allDates.get(dateCounter).getEvents());
+                                dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
 
-                            dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
+                                listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
+                                listView.setAdapter(adapter);
 
-                            listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
-                            listView.setAdapter(adapter);
-
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Intent intent = new Intent(getActivity(), MapsActivity.class);
-                                    intent.putExtra("cameFrom", "SearchDates");
-                                    startActivity(intent);
-                                }
-                            });
-                        } else {
+                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Intent intent = new Intent(getActivity(), MapsActivity.class);
+                                        intent.putExtra("cameFrom", "SearchDates");
+                                        startActivity(intent);
+                                    }
+                                });
+                            } else {
+                                dateCounter++;
+                                showDate();
+                            }
+                        }
+                        else {
                             dateCounter++;
                             showDate();
                         }
@@ -317,7 +283,6 @@ public class SearchDatesFragment extends Fragment {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE3333");
                 showDate();
             }
 
@@ -360,7 +325,7 @@ public class SearchDatesFragment extends Fragment {
             }
         });
     }
-
+/*
     public Double getDistance(ArrayList<EventsOfDate> eventsOfDate) {
 
         ArrayList<EventsOfDate> allEvents = eventsOfDate;
@@ -394,7 +359,7 @@ public class SearchDatesFragment extends Fragment {
 
         return doubleDistance;
     }
-
+*/
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

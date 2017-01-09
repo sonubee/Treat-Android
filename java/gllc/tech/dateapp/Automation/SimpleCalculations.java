@@ -1,22 +1,23 @@
 package gllc.tech.dateapp.Automation;
 
 import android.location.Location;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
+import gllc.tech.dateapp.Objects.User;
 
 /**
- * Created by bhangoo on 12/28/2016.
+ * Created by bhangoo on 1/8/2017.
  */
 
-public class GetDistance {
+public class SimpleCalculations {
 
-    public Double GetDistance(ArrayList<EventsOfDate> eventsOfDate) {
+    public static double GetTheDistance(ArrayList<EventsOfDate> eventsOfDate) {
 
         ArrayList<EventsOfDate> allEvents = eventsOfDate;
 
@@ -48,5 +49,29 @@ public class GetDistance {
         Double distance2 = distance*0.000621371;
 
         return distance2;
+    }
+
+    public static int getAge(User user){
+
+        String segments[] = user.getBirthdate().split("/");
+        int year = Integer.parseInt(segments[2]);
+        int month = Integer.parseInt(segments[0]);
+        int day = Integer.parseInt(segments[1]);
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageInt;
     }
 }

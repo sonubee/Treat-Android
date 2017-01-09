@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gllc.tech.dateapp.Automation.SimpleCalculations;
 import gllc.tech.dateapp.FacebookAlbums.DisplayFacebookAlbums;
 import gllc.tech.dateapp.R;
 
@@ -427,23 +428,7 @@ public class Profile extends Fragment {
         databaseReference.setValue(MyApplication.longitude);
     }
 
-    private String getAge(int year, int month, int day){
-        Calendar dob = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
 
-        dob.set(year, month, day);
-
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
-            age--;
-        }
-
-        Integer ageInt = new Integer(age);
-        String ageS = ageInt.toString();
-
-        return ageS;
-    }
 
 
     public void getEducation() {
@@ -498,10 +483,8 @@ public class Profile extends Fragment {
 
     public void setBirthdate() {
 
-        String segments[] = MyApplication.currentUser.getBirthdate().split("/");
-
         if (MyApplication.currentUser.isGaveFullBirthday()) {
-            name.append(", "  + getAge(Integer.parseInt(segments[2]), Integer.parseInt(segments[0]), Integer.parseInt(segments[1])));
+            name.append(", "  + SimpleCalculations.getAge(MyApplication.currentUser));
         }
 
     }
