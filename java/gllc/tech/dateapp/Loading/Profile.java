@@ -488,7 +488,6 @@ public class Profile extends Fragment {
 
                             builderSingle.show();
 
-
                         }catch (Exception e){
                             Log.i("--All", "Error: " + e.getMessage());
                         }
@@ -498,8 +497,13 @@ public class Profile extends Fragment {
     }
 
     public void setBirthdate() {
+
         String segments[] = MyApplication.currentUser.getBirthdate().split("/");
-        name.append(", "  + getAge(Integer.parseInt(segments[2]), Integer.parseInt(segments[0]), Integer.parseInt(segments[1])));
+
+        if (MyApplication.currentUser.isGaveFullBirthday()) {
+            name.append(", "  + getAge(Integer.parseInt(segments[2]), Integer.parseInt(segments[0]), Integer.parseInt(segments[1])));
+        }
+
     }
 
     public static Profile newInstance() {

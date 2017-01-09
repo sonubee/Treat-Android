@@ -70,29 +70,27 @@ public class ReviewProfileFragment extends Fragment {
         reviewPhoto4 = (ImageView) view.findViewById(R.id.reviewPhoto4);
         name = (TextView)view.findViewById(R.id.nameProfileReview);
         shortBio = (TextView)view.findViewById(R.id.shortBioProfileReview);
-        chatImage = (ImageView)view.findViewById(R.id.chatImage);
-        removeImage = (ImageView)view.findViewById(R.id.removeImage);
         karmaPoints = (TextView)view.findViewById(R.id.karmaPointsReview);
 
         RelativeLayout relativeLayout1 = new RelativeLayout(getContext());
         relativeLayout1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        ImageView imageView = new ImageView(getContext());
-        imageView.setImageResource(R.drawable.chat);
+        chatImage = new ImageView(getContext());
+        chatImage.setImageResource(R.drawable.chat);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(150, 150);
         lp.setMargins(100, 0, 0, 0);
-        imageView.setLayoutParams(lp);
+        chatImage.setLayoutParams(lp);
 
-        relativeLayout1.addView(imageView);
+        relativeLayout1.addView(chatImage);
 
-        ImageView noChat = new ImageView(getContext());
-        noChat.setImageResource(R.drawable.no);
+        removeImage = new ImageView(getContext());
+        removeImage.setImageResource(R.drawable.no);
         RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(150, 150);
         lp2.addRule(RelativeLayout.ALIGN_PARENT_END);
         lp2.setMargins(0,0,100,0);
-        noChat.setLayoutParams(lp2);
+        removeImage.setLayoutParams(lp2);
 
-        relativeLayout1.addView(noChat);
+        relativeLayout1.addView(removeImage);
 
         test.addView(relativeLayout1);
 
@@ -102,8 +100,6 @@ public class ReviewProfileFragment extends Fragment {
             chatImage.setVisibility(View.INVISIBLE);
             removeImage.setVisibility(View.INVISIBLE);
 
-            RelativeLayout relativeLayout = (RelativeLayout)view.findViewById(R.id.transparentLayout);
-            relativeLayout.setVisibility(View.INVISIBLE);
         }
 
         return view;

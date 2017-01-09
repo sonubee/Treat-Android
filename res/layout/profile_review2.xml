@@ -85,36 +85,5 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-
-        <RelativeLayout
-            android:id="@+id/transparentLayout"
-            android:layout_gravity="bottom"
-            android:background ="#5f676767"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <ImageView
-                android:id="@+id/chatImage"
-                android:layout_marginLeft="100dp"
-                android:src="@drawable/chat"
-                android:layout_width="70dp"
-                android:layout_height="70dp" />
-
-            <ImageView
-                android:id="@+id/removeImage"
-                android:layout_marginRight="100dp"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:src="@drawable/no"
-                android:layout_width="70dp"
-                android:layout_height="70dp" />
-
-        </RelativeLayout>
-
     </FrameLayout>
-
-
-
 </LinearLayout>

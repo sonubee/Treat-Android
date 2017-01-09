@@ -278,8 +278,7 @@ public class Login extends Fragment {
 
         MyApplication.allDates.clear();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Dates");
+        DatabaseReference myRef = firebaseDatabase.getReference("Dates");
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -300,15 +299,15 @@ public class Login extends Fragment {
                         Date date = parseFormat.parse(value.getEvents().get(0).getEndTime());
                         Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE"+parseFormat.format(date) + " = " + displayFormat.format(date));
 
-                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                        DatabaseReference databaseReference = firebaseDatabase.getReference("Dates/"+value.getKey());
+
+                        databaseReference = firebaseDatabase.getReference("Dates/"+value.getKey());
                         databaseReference.removeValue();
 
-                        DatabaseReference databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+ value.getPoster() + "/" + value.getKey());
-                        databaseReference1.setValue(value);
+                        databaseReference = firebaseDatabase.getReference("CompletedDates/"+ value.getPoster() + "/" + value.getKey());
+                        databaseReference.setValue(value);
 
-                        databaseReference1 = firebaseDatabase.getReference("CompletedDates/"+ value.getTheDate() + "/" + value.getKey());
-                        databaseReference1.setValue(value);
+                        databaseReference = firebaseDatabase.getReference("CompletedDates/"+ value.getTheDate() + "/" + value.getKey());
+                        databaseReference.setValue(value);
 
                         completed = true;
                     }
@@ -473,7 +472,6 @@ public class Login extends Fragment {
     }
 
     public void downloadCompletedDates(){
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("CompletedDates/"+MyApplication.currentUser.getId());
 
         databaseReference.addChildEventListener(new ChildEventListener() {
@@ -547,29 +545,26 @@ public class Login extends Fragment {
                 doneDownloading=true;
 
                 if (MyApplication.foundUser) {
-
-                    //((MainActivity) getActivity()).replaceFragments(gllc.tech.dateapp.Loading.Profile.class, R.id.container, "Profile");
                     ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile");
-
-                    try {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef = database.getReference("Users/" + MyApplication.currentUser.getId() + "/birthday");
-                        myRef.setValue(facebookLoginResponseJSONObject.getString("birthday"));
-                    } catch (Exception e) {
-
-                    }
 
                 } else {
                     try {
+                        boolean gaveFullbirthday;
+
+                        if (facebookLoginResponseJSONObject.getString("birthday").split("/").length == 3) {
+                            gaveFullbirthday = true;
+                        } else {
+                            gaveFullbirthday = false;
+                        }
+
                         MyApplication.currentUser = new User(facebookLoginResponseJSONObject.getString("name"), facebookLoginResponseJSONObject.getString("email"),
                                 firebaseUser.getUid(), facebookLoginResponseJSONObject.getString("gender"), "https://graph.facebook.com/" +
                                 facebookLoginResponseJSONObject.getString("id") + "/picture?type=large", facebookLoginResponseJSONObject.getString("id"),
                                 "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55, 100, MyApplication.latitude,
-                                MyApplication.longitude, "NA", "NA", "NA");
+                                MyApplication.longitude, facebookLoginResponseJSONObject.getString("birthday"), "NA", "NA", gaveFullbirthday);
 
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
-                        myRef.setValue(MyApplication.currentUser);
+                        databaseReference = firebaseDatabase.getReference("Users/" +MyApplication.currentUser.getId());
+                        databaseReference.setValue(MyApplication.currentUser);
 
                     } catch (JSONException e) {
                         Log.i("--All", "Unable to Parse New Facebook User");
@@ -599,9 +594,8 @@ public class Login extends Fragment {
 
                     MyApplication.currentUser.setPushToken(refreshedToken);
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("Users/" +MyApplication.currentUser.getId());
-                    myRef.setValue(MyApplication.currentUser);
+                    databaseReference = firebaseDatabase.getReference("Users/" +MyApplication.currentUser.getId());
+                    databaseReference.setValue(MyApplication.currentUser);
                 }
             }
 
@@ -609,14 +603,6 @@ public class Login extends Fragment {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
                 MyApplication.userHashMap.put(user.getId(), user);
-                /*
-                for (int i=0;i<MyApplication.allUsers.size();i++) {
-                    if (MyApplication.allUsers.get(i).getId().equals(user.getId())) {
-                        MyApplication.allUsers.set(i, user);
-                        MyApplication.userHashMap.put(user.getId(), user);
-                    }
-                }
-                */
             }
 
             @Override

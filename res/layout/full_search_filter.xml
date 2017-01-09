@@ -88,6 +88,7 @@
             android:layout_height="wrap_content"
             android:text="Age"
             android:textColor="#FFF"/>
+
         <LinearLayout
             android:background="#31413f"
             android:layout_width="match_parent"
@@ -102,6 +103,73 @@
                 android:id="@+id/ageSeekBar"
                 app:absoluteMaxValue="55"
                 app:absoluteMinValue="18" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Whose Treat"
+            android:textColor="#FFF"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="#31413f"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:layout_weight="1"
+                android:textColor="#FFF"
+                android:text="Poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:layout_weight="1"
+                android:textColor="#FFF"
+                android:text="Mine"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:layout_weight="1"
+                android:textColor="#FFF"
+                android:text="Split Bill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"/>
+
+            <CheckBox
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Decide Later"
+                android:textColor="#FFF"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textColor="#FFF"/>
+
+        <LinearLayout
+            android:background="#31413f"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/showCategories"
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Showing All - Click to Specify"
+                android:textColor="#FFF"/>
 
         </LinearLayout>
     </LinearLayout>
