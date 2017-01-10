@@ -51,6 +51,7 @@ import gllc.tech.dateapp.PostDate.PostDateFragment;
 import gllc.tech.dateapp.ProfileViewPager;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
+import gllc.tech.dateapp.TestSearchDates;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
@@ -165,6 +166,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
             case 2:
                 mFragment = new SearchDatesFragment();
+                //mFragment = new TestSearchDates();
                 break;
 
             case 3:

@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,9 +58,9 @@ public class SearchDatesFragment extends Fragment {
     CircleImageView imageView;
     TextView name, shortBioSearch, dateTitle, karmaPoints, whoseTreat, distance;
     public static int dateCounter;
-    ImageView yes,no;
+    //ImageView yes,no;
     SwipeDetector swipeDetector;
-    RelativeLayout relativeListView;
+    //RelativeLayout relativeListView;
     LinearLayout searchDatesLinearLayout;
 
     @Override
@@ -81,9 +82,9 @@ public class SearchDatesFragment extends Fragment {
         karmaPoints = (TextView)view.findViewById(R.id.karmaPointsSearch);
         shortBioSearch = (TextView)view.findViewById(R.id.shortBioSearch);
         whoseTreat = (TextView)view.findViewById(R.id.whoseTreatSearch);
-        yes = (ImageView) view.findViewById(R.id.yesImageView);
-        no = (ImageView) view.findViewById(R.id.noImageView);
-        relativeListView = (RelativeLayout)view.findViewById(R.id.relativeListViewSearch);
+        //yes = (ImageView) view.findViewById(R.id.yesImageView);
+        //no = (ImageView) view.findViewById(R.id.noImageView);
+        //relativeListView = (RelativeLayout)view.findViewById(R.id.relativeListViewSearch);
         distance = (TextView)view.findViewById(R.id.distanceFromYou);
         searchDatesLinearLayout = (LinearLayout)view.findViewById(R.id.searchDatesLinearLayout);
 
@@ -97,7 +98,7 @@ public class SearchDatesFragment extends Fragment {
         setHasOptionsMenu(true);
 
         searchAlready();
-
+/*
         yes.setImageResource(R.drawable.yes);
         no.setImageResource(R.drawable.no);
 
@@ -137,6 +138,7 @@ public class SearchDatesFragment extends Fragment {
                 }
             }
         });
+        */
     }
 
     public void showDate(){
@@ -215,16 +217,117 @@ public class SearchDatesFragment extends Fragment {
                                     }
                                 });
 
+                                final LinearLayout bottomHalf = new LinearLayout(getContext());
+                                bottomHalf.setOrientation(LinearLayout.VERTICAL);
+
                                 ArrayList<EventsOfDate> events = MyApplication.allDates.get(dateCounter).getEvents();
 
                                 for (int i=0; i < events.size(); i++) {
-                                    LayoutInflater inflater = LayoutInflater.from(getContext());
-                                    RelativeLayout eventAdapterLayout = (RelativeLayout)inflater.inflate(R.layout.event_adapter3, null, false);
+                                    //RelativeLayout tempRelativeLayout = new RelativeLayout(getContext());
+                                    RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null, false);
 
-                                    TextView textView = (TextView)eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter);
+                                    ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                            get(i).getActivity());
+                                    ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                            get(i).getCity());
+                                    ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                            get(i).getActivity() + " at " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getSpecific());
+                                    ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                            get(i).getBeginTime() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getEndTime());
+                                    Picasso.with(getContext()).load(MyApplication.allDates.get(dateCounter).getEvents().get(i).getPhoto()).
+                                            into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));
 
+                                    eventAdapterLayout.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(getActivity(), MapsActivity.class);
+                                            intent.putExtra("cameFrom", "SearchDates");
+                                            startActivity(intent);
+                                        }
+                                    });
+
+                                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    lp.setMargins(0, 0, 0, 10);
+                                    eventAdapterLayout.setLayoutParams(lp);
+
+                                    //tempRelativeLayout.addView(eventAdapterLayout);
+                                    bottomHalf.addView(eventAdapterLayout);
                                 }
 
+                                final RelativeLayout relativeLayout1 = new RelativeLayout(getContext());
+                                relativeLayout1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                                ImageView yesButton = new ImageView(getContext());
+                                yesButton.setImageResource(R.drawable.yes);
+                                yesButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
+                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                            DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" +
+                                                    MyApplication.allDates.get(dateCounter).getKey());
+                                            myRef.setValue(true);
+
+                                            DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" +
+                                                    MyApplication.currentUser.getId());
+                                            myRef2.setValue(MyApplication.currentUser.getProfilePic());
+
+                                            new SendPush(MyApplication.currentUser.getName() + " has requested to be your date!",
+                                                    MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getPushToken(), "Date Request");
+
+                                            bottomHalf.removeAllViews();
+
+                                            dateCounter++;
+
+                                            showDate();
+                                        }
+                                    }
+                                });
+
+
+
+
+                                ImageView noButton = new ImageView(getContext());
+                                noButton.setImageResource(R.drawable.no);
+                                noButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
+                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                            DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" +
+                                                    MyApplication.allDates.get(dateCounter).getKey());
+                                            myRef.setValue(false);
+
+                                            bottomHalf.removeAllViews();
+
+
+                                            dateCounter++;
+                                            showDate();
+                                        }
+                                    }
+                                });
+
+                                final float scale = getContext().getResources().getDisplayMetrics().density;
+                                int pixels = (int) (50 * scale + 0.5f);
+
+                                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pixels, pixels);
+                                lp.setMargins(200, 30, 0, 0);
+                                yesButton.setLayoutParams(lp);
+
+                                relativeLayout1.addView(yesButton);
+
+                                RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(pixels, pixels);
+                                lp2.addRule(RelativeLayout.ALIGN_PARENT_END);
+                                lp2.setMargins(0,30,200,0);
+                                noButton.setLayoutParams(lp2);
+
+                                relativeLayout1.addView(noButton);
+                                bottomHalf.addView(relativeLayout1);
+
+                                searchDatesLinearLayout.addView(bottomHalf);
+/*
                                 adapter = new EventAdapter(getContext(),MyApplication.allDates.get(dateCounter).getEvents());
 
                                 listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
@@ -238,6 +341,8 @@ public class SearchDatesFragment extends Fragment {
                                         startActivity(intent);
                                     }
                                 });
+
+                                */
                             } else {
                                 dateCounter++;
                                 showDate();
@@ -271,9 +376,10 @@ public class SearchDatesFragment extends Fragment {
             shortBioSearch.setVisibility(View.INVISIBLE);
             dateTitle.setVisibility(View.INVISIBLE);
             whoseTreat.setVisibility(View.INVISIBLE);
-            relativeListView.setVisibility(View.INVISIBLE);
-            listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
-            listView.setAdapter(null);
+            //relativeListView.setVisibility(View.INVISIBLE);
+            distance.setVisibility(View.INVISIBLE);
+            //listView = (ListView) getActivity().findViewById(R.id.newSearchDatesListview);
+            //listView.setAdapter(null);
         }
     }
 
@@ -327,41 +433,7 @@ public class SearchDatesFragment extends Fragment {
             }
         });
     }
-/*
-    public Double getDistance(ArrayList<EventsOfDate> eventsOfDate) {
 
-        ArrayList<EventsOfDate> allEvents = eventsOfDate;
-
-        ArrayList<LatLng> points = new ArrayList<>();
-
-        for (int i=0; i<allEvents.size(); i++) {
-            LatLng latLng = new LatLng(allEvents.get(i).getLatitude(), allEvents.get(i).getLongitude());
-            points.add(latLng);
-        }
-
-        double latitude = 0;
-        double longitude = 0;
-        int n = points.size();
-
-        for (LatLng point : points) {
-            latitude += point.latitude;
-            longitude += point.longitude;
-        }
-
-        LatLng center = new LatLng(latitude/n, longitude/n);
-
-        Location locationA = new Location("point A");
-        locationA.setLatitude(center.latitude);
-        locationA.setLongitude(center.longitude);
-        Location locationB = new Location("point B");
-        locationB.setLatitude(MyApplication.latitude);
-        locationB.setLongitude(MyApplication.longitude);
-        Float floatDistance = locationA.distanceTo(locationB) ;
-        Double doubleDistance = floatDistance*0.000621371;
-
-        return doubleDistance;
-    }
-*/
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

@@ -74,8 +74,9 @@ public class Profile extends Fragment {
 
         LinearLayout test = (LinearLayout)view.findViewById(R.id.mainLinearLayout);
         LinearLayout second = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.about_you, null);
+        RelativeLayout third = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null);
         test.addView(second);
-
+        test.addView(third);
 
         gender = (TextView)view.findViewById(R.id.listGender);
         profileImage = (CircleImageView)view.findViewById(R.id.userPicture);
