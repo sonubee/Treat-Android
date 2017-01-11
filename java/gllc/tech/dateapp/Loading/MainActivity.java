@@ -161,12 +161,12 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 1:
+                //mFragment = new TestSearchDates();
                 mFragment = new PostDateFragment();
                 break;
 
             case 2:
                 mFragment = new SearchDatesFragment();
-                //mFragment = new TestSearchDates();
                 break;
 
             case 3:

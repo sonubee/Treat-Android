@@ -232,7 +232,7 @@ public class SearchDatesFragment extends Fragment {
                                             get(i).getCity());
                                     ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
                                             get(i).getActivity() + " at " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getSpecific());
-                                    ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                    ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
                                             get(i).getBeginTime() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getEndTime());
                                     Picasso.with(getContext()).load(MyApplication.allDates.get(dateCounter).getEvents().get(i).getPhoto()).
                                             into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));

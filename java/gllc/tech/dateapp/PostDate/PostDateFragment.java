@@ -283,8 +283,10 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                enterDate.setText(dateFormatter.format(newDate.getTime()));
+                enterDate.setText("Date: " + dateFormatter.format(newDate.getTime()));
                 theDateString = dateFormatter.format(newDate.getTime());
+
+
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));

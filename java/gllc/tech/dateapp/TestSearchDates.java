@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,59 +26,27 @@ import gllc.tech.dateapp.Objects.EventsOfDate;
 
 public class TestSearchDates extends Fragment{
 
+    CoordinatorLayout coordinatorLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.search_dates2, container, false);
+        View view = inflater.inflate(R.layout.post_date2, container, false);
 
-        LinearLayout searchDatesLinearLayout = (LinearLayout)view.findViewById(R.id.searchDatesLinearLayout);
-
-        ArrayList<EventsOfDate> events = MyApplication.allDates.get(2).getEvents();
-
-        for (int i=0; i < events.size(); i++) {
-            RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null);
-
-            TextView textView = (TextView)eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter);
-            textView.setText("Test");
-
-            searchDatesLinearLayout.addView(eventAdapterLayout);
-        }
-
-        /*
-        LinearLayout searchDatesLinearLayout = (LinearLayout)view.findViewById(R.id.searchDatesLinearLayout);
-
-        TextView textView1 = new TextView(getContext());
-        textView1.setText("Test");
-        textView1.setTextColor(Color.WHITE);
-
-        LinearLayout second = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.profile_review_details, null);
-        searchDatesLinearLayout.addView(second);
-
-        searchDatesLinearLayout.addView(textView1);
-
-        ArrayList<EventsOfDate> events = MyApplication.allDates.get(0).getEvents();
-
-        for (int i=0; i < events.size(); i++) {
-
-            Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE1");
-
-            //LayoutInflater inflater = LayoutInflater.from(getContext());
-            //LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //RelativeLayout eventAdapterLayout = (RelativeLayout)inflater.inflate(R.layout.event_adapter3, null, false);
-            RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null);
-
-            //TextView textView = (TextView)eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter);
+        coordinatorLayout = (CoordinatorLayout)view.findViewById(R.id.coordinatorLayout);
 
 
-            //searchDatesLinearLayout.addView(eventAdapterLayout);
-        }
-*/
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "Welcome to AndroidHive", Snackbar.LENGTH_LONG);
+
+        snackbar.show();
 
 
     }
