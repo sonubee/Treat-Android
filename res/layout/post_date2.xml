@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
+    android:background="#000"
     android:id="@+id/coordinatorLayout"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,7 +14,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/enterInfoLayout">
+            android:id="@+id/postDateTopLayout">
 
             <TextView
                 android:layout_marginTop="10dp"
@@ -45,4 +46,4 @@
 
     </ScrollView>
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

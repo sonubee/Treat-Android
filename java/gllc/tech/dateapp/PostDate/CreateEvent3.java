@@ -135,8 +135,9 @@ public class CreateEvent3 extends Fragment {
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostDateFragment.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
-                PostDateFragment.adapter.notifyDataSetChanged();
+                //PostDateFragment.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
+                PostDate2.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
+                //PostDateFragment.adapter.notifyDataSetChanged();
                 ((MainActivity)getActivity()).popBackStack();
             }
         });

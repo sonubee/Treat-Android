@@ -5,33 +5,24 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +30,7 @@ import com.dd.processbutton.FlatButton;
 import com.google.android.gms.location.places.Place;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,41 +38,36 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.DisplayBothDates;
 import gllc.tech.dateapp.Loading.MainActivity;
-import gllc.tech.dateapp.Automation.MapsActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
-import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.EventsOfDate;
+import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
- * Created by bhangoo on 12/1/2016.
+ * Created by bhangoo on 1/10/2017.
  */
-public class PostDateFragment extends Fragment  implements View.OnClickListener {
+
+public class PostDate2 extends Fragment implements View.OnClickListener{
 
     public static ArrayList<EventsOfDate> listOfEvents = new ArrayList<>();
     public static ArrayList<Place> listOfPlaces = new ArrayList<>();
     String theDateString ="Enter Date", titleOfEvent ="", whoseTreat = "";
     FlatButton postDate;
-    public static ListView listView;
-    public static EventAdapter adapter;
-    private DatePickerDialog datePickerDialog;
-    private SimpleDateFormat dateFormatter;
     public static EditText titleDate;
     public static int selectedMap;
-    TextView noEvents, enterDate;
+    TextView enterDate;
     CoordinatorLayout coordinatorLayout;
+    private DatePickerDialog datePickerDialog;
+    private SimpleDateFormat dateFormatter;
+    LinearLayout enterInfoLayout;
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
 
         dateFormatter = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
@@ -88,20 +75,18 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
         setDateTimeField();
 
         datePickerDialog.show();
-
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.post_date, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.post_date2, container, false);
 
-        listView = (ListView) view.findViewById(R.id.eventListView);
         postDate = (FlatButton)view.findViewById(R.id.postDate);
         enterDate = (TextView) view.findViewById(R.id.enterDate);
         titleDate = (EditText)view.findViewById(R.id.titleDate);
-        noEvents = (TextView)view.findViewById(R.id.noEvents);
-        //coordinatorLayout = (CoordinatorLayout)view.findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = (CoordinatorLayout)view.findViewById(R.id.coordinatorLayout);
+        enterInfoLayout = (LinearLayout)view.findViewById(R.id.postDateTopLayout);
 
         enterDate.setOnClickListener(this);
 
@@ -111,11 +96,28 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+/*
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "Enter The Date", Snackbar.LENGTH_LONG);
 
-        setupAdapter();
-
+        snackbar.show();
+*/
         enterDate.setText(theDateString);
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                Toast.makeText(getContext(), "When is the date?", Toast.LENGTH_LONG).show();
+
+            }
+        }, 1000);
+
+        displayItems();
+
+
+/*
         postDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +161,42 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                 }
             }
         });
+        */
+    }
+
+    public void displayItems() {
+
+        final LinearLayout bottomHalf = new LinearLayout(getContext());
+        bottomHalf.setOrientation(LinearLayout.VERTICAL);
+
+        for (int i=0; i < listOfEvents.size(); i++) {
+
+            RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null, false);
+
+            ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(listOfEvents.get(i).getActivity());
+            ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getCity());
+            ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getActivity() + " at " + listOfEvents.get(i).getSpecific());
+            ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(listOfEvents.get(i).getBeginTime() + " - " + listOfEvents.get(i).getEndTime());
+            Picasso.with(getContext()).load(listOfEvents.get(i).getPhoto()).into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));
+
+            eventAdapterLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), MapsActivity.class);
+                    intent.putExtra("cameFrom", "SearchDates");
+                    startActivity(intent);
+                }
+            });
+
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 0, 0, 10);
+            eventAdapterLayout.setLayoutParams(lp);
+
+            bottomHalf.addView(eventAdapterLayout);
+
+            enterInfoLayout.addView(bottomHalf);
+        }
+
     }
 
     public void askTreat() {
@@ -253,6 +291,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
         builderSingle.show();
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         menu.clear();
@@ -270,6 +309,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
 
         return true;
     }
+
 
     private void setDateTimeField() {
 
@@ -291,35 +331,8 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
         datePickerDialog.setTitle("Enter The Date");
     }
 
-
-
-    public void setupAdapter () {
-
-        adapter = new EventAdapter(getContext(), listOfEvents);
-
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedMap = position;
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
-                intent.putExtra("cameFrom", "PostDate");
-                startActivity(intent);
-
-            }
-        });
-
-
-        if (listOfEvents.size() == 0) {
-            listView.setVisibility(View.INVISIBLE);
-        } else {
-            noEvents.setVisibility(View.INVISIBLE);
-        }
-    }
-
     @Override
     public void onClick(View v) {
-       datePickerDialog.show();
+        datePickerDialog.show();
     }
 }

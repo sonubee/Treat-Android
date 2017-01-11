@@ -47,6 +47,7 @@ import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.PostDate.CreateEvent3;
+import gllc.tech.dateapp.PostDate.PostDate2;
 import gllc.tech.dateapp.PostDate.PostDateFragment;
 import gllc.tech.dateapp.ProfileViewPager;
 import gllc.tech.dateapp.R;
@@ -161,8 +162,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 1:
-                //mFragment = new TestSearchDates();
-                mFragment = new PostDateFragment();
+                mFragment = new PostDate2();
+                //mFragment = new PostDateFragment();
                 break;
 
             case 2:
