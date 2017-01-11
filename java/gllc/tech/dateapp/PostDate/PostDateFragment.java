@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -70,8 +69,9 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     private SimpleDateFormat dateFormatter;
     public static EditText titleDate;
     public static int selectedMap;
+    RadioButton myTreat, yourTreat, noTreat;
     TextView noEvents, enterDate;
-    CoordinatorLayout coordinatorLayout;
+    LinearLayout enterDateLayout;
 
     @Override
     public void onResume() {
@@ -96,14 +96,17 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.post_date, container, false);
 
+        enterDateLayout = (LinearLayout)view.findViewById(R.id.enterDateLayout);
         listView = (ListView) view.findViewById(R.id.eventListView);
         postDate = (FlatButton)view.findViewById(R.id.postDate);
         enterDate = (TextView) view.findViewById(R.id.enterDate);
         titleDate = (EditText)view.findViewById(R.id.titleDate);
+        yourTreat = (RadioButton)view.findViewById(R.id.yourTreat);
+        myTreat = (RadioButton)view.findViewById(R.id.myTreat);
+        noTreat = (RadioButton)view.findViewById(R.id.noTreat);
         noEvents = (TextView)view.findViewById(R.id.noEvents);
-        //coordinatorLayout = (CoordinatorLayout)view.findViewById(R.id.coordinatorLayout);
 
-        enterDate.setOnClickListener(this);
+        enterDateLayout.setOnClickListener(this);
 
         return view;
     }

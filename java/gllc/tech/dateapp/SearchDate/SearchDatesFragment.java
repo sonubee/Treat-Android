@@ -251,6 +251,7 @@ public class SearchDatesFragment extends Fragment {
                                     lp.setMargins(0, 0, 0, 10);
                                     eventAdapterLayout.setLayoutParams(lp);
 
+                                    //tempRelativeLayout.addView(eventAdapterLayout);
                                     bottomHalf.addView(eventAdapterLayout);
                                 }
 
