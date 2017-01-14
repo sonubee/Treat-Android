@@ -5,45 +5,61 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:background="@drawable/layout_bg"
-            android:orientation="vertical"
+        <ScrollView
+            android:id="@+id/postDateScrollView"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_marginBottom="30dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/postDateTopLayout">
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:textColor="#619cc9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/enterDate"
+                    android:hint="Enter Date"
+                    android:textColorHint="#619cc9"
+                    android:layout_gravity="center" />
+
+                <EditText
+                    android:visibility="invisible"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:textColor="#619cc9"
+                    android:textColorHint="#619cc9"
+                    android:hint="Title of Your Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_gravity="center"
+                    android:id="@+id/titleDate"
+                    />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.dd.processbutton.FlatButton
+            android:visibility="invisible"
+            android:id="@+id/postDateButton"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/postDateScrollView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/postDateTopLayout">
+            android:text="Post it Up!"/>
 
-            <TextView
-                android:layout_marginTop="10dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:gravity="center"
-                android:textColor="#619cc9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/enterDate"
-                android:hint="Enter Date"
-                android:textColorHint="#619cc9"
-                android:layout_gravity="center" />
-
-            <EditText
-                android:visibility="invisible"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:gravity="center"
-                android:textColor="#619cc9"
-                android:textColorHint="#619cc9"
-                android:hint="Title of Your Date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:layout_gravity="center"
-                android:id="@+id/titleDate"
-                />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

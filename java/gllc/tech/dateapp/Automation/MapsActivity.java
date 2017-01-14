@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.TheDate;
+import gllc.tech.dateapp.PostDate.PostDate2;
 import gllc.tech.dateapp.PostDate.PostDateFragment;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
@@ -49,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ArrayList<EventsOfDate> allEvents = new ArrayList<>();
 
         if (getIntent().getStringExtra("cameFrom").equals("PostDate")) {
-            allEvents = PostDateFragment.listOfEvents;
+            allEvents = PostDate2.listOfEvents;
         }
 
         if (getIntent().getStringExtra("cameFrom").equals("SearchDates")) {

@@ -1,6 +1,7 @@
 package gllc.tech.dateapp.PostDate;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,8 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -40,11 +43,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
+import gllc.tech.dateapp.Objects.PlacesDetails;
 import gllc.tech.dateapp.R;
 
 /**
@@ -59,6 +64,7 @@ public class CreateEvent3 extends Fragment {
     double latitude, longitude;
     TextView eventTitle, placeAddress, startTime, endTime;
     ImageView activityImage;
+
 
     @Nullable
     @Override
@@ -163,11 +169,11 @@ public class CreateEvent3 extends Fragment {
     public void whereToGo() {
 
         new AlertDialog.Builder(getContext())
-                .setTitle(main)
-                .setMessage("Do You Know Where You Want To Go?")
+                .setTitle("Do You Know Where You Want To Go?")
+                .setMessage("Select Yes to choose the Location or Select No and we will give suggestions")
                 .setPositiveButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        makeSuggestions();
+                        makeSuggestions2();
                     }
                 })
                 .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
@@ -274,6 +280,7 @@ public class CreateEvent3 extends Fragment {
     }
 
     public void getStartTime() {
+        Toast.makeText(getContext(), "Choose Start Time", Toast.LENGTH_SHORT).show();
         TimePickerDialog mTimePicker;
 
         mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
@@ -325,7 +332,7 @@ public class CreateEvent3 extends Fragment {
     }
 
     public void getEndTime() {
-
+        Toast.makeText(getContext(), "Choose End Time", Toast.LENGTH_SHORT).show();
         TimePickerDialog mTimePicker2;
 
         mTimePicker2 = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
@@ -359,6 +366,8 @@ public class CreateEvent3 extends Fragment {
 
                     clickNext.setText("Add Event!");
                     clickNext.setVisibility(View.VISIBLE);
+
+                    Toast.makeText(getContext(), "All Done!", Toast.LENGTH_SHORT).show();
                 }
 
                 callCount++;
@@ -366,6 +375,147 @@ public class CreateEvent3 extends Fragment {
         }, 12, 0, false);//Yes 24 hour time
         mTimePicker2.setTitle("Select End Time");
         mTimePicker2.show();
+    }
+
+    public void makeSuggestions2() {
+        new AsyncHttpClient().post("https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDQbqcJuQtmi88_82Sq8Ixipv8NjpCMMeY&location="+
+                        MyApplication.currentUser.getLatitude()+","+ MyApplication.currentUser.getLongitude()+"&rankby=distance&keyword="+main, null,
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try{
+
+                            ArrayList<String> placeIds = new ArrayList<>();
+
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            JSONArray result = jsonObject.getJSONArray("results");
+
+                            for (int i=0 ; i<result.length(); i++) {
+                                JSONObject firstResult = result.getJSONObject(i);
+                                placeIds.add(firstResult.getString("place_id"));
+                            }
+
+
+
+                            getPlacesDetails2(placeIds);
+
+                        } catch (Exception e){
+                            Log.i("--All", "ErrorMakeSuggestions2: " + e.getMessage());
+                        }
+
+                    }
+                });
+        
+    }
+
+    public void getPlacesDetails2(ArrayList<String> placeIds) {
+
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.choose_location_dialog);
+        dialog.setTitle("Some Suggestions");
+
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
+
+        // set the custom dialog components - text, image and button
+        //TextView text = (TextView) dialog.findViewById(R.id.text);
+        //text.setText("Android custom dialog example!");
+        //ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        //image.setImageResource(R.drawable.ic_launcher);
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.chooseOwnLocationButton);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+        final ArrayList<PlacesDetails> placesDetailsArrayList = new ArrayList<>();
+        final PostDateSuggestionsAdapter postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
+
+        ListView suggestionsListView = (ListView) dialog.findViewById(R.id.suggestionsListView);
+        suggestionsListView.setAdapter(postDateSuggestionsAdapter);
+
+        for (int i = 0; i<placeIds.size(); i++) {
+            new AsyncHttpClient().post("https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDQbqcJuQtmi88_82Sq8Ixipv8NjpCMMeY&placeid=" + placeIds.get(i), null,
+                    new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            Log.i("--All", "In Failure");
+                            Log.i("--All", "Failure response: " + responseString);
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                            //Log.i("--All", "Result: " + responseString);
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                JSONObject result = jsonObject.getJSONObject("result");
+
+                                address = result.getString("formatted_address");
+
+                                String segments[] = result.getString("vicinity").split(",");
+
+                                city = segments[1];
+
+                                int reviews = result.getJSONArray("reviews").length();
+
+                                Log.i("--All", "Place Details: " + city);
+
+
+                                JSONObject geometry = result.getJSONObject("geometry");
+                                JSONObject location = geometry.getJSONObject("location");
+                                latitude = Double.parseDouble(location.getString("lat"));
+                                longitude = Double.parseDouble(location.getString("lng"));
+
+                                address = address.replaceFirst(",", "\n");
+                                placeAddress.setText(address);
+
+                                suffix = result.getString("name");
+
+                                fullEventTitle = main + " at " + suffix;
+                                eventTitle.setText(fullEventTitle);
+
+                                JSONArray photoArray = result.getJSONArray("photos");
+                                JSONObject firstPhoto = photoArray.getJSONObject(0);
+                                String photoReference = firstPhoto.getString("photo_reference");
+
+                                placesDetailsArrayList.add(new PlacesDetails(result.getString("place_id"), result.getString("name"), city, reviews, "NA", address,
+                                        latitude, longitude));
+
+                                postDateSuggestionsAdapter.notifyDataSetChanged();
+
+                                getPhoto2(photoReference, result.getString("place_id"), placesDetailsArrayList, postDateSuggestionsAdapter);
+
+                            } catch (Exception e) {
+                                Log.i("--All", "ErrorCreateEvent3: " + e.getMessage());
+                                //getStartTime();
+                            }
+
+                            placeAddress.setVisibility(View.VISIBLE);
+                            chooseAcitivty.setVisibility(View.GONE);
+                        }
+                    });
+        }
+
+        suggestionsListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+
+
     }
 
     public void makeSuggestions() {
@@ -415,6 +565,47 @@ public class CreateEvent3 extends Fragment {
                             Log.i("--All", "Error: " + e.getMessage());
                         }
 
+                    }
+                });
+    }
+
+    public void getPhoto2(final String photoReference, final String placeId, final ArrayList<PlacesDetails> placesDetailsArrayList, final PostDateSuggestionsAdapter postDateSuggestionsAdapter) {
+
+        new AsyncHttpClient().post("https://maps.googleapis.com/maps/api/place/photo?key=AIzaSyDQbqcJuQtmi88_82Sq8Ixipv8NjpCMMeY&maxwidth=600&photoreference=" + photoReference, null,
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                        String segments[] = responseString.split("\"");
+
+                        photo = segments[5];
+
+                        for (int i=0; i < placesDetailsArrayList.size(); i++) {
+                            if (placeId.equals(placesDetailsArrayList.get(i).getPlaceId())) {
+                                PlacesDetails placesDetails = new PlacesDetails(placeId, placesDetailsArrayList.get(i).getName(),
+                                        placesDetailsArrayList.get(i).getCity(), placesDetailsArrayList.get(i).getReviews(), photo);
+                                placesDetailsArrayList.set((i), placesDetails);
+
+                                postDateSuggestionsAdapter.notifyDataSetChanged();
+                            }
+                        }
+
+                        //Picasso.with(getContext()).load(photo).into(activityImage);
+/*
+                        startTime.setVisibility(View.VISIBLE);
+                        startTime.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getStartTime();
+                            }
+                        });
+
+                        getStartTime();
+                        */
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     }
                 });
     }

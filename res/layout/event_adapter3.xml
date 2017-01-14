@@ -32,6 +32,7 @@
         android:layout_alignStart="@id/eventTitleEventAdapter"/>
 
     <TextView
+        android:layout_marginRight="10dp"
         android:gravity="center"
         android:id="@+id/addressEventAdapter"
         android:layout_alignParentEnd="true"

@@ -5,12 +5,16 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -75,34 +80,6 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
         setDateTimeField();
 
         datePickerDialog.show();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.post_date2, container, false);
-
-        postDate = (FlatButton)view.findViewById(R.id.postDate);
-        enterDate = (TextView) view.findViewById(R.id.enterDate);
-        titleDate = (EditText)view.findViewById(R.id.titleDate);
-        coordinatorLayout = (CoordinatorLayout)view.findViewById(R.id.coordinatorLayout);
-        enterInfoLayout = (LinearLayout)view.findViewById(R.id.postDateTopLayout);
-
-        enterDate.setOnClickListener(this);
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-/*
-        Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, "Enter The Date", Snackbar.LENGTH_LONG);
-
-        snackbar.show();
-*/
-        enterDate.setText(theDateString);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -113,11 +90,35 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
 
             }
         }, 1000);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.post_date2, container, false);
+
+        enterDate = (TextView) view.findViewById(R.id.enterDate);
+        titleDate = (EditText)view.findViewById(R.id.titleDate);
+        coordinatorLayout = (CoordinatorLayout)view.findViewById(R.id.coordinatorLayout);
+        enterInfoLayout = (LinearLayout)view.findViewById(R.id.postDateTopLayout);
+        postDate = (FlatButton)view.findViewById(R.id.postDateButton);
+        enterDate.setOnClickListener(this);
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        enterDate.setText("Date: " + theDateString);
+
+
 
         displayItems();
 
 
-/*
+
         postDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,15 +162,17 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                 }
             }
         });
-        */
     }
 
     public void displayItems() {
 
-        final LinearLayout bottomHalf = new LinearLayout(getContext());
-        bottomHalf.setOrientation(LinearLayout.VERTICAL);
+
 
         for (int i=0; i < listOfEvents.size(); i++) {
+
+            //LinearLayout bottomHalf;
+            //bottomHalf = new LinearLayout(getContext());
+            //bottomHalf.setOrientation(LinearLayout.VERTICAL);
 
             RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null, false);
 
@@ -183,7 +186,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), MapsActivity.class);
-                    intent.putExtra("cameFrom", "SearchDates");
+                    intent.putExtra("cameFrom", "PostDate");
                     startActivity(intent);
                 }
             });
@@ -192,11 +195,14 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
             lp.setMargins(0, 0, 0, 10);
             eventAdapterLayout.setLayoutParams(lp);
 
-            bottomHalf.addView(eventAdapterLayout);
+            //bottomHalf.addView(eventAdapterLayout);
 
-            enterInfoLayout.addView(bottomHalf);
+            enterInfoLayout.addView(eventAdapterLayout);
         }
 
+        if (listOfEvents.size() > 0) {
+            postDate.setVisibility(View.VISIBLE);
+        }
     }
 
     public void askTreat() {
@@ -281,11 +287,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                             pleaseWait.hide();
                         }
                     }, 1000);
-
-
-
                 }
-
             }
         });
         builderSingle.show();
@@ -323,7 +325,17 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                 enterDate.setText("Date: " + dateFormatter.format(newDate.getTime()));
                 theDateString = dateFormatter.format(newDate.getTime());
 
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, "Now Click the (+) Button to Add Event(s)", Snackbar.LENGTH_LONG);
 
+                View snackbarView = snackbar.getView();
+                TextView tv = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextColor(Color.BLACK);
+                tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                //tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_EC1C24));
+
+                snackbarView.setBackgroundColor(Color.CYAN);
+
+                snackbar.show();
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
