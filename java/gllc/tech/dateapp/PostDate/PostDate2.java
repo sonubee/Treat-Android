@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -185,15 +186,28 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
             eventAdapterLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
                     Intent intent = new Intent(getActivity(), MapsActivity.class);
                     intent.putExtra("cameFrom", "PostDate");
                     startActivity(intent);
                 }
             });
 
+            eventAdapterLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.click_anim));
+
+                    return false;
+                }
+            });
+
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(0, 0, 0, 10);
             eventAdapterLayout.setLayoutParams(lp);
+
+
 
             //bottomHalf.addView(eventAdapterLayout);
 

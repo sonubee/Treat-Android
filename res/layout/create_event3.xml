@@ -6,15 +6,12 @@
 
     <com.jaredrummler.materialspinner.MaterialSpinner
         android:layout_marginTop="30dp"
-        ms_dropdown_height="300dp"
         android:hint="Choose Activity"
-        ms_background_color="#31413f"
-        android:textColor="#FFF"
-        android:textColorHint="#FFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/chooseActivity"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:scrollbarThumbVertical="@color/colorAccent"/>
 
     <TextView
         android:id="@+id/eventTitle"
@@ -25,7 +22,7 @@
         android:text="Choice Here"
         android:textColor="#FFF"/>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/activityImage"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

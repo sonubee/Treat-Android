@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
+import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
@@ -64,7 +65,7 @@ public class CreateEvent3 extends Fragment {
     String prefix, main, suffix, address, startingTime, endingTime, fullEventTitle, photo, city;
     double latitude, longitude;
     TextView eventTitle, placeAddress, startTime, endTime;
-    ImageView activityImage;
+    CircleImageView activityImage;
 
     @Nullable
     @Override
@@ -87,7 +88,7 @@ public class CreateEvent3 extends Fragment {
         placeAddress = (TextView) view.findViewById(R.id.placeAddress);
         startTime = (TextView) view.findViewById(R.id.startTime);
         endTime = (TextView) view.findViewById(R.id.endTime);
-        activityImage = (ImageView) view.findViewById(R.id.activityImage);
+        activityImage = (CircleImageView) view.findViewById(R.id.activityImage);
         clickNext = (FlatButton) view.findViewById(R.id.nextActivity);
 
         eventTitle.setVisibility(View.INVISIBLE);
@@ -109,6 +110,7 @@ public class CreateEvent3 extends Fragment {
         chooseAcitivty.setBackgroundColor(Color.parseColor("#31413f"));
         chooseAcitivty.setTextColor(Color.WHITE);
         chooseAcitivty.setHintTextColor(Color.WHITE);
+        chooseAcitivty.setScrollBarSize(14);
 
         chooseAcitivty.setItems("Choose Activity", "Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
                 "Hike", "Movie", "Walk", "Other");
@@ -123,7 +125,8 @@ public class CreateEvent3 extends Fragment {
                 eventTitle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        whereToGo();
+                        //whereToGo();
+                        makeSuggestions2();
                     }
                 });
 
@@ -133,7 +136,7 @@ public class CreateEvent3 extends Fragment {
                     activityImage.setImageResource(R.drawable.minigolf);
                 }
 
-                whereToGo();
+                makeSuggestions2();
 
             }
         });
@@ -168,6 +171,8 @@ public class CreateEvent3 extends Fragment {
 
     public void whereToGo() {
 
+        /*
+
         new AlertDialog.Builder(getContext())
                 .setTitle("Do You Know Where You Want To Go?")
                 .setMessage("Select Yes to choose the Location or Select No and we will give suggestions")
@@ -191,6 +196,7 @@ public class CreateEvent3 extends Fragment {
                     }
                 })
                 .show();
+                */
     }
 
     public void getPlacesDetails(String placeId) {
@@ -493,11 +499,13 @@ public class CreateEvent3 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                photo = placesDetailsArrayList.get(position).getPhoto();
+                Picasso.with(getContext()).load(photo).into(activityImage);
+
                 suffix = placesDetailsArrayList.get(position).getName();
 
                 fullEventTitle = main + " at " + suffix;
                 eventTitle.setText(fullEventTitle);
-
 
                 city = placesDetailsArrayList.get(position).getCity();
 
@@ -510,6 +518,14 @@ public class CreateEvent3 extends Fragment {
 
                 placeAddress.setVisibility(View.VISIBLE);
                 chooseAcitivty.setVisibility(View.GONE);
+
+                startTime.setVisibility(View.VISIBLE);
+                startTime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getStartTime();
+                    }
+                });
 
                 dialog.dismiss();
 
@@ -601,12 +617,12 @@ public class CreateEvent3 extends Fragment {
 
                         String segments[] = responseString.split("\"");
 
-                        photo = segments[5];
+                        String tempPhoto = segments[5];
 
                         for (int i=0; i < placesDetailsArrayList.size(); i++) {
                             if (placeId.equals(placesDetailsArrayList.get(i).getPlaceId())) {
                                 PlacesDetails placesDetails = new PlacesDetails(placeId, placesDetailsArrayList.get(i).getName(),
-                                        placesDetailsArrayList.get(i).getCity(), placesDetailsArrayList.get(i).getReviews(), photo, placesDetailsArrayList.get(i).getAddress(),
+                                        placesDetailsArrayList.get(i).getCity(), placesDetailsArrayList.get(i).getReviews(), tempPhoto, placesDetailsArrayList.get(i).getAddress(),
                                         placesDetailsArrayList.get(i).getLatitude(), placesDetailsArrayList.get(i).getLongitude());
                                 placesDetailsArrayList.set((i), placesDetails);
 
