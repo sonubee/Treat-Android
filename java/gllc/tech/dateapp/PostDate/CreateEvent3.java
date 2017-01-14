@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -64,7 +65,6 @@ public class CreateEvent3 extends Fragment {
     double latitude, longitude;
     TextView eventTitle, placeAddress, startTime, endTime;
     ImageView activityImage;
-
 
     @Nullable
     @Override
@@ -410,7 +410,7 @@ public class CreateEvent3 extends Fragment {
 
                     }
                 });
-        
+
     }
 
     public void getPlacesDetails2(ArrayList<String> placeIds) {
@@ -460,36 +460,20 @@ public class CreateEvent3 extends Fragment {
                                 JSONObject jsonObject = new JSONObject(responseString);
                                 JSONObject result = jsonObject.getJSONObject("result");
 
-                                address = result.getString("formatted_address");
-
                                 String segments[] = result.getString("vicinity").split(",");
-
-                                city = segments[1];
-
-                                int reviews = result.getJSONArray("reviews").length();
-
-                                Log.i("--All", "Place Details: " + city);
 
 
                                 JSONObject geometry = result.getJSONObject("geometry");
                                 JSONObject location = geometry.getJSONObject("location");
-                                latitude = Double.parseDouble(location.getString("lat"));
-                                longitude = Double.parseDouble(location.getString("lng"));
 
-                                address = address.replaceFirst(",", "\n");
-                                placeAddress.setText(address);
-
-                                suffix = result.getString("name");
-
-                                fullEventTitle = main + " at " + suffix;
-                                eventTitle.setText(fullEventTitle);
 
                                 JSONArray photoArray = result.getJSONArray("photos");
                                 JSONObject firstPhoto = photoArray.getJSONObject(0);
                                 String photoReference = firstPhoto.getString("photo_reference");
 
-                                placesDetailsArrayList.add(new PlacesDetails(result.getString("place_id"), result.getString("name"), city, reviews, "NA", address,
-                                        latitude, longitude));
+                                placesDetailsArrayList.add(new PlacesDetails(result.getString("place_id"), result.getString("name"), segments[1],
+                                        result.getJSONArray("reviews").length(), "NA", result.getString("formatted_address"), Double.parseDouble(location.getString("lat")),
+                                        Double.parseDouble(location.getString("lng"))));
 
                                 postDateSuggestionsAdapter.notifyDataSetChanged();
 
@@ -497,21 +481,60 @@ public class CreateEvent3 extends Fragment {
 
                             } catch (Exception e) {
                                 Log.i("--All", "ErrorCreateEvent3: " + e.getMessage());
-                                //getStartTime();
                             }
 
-                            placeAddress.setVisibility(View.VISIBLE);
-                            chooseAcitivty.setVisibility(View.GONE);
+                            //placeAddress.setVisibility(View.VISIBLE);
+                            //chooseAcitivty.setVisibility(View.GONE);
                         }
                     });
         }
 
-        suggestionsListView.setOnClickListener(new View.OnClickListener() {
+        suggestionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                suffix = placesDetailsArrayList.get(position).getName();
+
+                fullEventTitle = main + " at " + suffix;
+                eventTitle.setText(fullEventTitle);
+
+
+                city = placesDetailsArrayList.get(position).getCity();
+
+                address = placesDetailsArrayList.get(position).getAddress();
+                address = address.replaceFirst(",", "\n");
+                placeAddress.setText(address);
+
+                latitude = placesDetailsArrayList.get(position).getLatitude();
+                longitude = placesDetailsArrayList.get(position).getLongitude();
+
+                placeAddress.setVisibility(View.VISIBLE);
+                chooseAcitivty.setVisibility(View.GONE);
+
+                dialog.dismiss();
+
+                getStartTime();
             }
         });
+
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                try {
+                    Intent intent =
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                                    .build(getActivity());
+                    getActivity().startActivityForResult(intent, MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException e) {
+                    // TODO: Handle the error.
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    // TODO: Handle the error.
+                }
+            }
+        });
+
+
 
 
 
@@ -583,7 +606,8 @@ public class CreateEvent3 extends Fragment {
                         for (int i=0; i < placesDetailsArrayList.size(); i++) {
                             if (placeId.equals(placesDetailsArrayList.get(i).getPlaceId())) {
                                 PlacesDetails placesDetails = new PlacesDetails(placeId, placesDetailsArrayList.get(i).getName(),
-                                        placesDetailsArrayList.get(i).getCity(), placesDetailsArrayList.get(i).getReviews(), photo);
+                                        placesDetailsArrayList.get(i).getCity(), placesDetailsArrayList.get(i).getReviews(), photo, placesDetailsArrayList.get(i).getAddress(),
+                                        placesDetailsArrayList.get(i).getLatitude(), placesDetailsArrayList.get(i).getLongitude());
                                 placesDetailsArrayList.set((i), placesDetails);
 
                                 postDateSuggestionsAdapter.notifyDataSetChanged();

@@ -5,13 +5,13 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:src="@drawable/placeholder"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:id="@+id/placeImage"/>
 
     <TextView
         android:id="@+id/nameChooseLocation"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_toEndOf="@+id/placeImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,6 @@
         android:textColor="#FFF"/>
 
     <TextView
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:textColor="#FFF"
         android:layout_below="@id/nameChooseLocation"
         android:layout_toEndOf="@id/placeImage"
@@ -29,6 +28,7 @@
         android:id="@+id/cityChooseLocation"/>
 
     <TextView
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/placeImage"
         android:layout_below="@+id/cityChooseLocation"
         android:layout_width="wrap_content"

@@ -5,6 +5,8 @@
     android:background="@drawable/layout_bg">
 
     <ListView
+        android:divider="#FFF"
+        android:dividerHeight="4px"
         android:layout_margin="5dp"
         android:layout_weight="10"
         android:layout_width="match_parent"
