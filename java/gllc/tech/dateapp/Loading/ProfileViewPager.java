@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.Loading;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,12 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import gllc.tech.dateapp.CompletedDates.CompletedDates;
-import gllc.tech.dateapp.Loading.Profile;
+import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.Filters;
-import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
-import static gllc.tech.dateapp.R.id.viewPager;
 import static gllc.tech.dateapp.R.id.viewPagerProfile;
 
 /**

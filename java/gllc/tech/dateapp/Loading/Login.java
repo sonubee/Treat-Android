@@ -39,7 +39,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,9 +48,7 @@ import java.util.Date;
 
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
-import gllc.tech.dateapp.ProfileViewPager;
 import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.UpComingDates.YourDatesAdapter;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**

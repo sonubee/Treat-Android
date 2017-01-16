@@ -11,30 +11,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-
-import gllc.tech.dateapp.Loading.MyApplication;
-import gllc.tech.dateapp.Objects.EventsOfDate;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import gllc.tech.dateapp.PostDate.DisplayActivityGridViewAdapter;
 
 /**
  * Created by bhangoo on 1/9/2017.
  */
 
-public class TestSearchDates extends Fragment{
-
-    CoordinatorLayout coordinatorLayout;
+public class TestFragment extends Fragment{
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.post_date2, container, false);
+        View view = inflater.inflate(R.layout.gridview_choose_activity, container, false);
 
-        coordinatorLayout = (CoordinatorLayout)view.findViewById(R.id.coordinatorLayout);
+        GridView gridview = (GridView) view.findViewById(R.id.chooseActivityGridView);
+        gridview.setAdapter(new DisplayActivityGridViewAdapter(getContext()));
 
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+            }
+        });
 
         return view;
     }
@@ -42,11 +42,6 @@ public class TestSearchDates extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, "Welcome to AndroidHive", Snackbar.LENGTH_LONG);
-
-        snackbar.show();
 
 
     }

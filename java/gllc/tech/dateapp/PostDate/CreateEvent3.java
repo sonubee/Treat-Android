@@ -45,6 +45,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -111,6 +112,9 @@ public class CreateEvent3 extends Fragment {
         chooseAcitivty.setTextColor(Color.WHITE);
         chooseAcitivty.setHintTextColor(Color.WHITE);
         chooseAcitivty.setScrollBarSize(14);
+
+        String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
+                "Hike", "Movie", "Walk", "Other"};
 
         chooseAcitivty.setItems("Choose Activity", "Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
                 "Hike", "Movie", "Walk", "Other");

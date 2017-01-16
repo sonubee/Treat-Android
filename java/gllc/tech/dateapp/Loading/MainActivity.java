@@ -32,7 +32,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -41,20 +40,16 @@ import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
-import gllc.tech.dateapp.CompletedDates.CompletedDates;
-import gllc.tech.dateapp.DisplayBothDates;
+import gllc.tech.dateapp.TestFragment;
+import gllc.tech.dateapp.UpComingDates.DisplayBothDates;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.PostDate.CreateEvent3;
 import gllc.tech.dateapp.PostDate.PostDate2;
-import gllc.tech.dateapp.PostDate.PostDateFragment;
-import gllc.tech.dateapp.ProfileViewPager;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.SearchDatesFragment;
-import gllc.tech.dateapp.TestSearchDates;
 import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
-import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 public class MainActivity extends NavigationLiveo implements OnItemClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
 
@@ -162,8 +157,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 1:
-                mFragment = new PostDate2();
-                //mFragment = new PostDateFragment();
+                mFragment = new TestFragment();
+                //mFragment = new PostDate2();
                 break;
 
             case 2:
@@ -171,12 +166,10 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 3:
-                //mFragment = new YourDatesFragment();
                 mFragment = new DisplayBothDates();
                 break;
 
             case 4:
-                //mFragment = new CompletedDates();
                 mFragment = new ShowAllMessages();
                 break;
 
