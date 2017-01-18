@@ -542,7 +542,7 @@ public class Login extends Fragment {
                 doneDownloading=true;
 
                 if (MyApplication.foundUser) {
-                    ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile", null);
 
                 } else {
                     try {
@@ -567,7 +567,7 @@ public class Login extends Fragment {
                         Log.i("--All", "Unable to Parse New Facebook User");
                     }
 
-                    ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile");
+                    ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile", null);
                 }
 
                 downloadDates();

@@ -16,7 +16,7 @@ import gllc.tech.dateapp.R;
 public class DisplayActivityGridViewAdapter extends BaseAdapter {
 
     String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
-            "Hike", "Movie", "Walk", "Other"};
+            "Hike", "Movie", "Walk", "Other", "FastFood"};
     private final LayoutInflater mInflater;
     Context context;
 
@@ -57,6 +57,30 @@ public class DisplayActivityGridViewAdapter extends BaseAdapter {
 
         picture.setImageResource(R.drawable.minigolf);
         activity.setText(activitiesString[position]);
+
+        if (activitiesString[position].equals("Bowling")) {
+            picture.setImageResource(R.drawable.bowling);
+        }
+
+        if (activitiesString[position].equals("Lunch")) {
+            picture.setImageResource(R.drawable.meal);
+        }
+
+        if (activitiesString[position].equals("Dinner")) {
+            picture.setImageResource(R.drawable.meal);
+        }
+
+        if (activitiesString[position].equals("Coffee")) {
+            picture.setImageResource(R.drawable.coffee);
+        }
+
+        if (activitiesString[position].equals("Concert")) {
+            picture.setImageResource(R.drawable.music_festival);
+        }
+
+        if (activitiesString[position].equals("Music Festival")) {
+            picture.setImageResource(R.drawable.music_festival);
+        }
 
 
         return v;

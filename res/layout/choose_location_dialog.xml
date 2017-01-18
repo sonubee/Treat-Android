@@ -14,7 +14,7 @@
         android:id="@+id/suggestionsListView">
     </ListView>
 
-    <Button
+    <com.dd.processbutton.FlatButton
         android:id="@+id/chooseOwnLocationButton"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"

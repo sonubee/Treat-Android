@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import gllc.tech.dateapp.Loading.MainActivity;
+import gllc.tech.dateapp.Loading.MyApplication;
+import gllc.tech.dateapp.PostDate.CreateEvent3;
 import gllc.tech.dateapp.PostDate.DisplayActivityGridViewAdapter;
 
 /**
@@ -20,6 +24,9 @@ import gllc.tech.dateapp.PostDate.DisplayActivityGridViewAdapter;
  */
 
 public class TestFragment extends Fragment{
+    String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
+            "Hike", "Movie", "Walk", "Other", "FastFood"};
+
 
     @Nullable
     @Override
@@ -32,7 +39,11 @@ public class TestFragment extends Fragment{
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("--All", "FIIIIIIIIIIIIIIIIIINDMEEEE");
+
+                Bundle bundle = new Bundle();
+                bundle.putString("activitySelected", activitiesString[position]);
+
+                ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", bundle);
             }
         });
 

@@ -226,7 +226,7 @@ public class PostDateFragment extends Fragment  implements View.OnClickListener 
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            ((MainActivity)getActivity()).replaceFragments(DisplayBothDates.class, R.id.container, "DisplayBothDates");
+                            ((MainActivity)getActivity()).replaceFragments(DisplayBothDates.class, R.id.container, "DisplayBothDates", null);
                             Toast.makeText(getContext(), "Posted! Here Are Your Upcoming Dates", Toast.LENGTH_LONG).show();
                             pleaseWait.hide();
                         }

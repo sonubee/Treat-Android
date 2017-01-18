@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#000">
+    android:background="@drawable/layout_bg"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <gllc.tech.dateapp.Automation.SquareImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/gridImageView"
-            android:scaleType="centerCrop"/>
-
         <TextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/gridActivityName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:text="Activity"
-            android:textColor="#FFF"/>
+            android:textColor="#FFF"
+            android:textStyle="bold|italic"/>
+
+        <gllc.tech.dateapp.Automation.SquareImageView
+            android:layout_margin="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/gridImageView"
+            android:scaleType="centerCrop"
+            android:layout_below="@id/gridActivityName"/>
 
     </RelativeLayout>
 

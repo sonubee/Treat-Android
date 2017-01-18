@@ -2,6 +2,7 @@ package gllc.tech.dateapp.PostDate;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -67,11 +68,18 @@ public class CreateEvent3 extends Fragment {
     double latitude, longitude;
     TextView eventTitle, placeAddress, startTime, endTime;
     CircleImageView activityImage;
+    ProgressDialog pleaseWait;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.create_event3, container, false);
+
+        pleaseWait = new ProgressDialog(getContext());
+        pleaseWait.setMessage("Please Wait");
+        pleaseWait.setCancelable(false);
+        pleaseWait.setInverseBackgroundForced(false);
+        pleaseWait.show();
 
         prefix = "";
         main = "";
@@ -98,6 +106,10 @@ public class CreateEvent3 extends Fragment {
         endTime.setVisibility(View.INVISIBLE);
         clickNext.setVisibility(View.INVISIBLE);
 
+
+        chooseAcitivty.setVisibility(View.INVISIBLE);
+
+
         return view;
     }
 
@@ -105,8 +117,32 @@ public class CreateEvent3 extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setHasOptionsMenu(true);
 
+
+        //setHasOptionsMenu(true);
+
+        main = getArguments().getString("activitySelected");
+
+        eventTitle.setVisibility(View.VISIBLE);
+        eventTitle.setText(main);
+        eventTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //whereToGo();
+                makeSuggestions2();
+            }
+        });
+
+        if (main.equals("Minigolf") || main.equals("Dinner")) {
+            activityImage.setImageResource(R.drawable.minigolf);
+        }
+
+        Log.i("--All", "Making Suggestion");
+        makeSuggestions2();
+
+
+
+        /*
         chooseAcitivty.setDropdownHeight(800);
         chooseAcitivty.setBackgroundColor(Color.parseColor("#31413f"));
         chooseAcitivty.setTextColor(Color.WHITE);
@@ -144,14 +180,14 @@ public class CreateEvent3 extends Fragment {
 
             }
         });
-
+*/
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //PostDateFragment.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
                 PostDate2.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
                 //PostDateFragment.adapter.notifyDataSetChanged();
-                ((MainActivity)getActivity()).popBackStack();
+                ((MainActivity)getActivity()).popAllFragments();
             }
         });
     }
@@ -167,7 +203,7 @@ public class CreateEvent3 extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.resetEvent:
-                ((MainActivity)getActivity()).replaceFragments(CreateEvent3.class, R.id.container, "CreateEvent");
+                ((MainActivity)getActivity()).replaceFragments(CreateEvent3.class, R.id.container, "CreateEvent", null);
         }
 
         return true;
@@ -388,8 +424,19 @@ public class CreateEvent3 extends Fragment {
     }
 
     public void makeSuggestions2() {
+
+        String distanceOrRank;
+
+        if (main.equals("Dinner") || main.equals("Lunch")) {
+            distanceOrRank = "&radius=32000";
+        } else {
+            distanceOrRank = "&rankby=distance";
+        }
+
         new AsyncHttpClient().post("https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDQbqcJuQtmi88_82Sq8Ixipv8NjpCMMeY&location="+
-                        MyApplication.currentUser.getLatitude()+","+ MyApplication.currentUser.getLongitude()+"&rankby=distance&keyword="+main, null,
+                        //MyApplication.currentUser.getLatitude()+","+ MyApplication.currentUser.getLongitude()+"&rankby=distance&keyword="+main, null,
+                        //MyApplication.currentUser.getLatitude()+","+ MyApplication.currentUser.getLongitude()+"&radius=32000&keyword="+main, null,
+                        MyApplication.currentUser.getLatitude()+","+ MyApplication.currentUser.getLongitude()+distanceOrRank+"&keyword="+main, null,
                 new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -437,7 +484,7 @@ public class CreateEvent3 extends Fragment {
         //ImageView image = (ImageView) dialog.findViewById(R.id.image);
         //image.setImageResource(R.drawable.ic_launcher);
 
-        Button dialogButton = (Button) dialog.findViewById(R.id.chooseOwnLocationButton);
+        FlatButton dialogButton = (FlatButton) dialog.findViewById(R.id.chooseOwnLocationButton);
         // if button is clicked, close the custom dialog
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -633,6 +680,8 @@ public class CreateEvent3 extends Fragment {
                                 postDateSuggestionsAdapter.notifyDataSetChanged();
                             }
                         }
+
+                        pleaseWait.hide();
 
                         //Picasso.with(getContext()).load(photo).into(activityImage);
 /*

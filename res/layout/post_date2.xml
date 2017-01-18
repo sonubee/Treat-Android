@@ -22,23 +22,27 @@
                 android:id="@+id/postDateTopLayout">
 
                 <TextView
+                    android:padding="7dp"
+                    android:background="@drawable/layout_bg"
+                    android:text="Enter Date"
                     android:layout_marginTop="10dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center"
-                    android:textColor="#619cc9"
+                    android:textColor="#FFF"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/enterDate"
-                    android:hint="Enter Date"
-                    android:textColorHint="#619cc9"
                     android:layout_gravity="center" />
 
                 <EditText
+                    android:layout_margin="5dp"
+                    android:padding="7dp"
+                    android:background="@drawable/layout_bg"
                     android:visibility="invisible"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center"
-                    android:textColor="#619cc9"
-                    android:textColorHint="#619cc9"
+                    android:textColor="#FFF"
+                    android:textColorHint="#FFF"
                     android:hint="Title of Your Date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

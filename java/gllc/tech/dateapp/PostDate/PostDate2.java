@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +42,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import gllc.tech.dateapp.Automation.MapsActivity;
+import gllc.tech.dateapp.TestFragment;
 import gllc.tech.dateapp.UpComingDates.DisplayBothDates;
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
@@ -69,6 +71,9 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        listOfEvents.clear();
+        listOfPlaces.clear();
 
         setHasOptionsMenu(true);
 
@@ -226,14 +231,15 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
 
         arrayAdapter.add("My Treat");
         arrayAdapter.add("Your Treat");
-        arrayAdapter.add("NA");
+        arrayAdapter.add("Split Bill");
+        arrayAdapter.add("Decide Later");
         arrayAdapter.add("What's this?");
 
         builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, int which) {
 
-                if (which == 3) {
+                if (which == 4) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                     alert.setTitle("Whose Treat");
                     alert.setMessage("Date Creators can choose who will cover the date. If you cover the date, you can get twice " +
@@ -255,7 +261,9 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                     } else if (which == 1) {
                         whoseTreat = "Your Treat";
                     } else if (which == 2) {
-                        whoseTreat = "NA";
+                        whoseTreat = "Split Bill";
+                    } else if (which == 3) {
+                        whoseTreat = "Decide Later";
                     }
 
                     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -292,8 +300,8 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                         @Override
                         public void run() {
                             // Do something after 5s = 5000ms
-                            ((MainActivity)getActivity()).replaceFragments(DisplayBothDates.class, R.id.container, "DisplayBothDates");
-                            Toast.makeText(getContext(), "Posted! Here Are Your Upcoming Dates", Toast.LENGTH_LONG).show();
+                            ((MainActivity)getActivity()).replaceFragments(DisplayBothDates.class, R.id.container, "DisplayBothDates", null);
+                            Toast.makeText(getContext(), "Posted! Here Are Your Upcoming Dates", Toast.LENGTH_SHORT).show();
                             pleaseWait.hide();
                         }
                     }, 1000);
@@ -313,10 +321,11 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()){
             case R.id.addEvent:
 
-                ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", null);
+                ((MainActivity)getActivity()).addFragments(TestFragment.class, R.id.container, "ChooseActivity", null);
         }
 
         return true;
@@ -335,6 +344,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                 enterDate.setText("Date: " + dateFormatter.format(newDate.getTime()));
                 theDateString = dateFormatter.format(newDate.getTime());
 
+                /*
                 Snackbar snackbar = Snackbar.make(coordinatorLayout, "Now Click the (+) Button to Add Event(s)", Snackbar.LENGTH_LONG);
 
                 View snackbarView = snackbar.getView();
@@ -344,8 +354,11 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                 //tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_EC1C24));
 
                 snackbarView.setBackgroundColor(Color.CYAN);
-
                 snackbar.show();
+*/
+                ((MainActivity)getActivity()).addFragments(TestFragment.class, R.id.container, "ChooseActivity", null);
+
+
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -356,5 +369,6 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         datePickerDialog.show();
+
     }
 }

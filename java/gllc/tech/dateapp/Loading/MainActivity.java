@@ -157,8 +157,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 1:
-                mFragment = new TestFragment();
-                //mFragment = new PostDate2();
+                //mFragment = new TestFragment();
+                mFragment = new PostDate2();
                 break;
 
             case 2:
@@ -262,10 +262,11 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
-    public void replaceFragments(Class fragmentClass, int id, String tag) {
+    public void replaceFragments(Class fragmentClass, int id, String tag, Bundle bundle) {
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            fragment.setArguments(bundle);
         } catch (Exception e) {
             e.printStackTrace();
         }
