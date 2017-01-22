@@ -7,16 +7,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,33 +25,18 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
-import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
-import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SimpleCalculations;
 import gllc.tech.dateapp.FacebookAlbums.DisplayFacebookAlbums;
 import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.YelpService;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by bhangoo on 12/11/2016.
@@ -115,8 +96,6 @@ public class Profile extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //makeQuery();
 
         name.setText(MyApplication.currentUser.getName());
 
@@ -437,6 +416,12 @@ public class Profile extends Fragment {
     }
 
     public void setLatitudeLongitude() {
+        if (MyApplication.latitude != 0) {
+            MyApplication.currentUser.setLatitude(MyApplication.latitude);
+        }
+        if (MyApplication.longitude != 0) {
+            MyApplication.currentUser.setLongitude(MyApplication.longitude);
+        }
         databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/latitude");
         databaseReference.setValue(MyApplication.currentUser.getLatitude());
 
@@ -508,59 +493,5 @@ public class Profile extends Fragment {
         Profile f = new Profile();
         return f;
     }
-
-    public void makeQuery() {
-
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.yelp.com/v2/search?").newBuilder();
-        urlBuilder.addQueryParameter("ll", Double.toString(+MyApplication.currentUser.getLatitude())+","+Double.toString(MyApplication.currentUser.getLongitude()));
-        urlBuilder.addQueryParameter("limit", "2");
-        urlBuilder.addQueryParameter("category_filter", "mini_golf");
-
-        final YelpService yelpService = new YelpService();
-        yelpService.findRestaurants(urlBuilder, new Callback() {
-
-            @Override
-            public void onFailure(Request request, IOException e) {
-                Log.i("--All", "Error Yelp: " + e.getMessage());
-
-
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                try {
-                    String jsonData = response.body().string();
-                    Log.v("--All", "Yelp Response: " + jsonData);
-
-                    JSONObject fullResponse = new JSONObject(jsonData);
-                    JSONArray businesses = fullResponse.getJSONArray("businesses");
-
-                    for (int i=0; i<businesses.length(); i++) {
-                        JSONObject business = businesses.getJSONObject(i);
-                        Log.i("--All", "Name: " + business.get("name"));
-
-                        Log.i("--All", "Review Count: " + business.get("review_count"));
-
-                        JSONObject location = business.getJSONObject("location");
-                        Log.i("--All", "City: " + location.get("city"));
-                        JSONArray address = location.getJSONArray("display_address");
-                        Log.i("--All", "Address: " + address.get(0));
-                        for (int j=1; j <address.length();j++) {
-                            Log.i("--All", "\n" + address.get(j));
-                        }
-                        JSONObject coordinate = location.getJSONObject("coordinate");
-                        Log.i("--All", "Lat: " + coordinate.get("latitude"));
-                        Log.i("--All", "Long: " + coordinate.get("longitude"));
-
-                        Log.i("--All", "Image: " + business.get("image_url"));
-                    }
-
-                } catch (Exception e) {
-                    Log.i("--All", "Error Parsing JSON: " + e.getMessage());
-                }
-            }
-        });
-    }
-
 
 }

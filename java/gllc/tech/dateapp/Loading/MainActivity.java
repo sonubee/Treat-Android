@@ -42,7 +42,6 @@ import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
-import gllc.tech.dateapp.TestFragment;
 import gllc.tech.dateapp.UpComingDates.DisplayBothDates;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
@@ -159,7 +158,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 1:
-                //mFragment = new TestFragment();
+                //mFragment = new ChooseActivityPostDate();
                 mFragment = new PostDate2();
                 break;
 
@@ -416,9 +415,10 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 String latitude = String.valueOf(mLastLocation.getLatitude());
                 String longitude = String.valueOf(mLastLocation.getLongitude());
 
-                MyApplication.currentUser.setLatitude(Double.parseDouble(latitude));
-                //MyApplication.longitude = Double.parseDouble(longitude);
-                MyApplication.currentUser.setLongitude(Double.parseDouble(longitude));
+                //MyApplication.currentUser.setLatitude(Double.parseDouble(latitude));
+                MyApplication.longitude = Double.parseDouble(longitude);
+                MyApplication.latitude = Double.parseDouble(latitude);
+                //MyApplication.currentUser.setLongitude(Double.parseDouble(longitude));
 
             }
         }

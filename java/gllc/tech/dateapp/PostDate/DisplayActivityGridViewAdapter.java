@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.R;
 
 /**
@@ -15,8 +17,7 @@ import gllc.tech.dateapp.R;
 
 public class DisplayActivityGridViewAdapter extends BaseAdapter {
 
-    String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
-            "Hike", "Movie", "Walk", "Other", "FastFood"};
+
     private final LayoutInflater mInflater;
     Context context;
 
@@ -28,12 +29,12 @@ public class DisplayActivityGridViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return activitiesString.length;
+        return MyApplication.activitiesString.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return activitiesString[position];
+        return MyApplication.activitiesString[position];
     }
 
     @Override
@@ -56,29 +57,29 @@ public class DisplayActivityGridViewAdapter extends BaseAdapter {
         activity = (TextView) v.findViewById(R.id.gridActivityName);
 
         picture.setImageResource(R.drawable.minigolf);
-        activity.setText(activitiesString[position]);
+        activity.setText(MyApplication.activitiesString[position]);
 
-        if (activitiesString[position].equals("Bowling")) {
+        if (MyApplication.activitiesString[position].equals("Bowling")) {
             picture.setImageResource(R.drawable.bowling);
         }
 
-        if (activitiesString[position].equals("Lunch")) {
+        if (MyApplication.activitiesString[position].equals("Lunch")) {
             picture.setImageResource(R.drawable.meal);
         }
 
-        if (activitiesString[position].equals("Dinner")) {
+        if (MyApplication.activitiesString[position].equals("Dinner")) {
             picture.setImageResource(R.drawable.meal);
         }
 
-        if (activitiesString[position].equals("Coffee")) {
+        if (MyApplication.activitiesString[position].equals("Coffee")) {
             picture.setImageResource(R.drawable.coffee);
         }
 
-        if (activitiesString[position].equals("Concert")) {
+        if (MyApplication.activitiesString[position].equals("Concert")) {
             picture.setImageResource(R.drawable.music_festival);
         }
 
-        if (activitiesString[position].equals("Music Festival")) {
+        if (MyApplication.activitiesString[position].equals("Music Festival")) {
             picture.setImageResource(R.drawable.music_festival);
         }
 

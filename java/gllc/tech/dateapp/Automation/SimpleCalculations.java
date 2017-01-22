@@ -52,6 +52,24 @@ public class SimpleCalculations {
         return Integer.parseInt(String.format("%.0f", distance2));
     }
 
+    public static int GetTheDistanceOnePoint(double latitude, double longitude) {
+
+        LatLng point = new LatLng(latitude, longitude);
+
+        Location businessLocation = new Location("Point A");
+        businessLocation.setLatitude(latitude);
+        businessLocation.setLongitude(longitude);
+
+        Location myLocation = new Location("Point B");
+        myLocation.setLatitude(MyApplication.currentUser.getLatitude());
+        myLocation.setLongitude(MyApplication.currentUser.getLongitude());
+
+        Float distance = businessLocation.distanceTo(myLocation);
+        Double distance2 = distance*0.000621371;
+
+        return Integer.parseInt(String.format("%.0f", distance2));
+    }
+
     public static int getAge(User user){
 
         String segments[] = user.getBirthdate().split("/");

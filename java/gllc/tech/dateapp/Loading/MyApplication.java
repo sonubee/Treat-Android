@@ -52,11 +52,13 @@ public class MyApplication extends Application {
     public static String pushToken;
     public static int screenHeight;
     public static int screenWidth;
-    //public static double latitude = 0;
-    //public static double longitude = 0;
+    public static double latitude = 0;
+    public static double longitude = 0;
     public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     public static final int ACCESS_FINE_LOCATION_VALUE = 9999;
     public static String myId = "ZyOum0RLpLUqSxQ9if8OTjZVD7y1";
+    public static String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "MiniGolf", "MusicFestival",
+            "Hike", "Movie", "Walk", "Other", "FastFood"};
 
     @Override
     public void onCreate() {

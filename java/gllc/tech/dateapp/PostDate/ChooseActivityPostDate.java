@@ -1,4 +1,4 @@
-package gllc.tech.dateapp;
+package gllc.tech.dateapp.PostDate;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -18,15 +18,13 @@ import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.PostDate.CreateEvent3;
 import gllc.tech.dateapp.PostDate.DisplayActivityGridViewAdapter;
+import gllc.tech.dateapp.R;
 
 /**
  * Created by bhangoo on 1/9/2017.
  */
 
-public class TestFragment extends Fragment{
-    String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
-            "Hike", "Movie", "Walk", "Other", "FastFood"};
-
+public class ChooseActivityPostDate extends Fragment{
 
     @Nullable
     @Override
@@ -41,7 +39,7 @@ public class TestFragment extends Fragment{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Bundle bundle = new Bundle();
-                bundle.putString("activitySelected", activitiesString[position]);
+                bundle.putString("activitySelected", MyApplication.activitiesString[position]);
 
                 ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", bundle);
             }

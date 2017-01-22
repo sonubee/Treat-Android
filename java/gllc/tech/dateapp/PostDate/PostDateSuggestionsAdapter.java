@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import gllc.tech.dateapp.Automation.SimpleCalculations;
 import gllc.tech.dateapp.Objects.PlacesDetails;
 import gllc.tech.dateapp.R;
 
@@ -57,8 +58,10 @@ public class PostDateSuggestionsAdapter extends BaseAdapter {
         holder.placeImage = (ImageView)convertView.findViewById(R.id.placeImage);
 
         holder.name.setText(placesDetailsArrayList.get(position).getName());
-        holder.city.setText(placesDetailsArrayList.get(position).getCity());
-        holder.reviews.setText("Reviews: "+placesDetailsArrayList.get(position).getReviews());
+        holder.city.setText(placesDetailsArrayList.get(position).getCity() + " - " +
+                SimpleCalculations.GetTheDistanceOnePoint(placesDetailsArrayList.get(position).getLatitude(), placesDetailsArrayList.get(position).getLongitude()) +
+                " Miles From You");
+        holder.reviews.setText("Reviews: "+placesDetailsArrayList.get(position).getReviews() + " - Rating: " + placesDetailsArrayList.get(position).getRating());
 
         if (!placesDetailsArrayList.get(position).getPhoto().equals("NA")) {
             Picasso.with(context).load(placesDetailsArrayList.get(position).getPhoto()).into(holder.placeImage);

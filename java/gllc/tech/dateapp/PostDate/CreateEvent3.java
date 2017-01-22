@@ -1,16 +1,9 @@
 package gllc.tech.dateapp.PostDate;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,48 +14,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.dd.processbutton.FlatButton;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.BinaryHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Loading.MainActivity;
-import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.PlacesDetails;
 import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.YelpService;
+import gllc.tech.dateapp.Automation.YelpService;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -84,12 +60,6 @@ public class CreateEvent3 extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.create_event3, container, false);
-
-        pleaseWait = new ProgressDialog(getContext());
-        pleaseWait.setMessage("Please Wait");
-        pleaseWait.setCancelable(false);
-        pleaseWait.setInverseBackgroundForced(false);
-        pleaseWait.show();
 
         prefix = "";
         main = "";
@@ -143,7 +113,7 @@ public class CreateEvent3 extends Fragment{
             }
         });
 
-        if (main.equals("Minigolf") || main.equals("Dinner")) {
+        if (main.equals("MiniGolf") || main.equals("Dinner")) {
             activityImage.setImageResource(R.drawable.minigolf);
         }
 
@@ -594,19 +564,20 @@ public class CreateEvent3 extends Fragment{
         });
         dialog.show();
 
+        pleaseWait = new ProgressDialog(getContext());
+        pleaseWait.setMessage("Please Wait");
+        pleaseWait.setCancelable(false);
+        pleaseWait.setInverseBackgroundForced(false);
+        pleaseWait.show();
+
         final ArrayList<PlacesDetails> placesDetailsArrayList = new ArrayList<>();
         final PostDateSuggestionsAdapter postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
 
         ListView suggestionsListView = (ListView) dialog.findViewById(R.id.suggestionsListView);
         suggestionsListView.setAdapter(postDateSuggestionsAdapter);
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.yelp.com/v2/search?").newBuilder();
-        urlBuilder.addQueryParameter("ll", Double.toString(+MyApplication.currentUser.getLatitude())+","+Double.toString(MyApplication.currentUser.getLongitude()));
-        //urlBuilder.addQueryParameter("limit", "2");
-        urlBuilder.addQueryParameter("category_filter", "mini_golf");
-
         final YelpService yelpService = new YelpService();
-        yelpService.findRestaurants(urlBuilder, new Callback() {
+        yelpService.suggestions(main, new Callback() {
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -623,35 +594,23 @@ public class CreateEvent3 extends Fragment{
                     JSONArray businesses = fullResponse.getJSONArray("businesses");
 
                     for (int i=0; i<businesses.length(); i++) {
-                        final JSONObject business = businesses.getJSONObject(i);
-                        Log.i("--All", "Name: " + business.get("name"));
-
-                        Log.i("--All", "Review Count: " + business.get("review_count"));
-
-                        final JSONObject location = business.getJSONObject("location");
-                        Log.i("--All", "City: " + location.get("city"));
+                        JSONObject business = businesses.getJSONObject(i);
+                        JSONObject location = business.getJSONObject("location");
                         JSONArray address = location.getJSONArray("display_address");
-                        //Log.i("--All", "Address: " + address.get(0));
                         String formattedAddress = address.get(0).toString();
                         for (int j=1; j <address.length();j++) {
-                            //Log.i("--All", "\n" + address.get(j));
                             formattedAddress += "\n" + address.get(j).toString();
                         }
-
-                        final String finalFormattedAddress = formattedAddress;
-
-                        Log.i("--All", "Formatted Address: " + formattedAddress);
-                        final JSONObject coordinate = location.getJSONObject("coordinate");
-                        Log.i("--All", "Lat: " + coordinate.get("latitude"));
-                        Log.i("--All", "Long: " + coordinate.get("longitude"));
-
-                        Log.i("--All", "Image: " + business.get("image_url"));
+                        JSONObject coordinate = location.getJSONObject("coordinate");
+/*
+                        placesDetailsArrayList.add(new PlacesDetails("PLACE ID", business.getString("name"), location.getString("city"),
+                                Integer.parseInt(business.getString("review_count")), business.getString("image_url").replace("ms", "l"), formattedAddress,
+                                Double.parseDouble(coordinate.getString("latitude")), Double.parseDouble(coordinate.getString("longitude")), business.getDouble("rating")));
+*/
 
                         placesDetailsArrayList.add(new PlacesDetails("PLACE ID", business.getString("name"), location.getString("city"),
-                                Integer.parseInt(business.getString("review_count")), business.getString("image_url"), formattedAddress,
-                                Double.parseDouble(coordinate.getString("latitude")), Double.parseDouble(coordinate.getString("longitude"))));
-
-
+                                Integer.parseInt(business.getString("review_count")), business.getString("image_url").replace("ms", "l"), formattedAddress,
+                                coordinate.getDouble("latitude"), coordinate.getDouble("longitude"), business.getDouble("rating")));
 
                         getActivity().runOnUiThread(new Runnable(){
                             @Override
@@ -686,7 +645,7 @@ public class CreateEvent3 extends Fragment{
                 city = placesDetailsArrayList.get(position).getCity();
 
                 address = placesDetailsArrayList.get(position).getAddress();
-                address = address.replaceFirst(",", "\n");
+                //address = address.replaceFirst(",", "\n");
                 placeAddress.setText(address);
 
                 latitude = placesDetailsArrayList.get(position).getLatitude();

@@ -5,14 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +39,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import gllc.tech.dateapp.Automation.MapsActivity;
-import gllc.tech.dateapp.TestFragment;
 import gllc.tech.dateapp.UpComingDates.DisplayBothDates;
 import gllc.tech.dateapp.Loading.MainActivity;
 import gllc.tech.dateapp.Loading.MyApplication;
@@ -325,7 +321,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
         switch (item.getItemId()){
             case R.id.addEvent:
 
-                ((MainActivity)getActivity()).addFragments(TestFragment.class, R.id.container, "ChooseActivity", null);
+                ((MainActivity)getActivity()).addFragments(ChooseActivityPostDate.class, R.id.container, "ChooseActivity", null);
         }
 
         return true;
@@ -356,7 +352,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                 snackbarView.setBackgroundColor(Color.CYAN);
                 snackbar.show();
 */
-                ((MainActivity)getActivity()).addFragments(TestFragment.class, R.id.container, "ChooseActivity", null);
+                ((MainActivity)getActivity()).addFragments(ChooseActivityPostDate.class, R.id.container, "ChooseActivity", null);
 
 
             }

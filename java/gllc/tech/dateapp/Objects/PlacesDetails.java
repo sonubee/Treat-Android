@@ -15,8 +15,9 @@ public class PlacesDetails {
     String address;
     double latitude;
     double longitude;
+    double rating;
 
-    public PlacesDetails(String placeId, String name, String city, int reviews, String photo, String address, double latitude, double longitude) {
+    public PlacesDetails(String placeId, String name, String city, int reviews, String photo, String address, double latitude, double longitude, double rating) {
         this.placeId = placeId;
         this.name = name;
         this.city = city;
@@ -25,6 +26,7 @@ public class PlacesDetails {
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.rating = rating;
     }
 
     public PlacesDetails() {
@@ -92,5 +94,13 @@ public class PlacesDetails {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }
