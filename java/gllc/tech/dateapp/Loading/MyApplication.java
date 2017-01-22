@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import gllc.tech.dateapp.Objects.AgreedChats;
+import gllc.tech.dateapp.Objects.Categories;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
 
@@ -32,12 +33,14 @@ public class MyApplication extends Application {
     public static ArrayList<TheDate> fullMatchesAsCreator = new ArrayList<>();
     public static ArrayList<TheDate> pendingDates = new ArrayList<>();
     public static ArrayList<TheDate> combinedDates = new ArrayList<>();
+    public static ArrayList<Categories> categories = new ArrayList<>();
     public static HashMap<String, TheDate> dateHashMap = new HashMap<>();
     public static HashMap<String, TheDate> pendingDatesHashMap = new HashMap<>();
     public static HashMap<String, TheDate> fullMatchesAsCreatorHashMap = new HashMap<>();
     public static HashMap<String, TheDate> fullMatchesAsDateHashMap = new HashMap<>();
     public static HashMap<String, TheDate> combinesDatesHashMap = new HashMap<>();
     public static HashMap<String, Boolean> matchMap = new HashMap<>();
+    public static HashMap<String, Categories> categoriesMap = new HashMap<>();
     public static TheDate dateSelected = new TheDate();
     public static User otherPerson = new User();
     public static String dateSelectedKey = "";
@@ -59,6 +62,7 @@ public class MyApplication extends Application {
     public static String myId = "ZyOum0RLpLUqSxQ9if8OTjZVD7y1";
     public static String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "MiniGolf", "MusicFestival",
             "Hike", "Movie", "Walk", "Other", "FastFood"};
+    public static String yelpToken = "";
 
     @Override
     public void onCreate() {

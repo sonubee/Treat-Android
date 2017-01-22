@@ -46,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
+import gllc.tech.dateapp.Objects.Categories;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
@@ -572,6 +573,7 @@ public class Login extends Fragment {
 
                 downloadDates();
                 downloadCompletedDates();
+                downloadCategories();
             }
 
             @Override
@@ -600,6 +602,39 @@ public class Login extends Fragment {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
                 MyApplication.userHashMap.put(user.getId(), user);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void downloadCategories() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Categories");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Categories categories = dataSnapshot.getValue(Categories.class);
+                MyApplication.categories.add(categories);
+                MyApplication.categoriesMap.put(categories.getDisplayName(), categories);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override

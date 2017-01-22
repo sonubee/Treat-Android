@@ -101,8 +101,6 @@ public class Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getToken();
-
         name.setText(MyApplication.currentUser.getName());
 
         gender.setText(MyApplication.currentUser.getGender().substring(0, 1).toUpperCase() + MyApplication.currentUser.getGender().substring(1));
@@ -499,62 +497,4 @@ public class Profile extends Fragment {
         Profile f = new Profile();
         return f;
     }
-
-    public static void getToken() {
-
-        AsyncHttpClient client = new AsyncHttpClient();
-
-        RequestParams params = new RequestParams();
-
-        params.put("grant_type", "client_credentials");
-        params.put("client_id","awgQ-7EG3OGG27FcTe48aQ");
-        params.put("client_secret", "KanRzT18wUSz1NYuZsAyHBw3Uimihi4FkdlXZW7DagAT6bkMT9aDdlp2BrvjlWqB");
-
-        client.addHeader("Authorization", "Bearer ");
-
-        client.post("https://api.yelp.com/oauth2/token", params,
-                new TextHttpResponseHandler() {
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.i("--All", "In Failure");
-                        Log.i("--All", "Failure response: " + responseString);
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        Log.i("--All", "Result1: " + responseString);
-                        makeQuery("YaVSr4bqfb2FL0PUVj4ojzjcVsBXaDYXkbcMMEZV1d8e9gYVmefJb5Jlct-kF2ujVVlfr09mBlA2zycx57ET3JBVgGjnBmHQ8IK-IZp22TRg_NTSavHZJJ1oXiaFWHYx");
-                    }
-                });
-    }
-
-    public static void makeQuery(String token) {
-        AsyncHttpClient client = new AsyncHttpClient();
-
-        RequestParams params = new RequestParams();
-
-        params.put("latitude", MyApplication.currentUser.getLatitude());
-        params.put("longitude", MyApplication.currentUser.getLongitude());
-        params.put("categories", "mini_golf");
-        params.put("limit", 2);
-
-        client.addHeader("Authorization", "Bearer "+token);
-
-        client.get("https://api.yelp.com/v3/businesses/search?", params,
-                new TextHttpResponseHandler() {
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.i("--All", "In Failure");
-                        Log.i("--All", "Failure response: " + responseString);
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        Log.i("--All", "Result2: " + responseString);
-                    }
-                });
-    }
-
 }

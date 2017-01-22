@@ -34,6 +34,12 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -42,6 +48,7 @@ import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
+import cz.msebera.android.httpclient.Header;
 import gllc.tech.dateapp.UpComingDates.DisplayBothDates;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
@@ -120,6 +127,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 // result of the request.
             }
         }
+
+        getToken();
 
     }
 
@@ -427,6 +436,40 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     public void onConnectionSuspended(int i) {
 
+    }
+
+    public static void getToken() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        RequestParams params = new RequestParams();
+
+        params.put("grant_type", "client_credentials");
+        params.put("client_id","awgQ-7EG3OGG27FcTe48aQ");
+        params.put("client_secret", "KanRzT18wUSz1NYuZsAyHBw3Uimihi4FkdlXZW7DagAT6bkMT9aDdlp2BrvjlWqB");
+
+        client.addHeader("Authorization", "Bearer ");
+
+        client.post("https://api.yelp.com/oauth2/token", params,
+                new TextHttpResponseHandler() {
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("--All", "Failure response Yelp Token: " + responseString);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+                        try {
+                            JSONObject token = new JSONObject(responseString);
+                            MyApplication.yelpToken = token.getString("access_token");
+                        } catch (JSONException e) {
+                            Log.i("--All", "Error Getting Yelp Token: " + e.getMessage());
+                        }
+
+                    }
+                });
     }
 }
 

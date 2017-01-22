@@ -1,6 +1,7 @@
 package gllc.tech.dateapp.PostDate;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class PostDateSuggestionsAdapter extends BaseAdapter {
                 " Miles From You");
         holder.reviews.setText("Reviews: "+placesDetailsArrayList.get(position).getReviews() + " - Rating: " + placesDetailsArrayList.get(position).getRating());
 
-        if (!placesDetailsArrayList.get(position).getPhoto().equals("NA")) {
+        if (!placesDetailsArrayList.get(position).getPhoto().equals("NA") && !placesDetailsArrayList.get(position).getPhoto().equals("")) {
             Picasso.with(context).load(placesDetailsArrayList.get(position).getPhoto()).into(holder.placeImage);
         }
 
