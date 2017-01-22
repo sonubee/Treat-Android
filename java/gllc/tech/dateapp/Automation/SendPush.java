@@ -29,14 +29,14 @@ public class SendPush {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.i("MyActivity", "In Failure");
-                        Log.i("MyActivity", "Failure response: " + responseString);
+                        Log.i("--All", "In Failure");
+                        Log.i("--All", "Failure response: " + responseString);
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        Log.i("MyActivity", "Success Sending Push Notifications");
-                        Log.i("MyActivity", "Result: " + responseString);
+                        Log.i("--All", "Success Sending Push Notifications");
+                        Log.i("--All", "Result: " + responseString);
                     }
                 });
 

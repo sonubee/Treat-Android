@@ -5,6 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -52,8 +55,8 @@ import gllc.tech.dateapp.R;
 
 public class PostDate2 extends Fragment implements View.OnClickListener{
 
-    public static ArrayList<EventsOfDate> listOfEvents = new ArrayList<>();
-    public static ArrayList<Place> listOfPlaces = new ArrayList<>();
+    public static ArrayList<EventsOfDate> listOfEvents;
+    public static ArrayList<Place> listOfPlaces;
     String theDateString ="Enter Date", titleOfEvent ="", whoseTreat = "";
     FlatButton postDate;
     public static EditText titleDate;
@@ -68,8 +71,11 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listOfEvents.clear();
-        listOfPlaces.clear();
+        //listOfEvents.clear();
+        //listOfPlaces.clear();
+
+        listOfPlaces = new ArrayList<>();
+        listOfEvents = new ArrayList<>();
 
         setHasOptionsMenu(true);
 
@@ -307,11 +313,11 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
         builderSingle.show();
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         menu.clear();
         inflater.inflate(R.menu.menu_post, menu);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
