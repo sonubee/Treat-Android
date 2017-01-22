@@ -8,6 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -42,8 +45,10 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,12 +60,17 @@ import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.PlacesDetails;
 import gllc.tech.dateapp.R;
+import gllc.tech.dateapp.YelpService;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by bhangoo on 1/2/2017.
  */
 
-public class CreateEvent3 extends Fragment {
+public class CreateEvent3 extends Fragment{
 
     FlatButton clickNext;
     MaterialSpinner chooseAcitivty;
@@ -129,7 +139,7 @@ public class CreateEvent3 extends Fragment {
             @Override
             public void onClick(View v) {
                 //whereToGo();
-                makeSuggestions2();
+                makeSuggestions3();
             }
         });
 
@@ -138,49 +148,8 @@ public class CreateEvent3 extends Fragment {
         }
 
         Log.i("--All", "Making Suggestion");
-        makeSuggestions2();
+        makeSuggestions3();
 
-
-
-        /*
-        chooseAcitivty.setDropdownHeight(800);
-        chooseAcitivty.setBackgroundColor(Color.parseColor("#31413f"));
-        chooseAcitivty.setTextColor(Color.WHITE);
-        chooseAcitivty.setHintTextColor(Color.WHITE);
-        chooseAcitivty.setScrollBarSize(14);
-
-        String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
-                "Hike", "Movie", "Walk", "Other"};
-
-        chooseAcitivty.setItems("Choose Activity", "Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "Minigolf", "Music Festival",
-                "Hike", "Movie", "Walk", "Other");
-
-        chooseAcitivty.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                main = chooseAcitivty.getText().toString();
-
-                eventTitle.setVisibility(View.VISIBLE);
-                eventTitle.setText(main);
-                eventTitle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //whereToGo();
-                        makeSuggestions2();
-                    }
-                });
-
-                chooseAcitivty.setVisibility(View.INVISIBLE);
-
-                if (main.equals("Minigolf") || main.equals("Dinner")) {
-                    activityImage.setImageResource(R.drawable.minigolf);
-                }
-
-                makeSuggestions2();
-
-            }
-        });
-*/
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,35 +178,6 @@ public class CreateEvent3 extends Fragment {
         return true;
     }
 
-    public void whereToGo() {
-
-        /*
-
-        new AlertDialog.Builder(getContext())
-                .setTitle("Do You Know Where You Want To Go?")
-                .setMessage("Select Yes to choose the Location or Select No and we will give suggestions")
-                .setPositiveButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        makeSuggestions2();
-                    }
-                })
-                .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            Intent intent =
-                                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                                            .build(getActivity());
-                            getActivity().startActivityForResult(intent, MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE);
-                        } catch (GooglePlayServicesRepairableException e) {
-                            // TODO: Handle the error.
-                        } catch (GooglePlayServicesNotAvailableException e) {
-                            // TODO: Handle the error.
-                        }
-                    }
-                })
-                .show();
-                */
-    }
 
     public void getPlacesDetails(String placeId) {
 
@@ -422,7 +362,7 @@ public class CreateEvent3 extends Fragment {
         mTimePicker2.setTitle("Select End Time");
         mTimePicker2.show();
     }
-
+/*
     public void makeSuggestions2() {
 
         String distanceOrRank;
@@ -600,63 +540,6 @@ public class CreateEvent3 extends Fragment {
                 }
             }
         });
-
-
-
-
-
-
-    }
-
-    public void makeSuggestions() {
-
-        new AsyncHttpClient().post("https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDQbqcJuQtmi88_82Sq8Ixipv8NjpCMMeY&location="+
-                MyApplication.currentUser.getLatitude()+","+ MyApplication.currentUser.getLongitude()+"&rankby=distance&keyword="+main, null,
-                new TextHttpResponseHandler() {
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
-
-                        try{
-                            ArrayList<String> names = new ArrayList<>();
-                            final ArrayList<String> placeIds = new ArrayList<>();
-
-                            JSONObject jsonObject = new JSONObject(responseString);
-                            JSONArray result = jsonObject.getJSONArray("results");
-
-                            for (int i=0 ; i<result.length(); i++) {
-                                JSONObject firstResult = result.getJSONObject(i);
-                                names.add(firstResult.getString("name"));
-                                placeIds.add(firstResult.getString("place_id"));
-                            }
-
-                            AlertDialog.Builder builderSingle = new AlertDialog.Builder(getContext());
-                            builderSingle.setTitle("Some Nearby Suggestions:");
-
-                            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
-
-                            for (int j = 0 ; j <names.size(); j++) {
-                                arrayAdapter.add(names.get(j));
-                            }
-
-                            builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    getPlacesDetails(placeIds.get(which));
-                                }
-                            });
-                            builderSingle.show();
-
-                        } catch (Exception e){
-                            Log.i("--All", "Error: " + e.getMessage());
-                        }
-
-                    }
-                });
     }
 
     public void getPhoto2(final String photoReference, final String placeId, final ArrayList<PlacesDetails> placesDetailsArrayList, final PostDateSuggestionsAdapter postDateSuggestionsAdapter) {
@@ -684,23 +567,147 @@ public class CreateEvent3 extends Fragment {
                         pleaseWait.hide();
 
                         //Picasso.with(getContext()).load(photo).into(activityImage);
-/*
-                        startTime.setVisibility(View.VISIBLE);
-                        startTime.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getStartTime();
-                            }
-                        });
 
-                        getStartTime();
-                        */
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     }
                 });
+    }
+*/
+    public void makeSuggestions3() {
+
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.choose_location_dialog);
+        dialog.setTitle("Some Suggestions");
+
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
+
+        FlatButton dialogButton = (FlatButton) dialog.findViewById(R.id.chooseOwnLocationButton);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+        final ArrayList<PlacesDetails> placesDetailsArrayList = new ArrayList<>();
+        final PostDateSuggestionsAdapter postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
+
+        ListView suggestionsListView = (ListView) dialog.findViewById(R.id.suggestionsListView);
+        suggestionsListView.setAdapter(postDateSuggestionsAdapter);
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.yelp.com/v2/search?").newBuilder();
+        urlBuilder.addQueryParameter("ll", Double.toString(+MyApplication.currentUser.getLatitude())+","+Double.toString(MyApplication.currentUser.getLongitude()));
+        //urlBuilder.addQueryParameter("limit", "2");
+        urlBuilder.addQueryParameter("category_filter", "mini_golf");
+
+        final YelpService yelpService = new YelpService();
+        yelpService.findRestaurants(urlBuilder, new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.i("--All", "Error Yelp: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                try {
+                    String jsonData = response.body().string();
+                    //Log.v("--All", "Yelp Response: " + jsonData);
+
+                    JSONObject fullResponse = new JSONObject(jsonData);
+                    JSONArray businesses = fullResponse.getJSONArray("businesses");
+
+                    for (int i=0; i<businesses.length(); i++) {
+                        final JSONObject business = businesses.getJSONObject(i);
+                        Log.i("--All", "Name: " + business.get("name"));
+
+                        Log.i("--All", "Review Count: " + business.get("review_count"));
+
+                        final JSONObject location = business.getJSONObject("location");
+                        Log.i("--All", "City: " + location.get("city"));
+                        JSONArray address = location.getJSONArray("display_address");
+                        //Log.i("--All", "Address: " + address.get(0));
+                        String formattedAddress = address.get(0).toString();
+                        for (int j=1; j <address.length();j++) {
+                            //Log.i("--All", "\n" + address.get(j));
+                            formattedAddress += "\n" + address.get(j).toString();
+                        }
+
+                        final String finalFormattedAddress = formattedAddress;
+
+                        Log.i("--All", "Formatted Address: " + formattedAddress);
+                        final JSONObject coordinate = location.getJSONObject("coordinate");
+                        Log.i("--All", "Lat: " + coordinate.get("latitude"));
+                        Log.i("--All", "Long: " + coordinate.get("longitude"));
+
+                        Log.i("--All", "Image: " + business.get("image_url"));
+
+                        placesDetailsArrayList.add(new PlacesDetails("PLACE ID", business.getString("name"), location.getString("city"),
+                                Integer.parseInt(business.getString("review_count")), business.getString("image_url"), formattedAddress,
+                                Double.parseDouble(coordinate.getString("latitude")), Double.parseDouble(coordinate.getString("longitude"))));
+
+
+
+                        getActivity().runOnUiThread(new Runnable(){
+                            @Override
+                            public void run(){
+                                postDateSuggestionsAdapter.notifyDataSetChanged();
+                                pleaseWait.hide();
+
+                            }
+                        });
+                    }
+
+                } catch (Exception e) {
+                    Log.i("--All", "Error Parsing JSON: " + e.getMessage());
+                }
+
+
+            }
+        });
+
+        suggestionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                photo = placesDetailsArrayList.get(position).getPhoto();
+                Picasso.with(getContext()).load(photo).into(activityImage);
+
+                suffix = placesDetailsArrayList.get(position).getName();
+
+                fullEventTitle = main + " at " + suffix;
+                eventTitle.setText(fullEventTitle);
+
+                city = placesDetailsArrayList.get(position).getCity();
+
+                address = placesDetailsArrayList.get(position).getAddress();
+                address = address.replaceFirst(",", "\n");
+                placeAddress.setText(address);
+
+                latitude = placesDetailsArrayList.get(position).getLatitude();
+                longitude = placesDetailsArrayList.get(position).getLongitude();
+
+                placeAddress.setVisibility(View.VISIBLE);
+                chooseAcitivty.setVisibility(View.GONE);
+
+                startTime.setVisibility(View.VISIBLE);
+                startTime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getStartTime();
+                    }
+                });
+
+                dialog.dismiss();
+
+                getStartTime();
+            }
+        });
     }
 }
 

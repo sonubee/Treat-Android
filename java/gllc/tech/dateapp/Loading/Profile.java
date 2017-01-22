@@ -29,20 +29,33 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
+import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 import gllc.tech.dateapp.Automation.SimpleCalculations;
 import gllc.tech.dateapp.FacebookAlbums.DisplayFacebookAlbums;
 import gllc.tech.dateapp.R;
+import gllc.tech.dateapp.YelpService;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by bhangoo on 12/11/2016.
@@ -58,12 +71,12 @@ public class Profile extends Fragment {
     public static ArrayList<String> albumIds = new ArrayList<>();
     public static ArrayList<String> albumNames = new ArrayList<>();
     public static ArrayList<String> coverPhotosArray = new ArrayList<>();
-    public static HashMap<String,String> albumIdToCoverPhoto = new HashMap<>();
-    public static HashMap<String,String> albumIdToLink = new HashMap<>();
-    public static int photoToReplace=0;
+    public static HashMap<String, String> albumIdToCoverPhoto = new HashMap<>();
+    public static HashMap<String, String> albumIdToLink = new HashMap<>();
+    public static int photoToReplace = 0;
 
     String albumId;
-    int a=0,b=0,c=0;
+    int a = 0, b = 0, c = 0;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
 
@@ -72,27 +85,27 @@ public class Profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.new_profile, container, false);
 
-        LinearLayout test = (LinearLayout)view.findViewById(R.id.mainLinearLayout);
-        LinearLayout second = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.about_you, null);
+        LinearLayout test = (LinearLayout) view.findViewById(R.id.mainLinearLayout);
+        LinearLayout second = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.about_you, null);
         test.addView(second);
 
-        gender = (TextView)view.findViewById(R.id.listGender);
-        profileImage = (CircleImageView)view.findViewById(R.id.userPicture);
-        name = (TextView)view.findViewById(R.id.nameUser);
+        gender = (TextView) view.findViewById(R.id.listGender);
+        profileImage = (CircleImageView) view.findViewById(R.id.userPicture);
+        name = (TextView) view.findViewById(R.id.nameUser);
         //editBio = (ImageView)view.findViewById(R.id.editButton);
-        editPhoto1 = (ImageView)view.findViewById(R.id.editButtonPhoto1);
-        editPhoto2 = (ImageView)view.findViewById(R.id.editButtonPhoto2);
-        editPhoto3 = (ImageView)view.findViewById(R.id.editButtonPhoto3);
-        editPhoto4 = (ImageView)view.findViewById(R.id.editButtonPhoto4);
-        bio = (TextView)view.findViewById(R.id.bioTextView);
-        enterBio = (EditText)view.findViewById(R.id.bioEditText);
-        photo2 = (ImageView)view.findViewById(R.id.supportImage1);
-        photo3 = (ImageView)view.findViewById(R.id.supportImage2);
-        photo4 = (ImageView)view.findViewById(R.id.supportImage3);
-        karmaPoints = (TextView)view.findViewById(R.id.profileKarmaPoints);
-        ageRange = (TextView)view.findViewById(R.id.ageTangeTextView);
-        school = (TextView)view.findViewById(R.id.schoolProfile);
-        chooseSchool = (RelativeLayout)view.findViewById(R.id.chooseSchool);
+        editPhoto1 = (ImageView) view.findViewById(R.id.editButtonPhoto1);
+        editPhoto2 = (ImageView) view.findViewById(R.id.editButtonPhoto2);
+        editPhoto3 = (ImageView) view.findViewById(R.id.editButtonPhoto3);
+        editPhoto4 = (ImageView) view.findViewById(R.id.editButtonPhoto4);
+        bio = (TextView) view.findViewById(R.id.bioTextView);
+        enterBio = (EditText) view.findViewById(R.id.bioEditText);
+        photo2 = (ImageView) view.findViewById(R.id.supportImage1);
+        photo3 = (ImageView) view.findViewById(R.id.supportImage2);
+        photo4 = (ImageView) view.findViewById(R.id.supportImage3);
+        karmaPoints = (TextView) view.findViewById(R.id.profileKarmaPoints);
+        ageRange = (TextView) view.findViewById(R.id.ageTangeTextView);
+        school = (TextView) view.findViewById(R.id.schoolProfile);
+        chooseSchool = (RelativeLayout) view.findViewById(R.id.chooseSchool);
 
         loadImages();
 
@@ -103,16 +116,18 @@ public class Profile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //makeQuery();
+
         name.setText(MyApplication.currentUser.getName());
 
-        gender.setText(MyApplication.currentUser.getGender().substring(0,1).toUpperCase() + MyApplication.currentUser.getGender().substring(1));
+        gender.setText(MyApplication.currentUser.getGender().substring(0, 1).toUpperCase() + MyApplication.currentUser.getGender().substring(1));
         karmaPoints.setText(MyApplication.currentUser.getKarmaPoints() + " Karma Points");
 
         if (MyApplication.currentUser.getSchool().equals("NA")) {
             school.setText("Select One Here");
         } else if (MyApplication.currentUser.getSchool().equals("None")) {
             school.setText("None Chosen");
-        }else {
+        } else {
             school.setText(MyApplication.currentUser.getSchool());
         }
 
@@ -131,7 +146,7 @@ public class Profile extends Fragment {
                 if (!hasFocus) {
                     MyApplication.currentUser.setBio(enterBio.getText().toString());
                     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                    DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/bio");
+                    DatabaseReference databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/bio");
                     databaseReference.setValue(enterBio.getText().toString());
                 }
             }
@@ -141,7 +156,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 getAlbums();
-                photoToReplace=1;
+                photoToReplace = 1;
             }
         });
 
@@ -149,7 +164,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 getAlbums();
-                photoToReplace=2;
+                photoToReplace = 2;
             }
         });
 
@@ -157,7 +172,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 getAlbums();
-                photoToReplace=3;
+                photoToReplace = 3;
             }
         });
 
@@ -165,7 +180,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 getAlbums();
-                photoToReplace=4;
+                photoToReplace = 4;
             }
         });
 
@@ -177,7 +192,7 @@ public class Profile extends Fragment {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.full_image);
 
-                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                ImageView imageView = (ImageView) dialog.findViewById(R.id.popupFullImage);
                 if (MyApplication.currentUser.getPhoto1().equals("NA")) {
                     Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApplication.currentUser.getFid() + "/picture?type=large").into(imageView);
                 } else {
@@ -195,10 +210,10 @@ public class Profile extends Fragment {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.full_image);
 
-                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                ImageView imageView = (ImageView) dialog.findViewById(R.id.popupFullImage);
                 if (MyApplication.currentUser.getPhoto2().equals("NA")) {
                     getAlbums();
-                    photoToReplace=2;
+                    photoToReplace = 2;
                 } else {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto2()).into(imageView);
                 }
@@ -214,10 +229,10 @@ public class Profile extends Fragment {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.full_image);
 
-                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                ImageView imageView = (ImageView) dialog.findViewById(R.id.popupFullImage);
                 if (MyApplication.currentUser.getPhoto3().equals("NA")) {
                     getAlbums();
-                    photoToReplace=3;
+                    photoToReplace = 3;
                 } else {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto3()).into(imageView);
                 }
@@ -233,10 +248,10 @@ public class Profile extends Fragment {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.full_image);
 
-                ImageView imageView = (ImageView)dialog.findViewById(R.id.popupFullImage);
+                ImageView imageView = (ImageView) dialog.findViewById(R.id.popupFullImage);
                 if (MyApplication.currentUser.getPhoto4().equals("NA")) {
                     getAlbums();
-                    photoToReplace=4;
+                    photoToReplace = 4;
                 } else {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto4()).into(imageView);
                 }
@@ -287,9 +302,9 @@ public class Profile extends Fragment {
 
     }
 
-    public void getAlbums(){
+    public void getAlbums() {
         albumIds.clear();
-        b=0;
+        b = 0;
         new GraphRequest(
                 AccessToken.getCurrentAccessToken(),
                 "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",//user id of login user
@@ -312,7 +327,9 @@ public class Profile extends Fragment {
 
                                         getCoverPhotoID(albumId);
 
-                                    } catch (Exception e) {Log.i("--All", "Error: " + e.toString());}
+                                    } catch (Exception e) {
+                                        Log.i("--All", "Error: " + e.toString());
+                                    }
                                 }
                             }
                         } catch (Exception e) {
@@ -347,9 +364,9 @@ public class Profile extends Fragment {
                                     getCoverPhotoPicture2(coverPhotoId, albumIdToUse);
 
 
-                                } else{
+                                } else {
                                     coverPhotosArray.add("NA");
-                                    albumIdToCoverPhoto.put(albumIdToUse,"NA");
+                                    albumIdToCoverPhoto.put(albumIdToUse, "NA");
                                     albumIdToLink.put(albumIdToUse, "NA");
                                     b++;
                                 }
@@ -377,16 +394,16 @@ public class Profile extends Fragment {
                     public void onCompleted(GraphResponse response) {
                         //Log.i("--All", "Response: " + response.toString());
                         JSONObject jsonObject = response.getJSONObject();
-                        try{
+                        try {
                             JSONArray imagesArrayJSON = jsonObject.getJSONArray("images");
                             albumIdToLink.put(albumIdToUse, imagesArrayJSON.getJSONObject(0).getString("source"));
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             Log.i("--All", "Error: " + e.getMessage());
                         }
 
                         b++;
                         if (b == albumIds.size()) {
-                            ((MainActivity)getActivity()).addFragments(DisplayFacebookAlbums.class, R.id.container, "DisplayFacebookAlbums", null);
+                            ((MainActivity) getActivity()).addFragments(DisplayFacebookAlbums.class, R.id.container, "DisplayFacebookAlbums", null);
                         }
                     }
                 }
@@ -408,10 +425,10 @@ public class Profile extends Fragment {
                         Login.dialog.hide();
                         Log.i("--All", "Response: " + response.toString());
                         JSONObject jsonObject = response.getJSONObject();
-                        try{
+                        try {
                             //JSONArray imagesArrayJSON = jsonObject.getJSONArray("images");
                             //albumIdToLink.put(albumIdToUse, imagesArrayJSON.getJSONObject(0).getString("source"));
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             Log.i("--All", "Error: " + e.getMessage());
                         }
                     }
@@ -420,14 +437,12 @@ public class Profile extends Fragment {
     }
 
     public void setLatitudeLongitude() {
-        databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/latitude");
-        databaseReference.setValue(MyApplication.latitude);
+        databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/latitude");
+        databaseReference.setValue(MyApplication.currentUser.getLatitude());
 
-        databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/longitude");
-        databaseReference.setValue(MyApplication.longitude);
+        databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/longitude");
+        databaseReference.setValue(MyApplication.currentUser.getLongitude());
     }
-
-
 
 
     public void getEducation() {
@@ -441,14 +456,14 @@ public class Profile extends Fragment {
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
 
-                        try{
+                        try {
                             ArrayList<String> educationList = new ArrayList<String>();
                             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
 
                             JSONObject education = response.getJSONObject();
                             JSONArray educationArray = education.getJSONArray("education");
 
-                            for (int i=0; i<educationArray.length(); i++) {
+                            for (int i = 0; i < educationArray.length(); i++) {
                                 JSONObject schoolData = educationArray.getJSONObject(i);
                                 JSONObject school = schoolData.getJSONObject("school");
 
@@ -465,14 +480,14 @@ public class Profile extends Fragment {
                                 public void onClick(final DialogInterface dialog, int which) {
                                     school.setText(arrayAdapter.getItem(which));
 
-                                    databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId() +"/school");
+                                    databaseReference = firebaseDatabase.getReference("Users/" + MyApplication.currentUser.getId() + "/school");
                                     databaseReference.setValue(arrayAdapter.getItem(which));
                                 }
                             });
 
                             builderSingle.show();
 
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             Log.i("--All", "Error: " + e.getMessage());
                         }
                     }
@@ -483,7 +498,7 @@ public class Profile extends Fragment {
     public void setBirthdate() {
 
         if (MyApplication.currentUser.isGaveFullBirthday()) {
-            name.append(", "  + SimpleCalculations.getAge(MyApplication.currentUser));
+            name.append(", " + SimpleCalculations.getAge(MyApplication.currentUser));
         }
 
     }
@@ -493,5 +508,59 @@ public class Profile extends Fragment {
         Profile f = new Profile();
         return f;
     }
+
+    public void makeQuery() {
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.yelp.com/v2/search?").newBuilder();
+        urlBuilder.addQueryParameter("ll", Double.toString(+MyApplication.currentUser.getLatitude())+","+Double.toString(MyApplication.currentUser.getLongitude()));
+        urlBuilder.addQueryParameter("limit", "2");
+        urlBuilder.addQueryParameter("category_filter", "mini_golf");
+
+        final YelpService yelpService = new YelpService();
+        yelpService.findRestaurants(urlBuilder, new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.i("--All", "Error Yelp: " + e.getMessage());
+
+
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                try {
+                    String jsonData = response.body().string();
+                    Log.v("--All", "Yelp Response: " + jsonData);
+
+                    JSONObject fullResponse = new JSONObject(jsonData);
+                    JSONArray businesses = fullResponse.getJSONArray("businesses");
+
+                    for (int i=0; i<businesses.length(); i++) {
+                        JSONObject business = businesses.getJSONObject(i);
+                        Log.i("--All", "Name: " + business.get("name"));
+
+                        Log.i("--All", "Review Count: " + business.get("review_count"));
+
+                        JSONObject location = business.getJSONObject("location");
+                        Log.i("--All", "City: " + location.get("city"));
+                        JSONArray address = location.getJSONArray("display_address");
+                        Log.i("--All", "Address: " + address.get(0));
+                        for (int j=1; j <address.length();j++) {
+                            Log.i("--All", "\n" + address.get(j));
+                        }
+                        JSONObject coordinate = location.getJSONObject("coordinate");
+                        Log.i("--All", "Lat: " + coordinate.get("latitude"));
+                        Log.i("--All", "Long: " + coordinate.get("longitude"));
+
+                        Log.i("--All", "Image: " + business.get("image_url"));
+                    }
+
+                } catch (Exception e) {
+                    Log.i("--All", "Error Parsing JSON: " + e.getMessage());
+                }
+            }
+        });
+    }
+
 
 }

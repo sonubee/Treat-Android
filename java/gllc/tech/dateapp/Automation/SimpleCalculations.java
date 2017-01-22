@@ -43,8 +43,9 @@ public class SimpleCalculations {
         locationA.setLatitude(center.latitude);
         locationA.setLongitude(center.longitude);
         Location locationB = new Location("point B");
-        locationB.setLatitude(MyApplication.latitude);
-        locationB.setLongitude(MyApplication.longitude);
+        locationB.setLatitude(MyApplication.currentUser.getLatitude());
+        locationB.setLongitude(MyApplication.currentUser.getLongitude());
+        //locationB.setLongitude(MyApplication.longitude);
         Float distance = locationA.distanceTo(locationB) ;
         Double distance2 = distance*0.000621371;
 

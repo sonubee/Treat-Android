@@ -35,6 +35,8 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.model.HelpLiveo;
@@ -351,7 +353,10 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
                 FragmentManager manager = getSupportFragmentManager();
                 Fragment fragment = manager.findFragmentByTag("CreateEvent");
+                ArrayList<String> placeIds = new ArrayList<String>();
+                placeIds.add(place.getId());
                 ((CreateEvent3) fragment).getPlacesDetails(place.getId());
+                //((CreateEvent3) fragment).getPlacesDetails2(placeIds);
 
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
@@ -411,8 +416,9 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 String latitude = String.valueOf(mLastLocation.getLatitude());
                 String longitude = String.valueOf(mLastLocation.getLongitude());
 
-                MyApplication.latitude = Double.parseDouble(latitude);
-                MyApplication.longitude = Double.parseDouble(longitude);
+                MyApplication.currentUser.setLatitude(Double.parseDouble(latitude));
+                //MyApplication.longitude = Double.parseDouble(longitude);
+                MyApplication.currentUser.setLongitude(Double.parseDouble(longitude));
 
             }
         }
