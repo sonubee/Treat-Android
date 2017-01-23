@@ -57,11 +57,18 @@ public class CreateEvent3 extends Fragment{
     TextView eventTitle, placeAddress, startTime, endTime;
     CircleImageView activityImage;
     ProgressDialog pleaseWait;
+    ArrayList<PlacesDetails> placesDetailsArrayList;
+    PostDateSuggestionsAdapter postDateSuggestionsAdapter;
+    String globalResponse;
+    int counter=0, counterHolder=0;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.create_event3, container, false);
+
+        placesDetailsArrayList = new ArrayList<>();
+        postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
 
         prefix = "";
         main = "";
@@ -90,7 +97,6 @@ public class CreateEvent3 extends Fragment{
 
 
         chooseAcitivty.setVisibility(View.INVISIBLE);
-
 
         return view;
     }
@@ -481,9 +487,6 @@ public class CreateEvent3 extends Fragment{
         pleaseWait.setInverseBackgroundForced(false);
         pleaseWait.show();
 
-        final ArrayList<PlacesDetails> placesDetailsArrayList = new ArrayList<>();
-        final PostDateSuggestionsAdapter postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
-
         ListView suggestionsListView = (ListView) dialog.findViewById(R.id.suggestionsListView);
         suggestionsListView.setAdapter(postDateSuggestionsAdapter);
 
@@ -511,37 +514,9 @@ public class CreateEvent3 extends Fragment{
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        try {
-                            Log.v("--All", "Yelp Response: " + responseString);
-
-                            JSONObject fullResponse = new JSONObject(responseString);
-                            JSONArray businesses = fullResponse.getJSONArray("businesses");
-
-                            for (int i=0; i<businesses.length(); i++) {
-                                JSONObject business = businesses.getJSONObject(i);
-                                JSONObject location = business.getJSONObject("location");
-                                JSONArray address = location.getJSONArray("display_address");
-                                String formattedAddress = address.get(0).toString();
-                                for (int j=1; j <address.length();j++) {
-                                    formattedAddress += "\n" + address.get(j).toString();
-                                }
-                                JSONObject coordinate = business.getJSONObject("coordinates");
-
-                                placesDetailsArrayList.add(new PlacesDetails(main, business.getString("name"), location.getString("city"),
-                                        Integer.parseInt(business.getString("review_count")), business.getString("image_url").replace("ms", "l"), formattedAddress,
-                                        coordinate.getDouble("latitude"), coordinate.getDouble("longitude"), business.getDouble("rating")));
-
-                            }
-
-
-                            postDateSuggestionsAdapter.notifyDataSetChanged();
-                            pleaseWait.hide();
-
-                            
-
-                        } catch (Exception e) {
-                            Log.i("--All", "Error Parsing JSON: " + e.getMessage());
-                        }
+                        counterHolder=0;
+                        globalResponse = responseString;
+                        parseData();
                     }
                 });
 
@@ -584,8 +559,42 @@ public class CreateEvent3 extends Fragment{
         });
     }
 
-    public void parseData(String response) {
+    public void parseData() {
+        try {
+            //Log.v("--All", "Yelp Response: " + globalResponse);
 
+            JSONObject fullResponse = new JSONObject(globalResponse);
+            JSONArray businesses = fullResponse.getJSONArray("businesses");
+
+            for (counter=counterHolder; counter<businesses.length(); counter++) {
+                JSONObject business = businesses.getJSONObject(counter);
+                JSONObject location = business.getJSONObject("location");
+                JSONArray address = location.getJSONArray("display_address");
+                String formattedAddress = address.get(0).toString();
+                for (int j=1; j <address.length();j++) {
+                    formattedAddress += "\n" + address.get(j).toString();
+                }
+                JSONObject coordinate = business.getJSONObject("coordinates");
+
+                placesDetailsArrayList.add(new PlacesDetails(main, business.getString("name"), location.getString("city"),
+                        Integer.parseInt(business.getString("review_count")), business.getString("image_url").replace("ms", "l"), formattedAddress,
+                        coordinate.getDouble("latitude"), coordinate.getDouble("longitude"), business.getDouble("rating")));
+
+            }
+
+
+            postDateSuggestionsAdapter.notifyDataSetChanged();
+            pleaseWait.hide();
+
+
+
+        } catch (Exception e) {
+            Log.i("--All", "Error Parsing JSON: " + e.getMessage());
+            counterHolder=counter;
+            counterHolder++;
+            parseData();
+
+        }
     }
 }
 
