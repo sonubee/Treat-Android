@@ -1,6 +1,7 @@
 package gllc.tech.dateapp.PostDate;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,12 @@ public class DisplayActivityGridViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return MyApplication.activitiesString.length;
+        return MyApplication.categories.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return MyApplication.activitiesString[position];
+        return MyApplication.categories.get(position);
     }
 
     @Override
@@ -56,8 +57,13 @@ public class DisplayActivityGridViewAdapter extends BaseAdapter {
         picture = (ImageView) v.getTag(R.id.gridImageView);
         activity = (TextView) v.findViewById(R.id.gridActivityName);
 
+        String pic = MyApplication.categoriesMap.get(MyApplication.categories.get(position).getDisplayName()).getDefaultImage();
+        int id = context.getResources().getIdentifier(pic, "drawable", context.getPackageName());
+        picture.setImageResource(id);
+        activity.setText(MyApplication.categories.get(position).getDisplayName());
+
+        /*
         picture.setImageResource(R.drawable.minigolf);
-        activity.setText(MyApplication.activitiesString[position]);
 
         if (MyApplication.activitiesString[position].equals("Bowling")) {
             picture.setImageResource(R.drawable.bowling);
@@ -82,7 +88,7 @@ public class DisplayActivityGridViewAdapter extends BaseAdapter {
         if (MyApplication.activitiesString[position].equals("Music Festival")) {
             picture.setImageResource(R.drawable.music_festival);
         }
-
+*/
 
         return v;
     }

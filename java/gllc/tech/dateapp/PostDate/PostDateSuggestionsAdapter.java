@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import gllc.tech.dateapp.Automation.SimpleCalculations;
+import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.PlacesDetails;
 import gllc.tech.dateapp.R;
 
@@ -64,7 +65,13 @@ public class PostDateSuggestionsAdapter extends BaseAdapter {
                 " Miles From You");
         holder.reviews.setText("Reviews: "+placesDetailsArrayList.get(position).getReviews() + " - Rating: " + placesDetailsArrayList.get(position).getRating());
 
-        if (!placesDetailsArrayList.get(position).getPhoto().equals("NA") && !placesDetailsArrayList.get(position).getPhoto().equals("")) {
+        if (placesDetailsArrayList.get(position).getPhoto().equals("")) {
+            String pic = MyApplication.categoriesMap.get(placesDetailsArrayList.get(position).getPlaceId()).getDefaultImage();
+            int id = context.getResources().getIdentifier(pic, "drawable", context.getPackageName());
+            holder.placeImage.setImageResource(id);
+        }
+
+        else if (!placesDetailsArrayList.get(position).getPhoto().equals("NA")) {
             Picasso.with(context).load(placesDetailsArrayList.get(position).getPhoto()).into(holder.placeImage);
         }
 

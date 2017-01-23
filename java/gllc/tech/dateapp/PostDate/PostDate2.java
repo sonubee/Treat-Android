@@ -90,7 +90,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
-                Toast.makeText(getContext(), "When is the date?", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "When is the date?", Toast.LENGTH_SHORT).show();
 
             }
         }, 1000);

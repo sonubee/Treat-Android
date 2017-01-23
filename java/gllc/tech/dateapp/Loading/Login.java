@@ -81,6 +81,7 @@ public class Login extends Fragment {
         MyApplication.fullMatchesAsCreator.clear();
         MyApplication.fullMatchesAsDate.clear();
         MyApplication.pendingDates.clear();
+        MyApplication.categories.clear();
 
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.i("--All", "Token: " + refreshedToken);

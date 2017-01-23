@@ -60,8 +60,8 @@ public class MyApplication extends Application {
     public static int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     public static final int ACCESS_FINE_LOCATION_VALUE = 9999;
     public static String myId = "ZyOum0RLpLUqSxQ9if8OTjZVD7y1";
-    public static String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "MiniGolf", "MusicFestival",
-            "Hike", "Movie", "Walk", "Other", "FastFood"};
+    //public static String[] activitiesString = new String[] {"Bowling", "Coffee", "Concert", "Dinner", "Event", "Lunch", "Go-Kart", "MiniGolf", "MusicFestival",
+    //        "Hike", "Movie", "Walk", "Other", "FastFood"};
     public static String yelpToken = "";
 
     @Override

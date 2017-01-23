@@ -39,7 +39,7 @@ public class ChooseActivityPostDate extends Fragment{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Bundle bundle = new Bundle();
-                bundle.putString("activitySelected", MyApplication.activitiesString[position]);
+                bundle.putString("activitySelected", MyApplication.categories.get(position).getDisplayName());
 
                 ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", bundle);
             }

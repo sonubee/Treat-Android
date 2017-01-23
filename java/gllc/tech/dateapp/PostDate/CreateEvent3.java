@@ -109,16 +109,14 @@ public class CreateEvent3 extends Fragment{
             @Override
             public void onClick(View v) {
                 //whereToGo();
-                makeSuggestions3();
+                makeSuggestions4();
             }
         });
 
-        if (main.equals("MiniGolf") || main.equals("Dinner")) {
-            String pic = "minigolf";
-            int id = getResources().getIdentifier(pic, "drawable", getActivity().getPackageName());
-            activityImage.setImageResource(id);
-            //activityImage.setImageResource(R.drawable.minigolf);
-        }
+
+        String pic = MyApplication.categoriesMap.get(main).getDefaultImage();
+        int id = getResources().getIdentifier(pic, "drawable", getActivity().getPackageName());
+        activityImage.setImageResource(id);
 
         Log.i("--All", "Making Suggestion");
         makeSuggestions4();
@@ -497,12 +495,7 @@ public class CreateEvent3 extends Fragment{
         params.put("latitude", MyApplication.currentUser.getLatitude());
         params.put("longitude", MyApplication.currentUser.getLongitude());
 
-        String category = "";
-        if (main.equals("MiniGolf")) {category = "mini_golf";}
-        if (main.equals("Bowling")) {category = "bowling";}
-        if (main.equals("Dinner")) {category = "restaurants";}
-
-        params.put("categories", category);
+        params.put("categories", MyApplication.categoriesMap.get(main).getCategory());
 
         client.addHeader("Authorization", "Bearer "+MyApplication.yelpToken);
 
@@ -518,11 +511,8 @@ public class CreateEvent3 extends Fragment{
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        //Log.i("--All", "Result2: " + responseString);
-
                         try {
-                            //String jsonData = response.body().string();
-                            //Log.v("--All", "Yelp Response: " + jsonData);
+                            Log.v("--All", "Yelp Response: " + responseString);
 
                             JSONObject fullResponse = new JSONObject(responseString);
                             JSONArray businesses = fullResponse.getJSONArray("businesses");
@@ -537,7 +527,7 @@ public class CreateEvent3 extends Fragment{
                                 }
                                 JSONObject coordinate = business.getJSONObject("coordinates");
 
-                                placesDetailsArrayList.add(new PlacesDetails("PLACE ID", business.getString("name"), location.getString("city"),
+                                placesDetailsArrayList.add(new PlacesDetails(main, business.getString("name"), location.getString("city"),
                                         Integer.parseInt(business.getString("review_count")), business.getString("image_url").replace("ms", "l"), formattedAddress,
                                         coordinate.getDouble("latitude"), coordinate.getDouble("longitude"), business.getDouble("rating")));
 
@@ -546,6 +536,8 @@ public class CreateEvent3 extends Fragment{
 
                             postDateSuggestionsAdapter.notifyDataSetChanged();
                             pleaseWait.hide();
+
+                            
 
                         } catch (Exception e) {
                             Log.i("--All", "Error Parsing JSON: " + e.getMessage());
@@ -590,6 +582,10 @@ public class CreateEvent3 extends Fragment{
                 getStartTime();
             }
         });
+    }
+
+    public void parseData(String response) {
+
     }
 }
 
