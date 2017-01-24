@@ -60,35 +60,8 @@ public class DisplayActivityGridViewAdapter extends BaseAdapter {
         String pic = MyApplication.categoriesMap.get(MyApplication.categories.get(position).getDisplayName()).getDefaultImage();
         int id = context.getResources().getIdentifier(pic, "drawable", context.getPackageName());
         picture.setImageResource(id);
+
         activity.setText(MyApplication.categories.get(position).getDisplayName());
-
-        /*
-        picture.setImageResource(R.drawable.minigolf);
-
-        if (MyApplication.activitiesString[position].equals("Bowling")) {
-            picture.setImageResource(R.drawable.bowling);
-        }
-
-        if (MyApplication.activitiesString[position].equals("Lunch")) {
-            picture.setImageResource(R.drawable.meal);
-        }
-
-        if (MyApplication.activitiesString[position].equals("Dinner")) {
-            picture.setImageResource(R.drawable.meal);
-        }
-
-        if (MyApplication.activitiesString[position].equals("Coffee")) {
-            picture.setImageResource(R.drawable.coffee);
-        }
-
-        if (MyApplication.activitiesString[position].equals("Concert")) {
-            picture.setImageResource(R.drawable.music_festival);
-        }
-
-        if (MyApplication.activitiesString[position].equals("Music Festival")) {
-            picture.setImageResource(R.drawable.music_festival);
-        }
-*/
 
         return v;
     }

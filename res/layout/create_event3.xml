@@ -10,16 +10,8 @@
         android:orientation="vertical"
         android:background="#000">
 
-        <com.jaredrummler.materialspinner.MaterialSpinner
-            android:layout_marginTop="30dp"
-            android:hint="Choose Activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/chooseActivity"
-            android:layout_gravity="center_horizontal"
-            android:scrollbarThumbVertical="@color/colorAccent"/>
-
         <TextView
+            android:layout_marginTop="20dp"
             android:id="@+id/eventTitle"
             android:layout_gravity="center_horizontal"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"

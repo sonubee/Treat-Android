@@ -17,8 +17,8 @@ public class PlacesDetails {
     double longitude;
     double rating;
 
-    public PlacesDetails(String placeId, String name, String city, int reviews, String photo, String address, double latitude, double longitude, double rating) {
-        this.placeId = placeId;
+    public PlacesDetails(String activity, String name, String city, int reviews, String photo, String address, double latitude, double longitude, double rating) {
+        this.placeId = activity;
         this.name = name;
         this.city = city;
         this.reviews = reviews;

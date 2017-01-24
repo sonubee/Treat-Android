@@ -184,7 +184,14 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
             ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getCity());
             ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getActivity() + " at " + listOfEvents.get(i).getSpecific());
             ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(listOfEvents.get(i).getBeginTime() + " - " + listOfEvents.get(i).getEndTime());
-            Picasso.with(getContext()).load(listOfEvents.get(i).getPhoto()).into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));
+            if (!listOfEvents.get(i).getPhoto().equals("NA")) {
+                Picasso.with(getContext()).load(listOfEvents.get(i).getPhoto()).into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));
+            } else {
+                String pic = MyApplication.categoriesMap.get(listOfEvents.get(i).getActivity()).getDefaultImage();
+                int id = getActivity().getResources().getIdentifier(pic, "drawable", getActivity().getPackageName());
+                ((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)).setImageResource(id);
+            }
+
 
             eventAdapterLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

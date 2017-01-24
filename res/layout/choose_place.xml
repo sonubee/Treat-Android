@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:id="@+id/searchPlaceEditText"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="Enter Name Here"/>
+
+        <com.dd.processbutton.FlatButton
+            android:id="@+id/searchPlaceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Search"/>
+    </LinearLayout>
+
+    <ListView
+        android:divider="#FFF"
+        android:dividerHeight="4px"
+        android:id="@+id/searchPlaceListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
+
+</LinearLayout>

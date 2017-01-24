@@ -51,7 +51,6 @@ import okhttp3.Response;
 public class CreateEvent3 extends Fragment{
 
     FlatButton clickNext;
-    MaterialSpinner chooseAcitivty;
     String prefix, main, suffix, address, startingTime, endingTime, fullEventTitle, photo, city;
     double latitude, longitude;
     TextView eventTitle, placeAddress, startTime, endTime;
@@ -81,7 +80,6 @@ public class CreateEvent3 extends Fragment{
         photo = "NA";
         city = "";
 
-        chooseAcitivty = (MaterialSpinner) view.findViewById(R.id.chooseActivity);
         eventTitle = (TextView) view.findViewById(R.id.eventTitle);
         placeAddress = (TextView) view.findViewById(R.id.placeAddress);
         startTime = (TextView) view.findViewById(R.id.startTime);
@@ -89,14 +87,8 @@ public class CreateEvent3 extends Fragment{
         activityImage = (CircleImageView) view.findViewById(R.id.activityImage);
         clickNext = (FlatButton) view.findViewById(R.id.nextActivity);
 
-        eventTitle.setVisibility(View.INVISIBLE);
-        placeAddress.setVisibility(View.INVISIBLE);
-        startTime.setVisibility(View.INVISIBLE);
         endTime.setVisibility(View.INVISIBLE);
         clickNext.setVisibility(View.INVISIBLE);
-
-
-        chooseAcitivty.setVisibility(View.INVISIBLE);
 
         return view;
     }
@@ -108,34 +100,35 @@ public class CreateEvent3 extends Fragment{
         //setHasOptionsMenu(true);
 
         main = getArguments().getString("activitySelected");
+        photo = getArguments().getString("photoURL");
+        suffix = getArguments().getString("place");
+        city = getArguments().getString("city");
+        address = getArguments().getString("address");
+        latitude = getArguments().getDouble("latitude");
+        longitude = getArguments().getDouble("longitude");
 
-        eventTitle.setVisibility(View.VISIBLE);
-        eventTitle.setText(main);
-        eventTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //whereToGo();
-                makeSuggestions4();
-            }
-        });
+        fullEventTitle = main + " at " + suffix;
+        eventTitle.setText(fullEventTitle);
+        placeAddress.setText(address);
 
 
-        String pic = MyApplication.categoriesMap.get(main).getDefaultImage();
-        int id = getResources().getIdentifier(pic, "drawable", getActivity().getPackageName());
-        activityImage.setImageResource(id);
-
-        Log.i("--All", "Making Suggestion");
-        makeSuggestions4();
+        if (!photo.equals("")) {
+            Picasso.with(getContext()).load(photo).into(activityImage);
+        } else {
+            String pic = MyApplication.categoriesMap.get(main).getDefaultImage();
+            int id = getActivity().getResources().getIdentifier(pic, "drawable", getActivity().getPackageName());
+            activityImage.setImageResource(id);
+        }
 
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //PostDateFragment.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
                 PostDate2.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
-                //PostDateFragment.adapter.notifyDataSetChanged();
                 ((MainActivity)getActivity()).popAllFragments();
             }
         });
+
+        getStartTime();
     }
 
     @Override
@@ -204,9 +197,7 @@ public class CreateEvent3 extends Fragment{
                             Log.i("--All", "Error: " + e.getMessage());
                             getStartTime();
                         }
-
                         placeAddress.setVisibility(View.VISIBLE);
-                        chooseAcitivty.setVisibility(View.GONE);
                     }
                 });
 
@@ -339,7 +330,7 @@ public class CreateEvent3 extends Fragment{
         mTimePicker2.setTitle("Select End Time");
         mTimePicker2.show();
     }
-
+/*
     public void makeSuggestions3() {
 
         final Dialog dialog = new Dialog(getContext());
@@ -396,11 +387,11 @@ public class CreateEvent3 extends Fragment{
                             formattedAddress += "\n" + address.get(j).toString();
                         }
                         JSONObject coordinate = location.getJSONObject("coordinate");
-/*
+
                         placesDetailsArrayList.add(new PlacesDetails("PLACE ID", business.getString("name"), location.getString("city"),
                                 Integer.parseInt(business.getString("review_count")), business.getString("image_url").replace("ms", "l"), formattedAddress,
                                 Double.parseDouble(coordinate.getString("latitude")), Double.parseDouble(coordinate.getString("longitude")), business.getDouble("rating")));
-*/
+
 
                         placesDetailsArrayList.add(new PlacesDetails("PLACE ID", business.getString("name"), location.getString("city"),
                                 Integer.parseInt(business.getString("review_count")), business.getString("image_url").replace("ms", "l"), formattedAddress,
@@ -462,7 +453,7 @@ public class CreateEvent3 extends Fragment{
             }
         });
     }
-
+*/
     public void makeSuggestions4() {
 
         final Dialog dialog = new Dialog(getContext());
@@ -519,44 +510,6 @@ public class CreateEvent3 extends Fragment{
                         parseData();
                     }
                 });
-
-        suggestionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                photo = placesDetailsArrayList.get(position).getPhoto();
-                Picasso.with(getContext()).load(photo).into(activityImage);
-
-                suffix = placesDetailsArrayList.get(position).getName();
-
-                fullEventTitle = main + " at " + suffix;
-                eventTitle.setText(fullEventTitle);
-
-                city = placesDetailsArrayList.get(position).getCity();
-
-                address = placesDetailsArrayList.get(position).getAddress();
-                //address = address.replaceFirst(",", "\n");
-                placeAddress.setText(address);
-
-                latitude = placesDetailsArrayList.get(position).getLatitude();
-                longitude = placesDetailsArrayList.get(position).getLongitude();
-
-                placeAddress.setVisibility(View.VISIBLE);
-                chooseAcitivty.setVisibility(View.GONE);
-
-                startTime.setVisibility(View.VISIBLE);
-                startTime.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getStartTime();
-                    }
-                });
-
-                dialog.dismiss();
-
-                getStartTime();
-            }
-        });
     }
 
     public void parseData() {
