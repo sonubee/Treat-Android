@@ -57,7 +57,7 @@ public class SearchDatesAdapter extends BaseAdapter {
         holder.eventImage = (ImageView)convertView.findViewById(R.id.eventImage);
 
         holder.time.setText(eventsOfDates.get(position).getBeginTime() + " - " + eventsOfDates.get(position).getEndTime());
-        holder.event.setText(eventsOfDates.get(position).getActivity() + " at " + eventsOfDates.get(position).getSpecific());
+        holder.event.setText(eventsOfDates.get(position).getActivity() + " at " + eventsOfDates.get(position).getPlaceName());
         Picasso.with(context).load(eventsOfDates.get(position).getPhoto()).into(holder.eventImage);
 
         return convertView;

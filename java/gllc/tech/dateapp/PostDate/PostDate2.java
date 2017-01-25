@@ -5,9 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -182,7 +179,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
 
             ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(listOfEvents.get(i).getActivity());
             ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getCity());
-            ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getActivity() + " at " + listOfEvents.get(i).getSpecific());
+            ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getActivity() + " at " + listOfEvents.get(i).getPlaceName());
             ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(listOfEvents.get(i).getBeginTime() + " - " + listOfEvents.get(i).getEndTime());
             if (!listOfEvents.get(i).getPhoto().equals("NA")) {
                 Picasso.with(getContext()).load(listOfEvents.get(i).getPhoto()).into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));

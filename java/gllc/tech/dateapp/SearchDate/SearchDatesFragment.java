@@ -8,7 +8,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -231,7 +229,7 @@ public class SearchDatesFragment extends Fragment {
                                     ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
                                             get(i).getCity());
                                     ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
-                                            get(i).getActivity() + " at " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getSpecific());
+                                            get(i).getActivity() + " at " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getPlaceName());
                                     ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
                                             get(i).getBeginTime() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getEndTime());
                                     Picasso.with(getContext()).load(MyApplication.allDates.get(dateCounter).getEvents().get(i).getPhoto()).

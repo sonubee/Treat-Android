@@ -55,10 +55,10 @@ public class DateReviewAdapter extends BaseAdapter {
 
         //holder1.beginTime.setText(eventsOfDates.get(position).getBeginTime());
         //holder1.endTime.setText(eventsOfDates.get(position).getEndTime());
-        //holder1.location.setText(eventsOfDates.get(position).getSpecific());
+        //holder1.location.setText(eventsOfDates.get(position).getActivitySpecificName());
 
         holder1.time.setText(eventsOfDates.get(position).getBeginTime() + " - " + eventsOfDates.get(position).getEndTime());
-        holder1.activity.setText(eventsOfDates.get(position).getActivity() + " at " + eventsOfDates.get(position).getSpecific());
+        holder1.activity.setText(eventsOfDates.get(position).getActivity() + " at " + eventsOfDates.get(position).getPlaceName());
 
         holder1.activity.setTextColor(Color.CYAN);
 

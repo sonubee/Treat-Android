@@ -60,8 +60,14 @@ public class EventAdapter extends BaseAdapter{
 
 
         holder.time.setText(listOfEvents.get(position).getBeginTime() + " - " + listOfEvents.get(position).getEndTime());
-        holder.activity.setText(listOfEvents.get(position).getActivity() + " at " + listOfEvents.get(position).getSpecific());
-        holder.address.setText(listOfEvents.get(position).getCity());
+
+        if (listOfEvents.get(position).getActivitySpecificName().equals("")) {
+            holder.activity.setText(listOfEvents.get(position).getActivity());
+        } else {
+            holder.activity.setText(listOfEvents.get(position).getActivity() + " - " + listOfEvents.get(position).getActivitySpecificName());
+        }
+
+        holder.address.setText(listOfEvents.get(position).getPlaceName() + " in " + listOfEvents.get(position).getCity());
         Picasso.with(context).load(listOfEvents.get(position).getPhoto()).into(holder.imageView);
 
         return convertView;

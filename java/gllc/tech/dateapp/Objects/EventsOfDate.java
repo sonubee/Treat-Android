@@ -5,7 +5,7 @@ package gllc.tech.dateapp.Objects;
  */
 public class EventsOfDate {
 
-    String specific;
+    String activitySpecificName;
     String activity;
     String address;
     String beginTime;
@@ -19,9 +19,9 @@ public class EventsOfDate {
     public EventsOfDate() {
     }
 
-    public EventsOfDate(String specific, String activity, String address, String beginTime, String endTime, String placeName, double latitude, double longitude,
+    public EventsOfDate(String activitySpecificName, String activity, String address, String beginTime, String endTime, String placeName, double latitude, double longitude,
                         String photo, String city) {
-        this.specific = specific;
+        this.activitySpecificName = activitySpecificName;
         this.activity = activity;
         this.address = address;
         this.beginTime = beginTime;
@@ -33,12 +33,12 @@ public class EventsOfDate {
         this.city = city;
     }
 
-    public String getSpecific() {
-        return specific;
+    public String getActivitySpecificName() {
+        return activitySpecificName;
     }
 
-    public void setSpecific(String specific) {
-        this.specific = specific;
+    public void setActivitySpecificName(String activitySpecificName) {
+        this.activitySpecificName = activitySpecificName;
     }
 
     public String getActivity() {

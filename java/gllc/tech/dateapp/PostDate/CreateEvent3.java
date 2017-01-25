@@ -120,7 +120,7 @@ public class CreateEvent3 extends Fragment{
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostDate2.listOfEvents.add(new EventsOfDate(place, main, address, startingTime, endingTime, place, latitude, longitude, photo, city));
+                PostDate2.listOfEvents.add(new EventsOfDate(activitySpecificName, main, address, startingTime, endingTime, place, latitude, longitude, photo, city));
                 ((MainActivity)getActivity()).popAllFragments();
             }
         });
