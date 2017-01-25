@@ -49,7 +49,7 @@ public class ChooseActivityPostDate extends Fragment{
     PostDateSuggestionsAdapter postDateSuggestionsAdapter;
     int counter=0, counterHolder=0;
     String globalResponse;
-    String photoURL, place, city,address, activity, activitySpecificName="";
+    String photoURL, place, city,address, activity, activitySpecificName="", posterPath="";
     Double latitude, longitude;
 
     @Nullable
@@ -92,13 +92,13 @@ public class ChooseActivityPostDate extends Fragment{
                                         JSONArray movies = fullResponse.getJSONArray("results");
 
                                         final ArrayList<String> movieNames = new ArrayList<String>();
+                                        final ArrayList<String> posterPathArrayList = new ArrayList<String>();
 
                                         for (int i = 0; i < movies.length(); i++) {
                                             JSONObject movie = movies.getJSONObject(i);
 
                                             movieNames.add(movie.getString("original_title"));
-
-                                            Log.i("--All", "Title: " + movieNames.get(i));
+                                            posterPathArrayList.add(movie.getString("poster_path"));
                                         }
 
                                         final Dialog dialog = new Dialog(getContext());
@@ -107,7 +107,7 @@ public class ChooseActivityPostDate extends Fragment{
 
                                         dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
 
-                                        WhichMovieAdapter whichMovieAdapter = new WhichMovieAdapter(getContext(), movieNames);
+                                        WhichMovieAdapter whichMovieAdapter = new WhichMovieAdapter(getContext(), movieNames, posterPathArrayList);
 
                                         ListView whichMovieListView = (ListView) dialog.findViewById(R.id.whichMovieListView);
                                         whichMovieListView.setAdapter(whichMovieAdapter);
@@ -116,6 +116,7 @@ public class ChooseActivityPostDate extends Fragment{
                                             @Override
                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                 activitySpecificName = movieNames.get(position);
+                                                posterPath = posterPathArrayList.get(position);
 
                                                 dialog.dismiss();
                                                 getLocation(activityPosition);
@@ -186,7 +187,7 @@ public class ChooseActivityPostDate extends Fragment{
         }
     }
 
-    public void getLocation(int position) {
+    public void getLocation(int positionOfLocation) {
 
         placesDetailsArrayList = new ArrayList<>();
         postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
@@ -221,6 +222,11 @@ public class ChooseActivityPostDate extends Fragment{
                 searchButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        placesDetailsArrayList.clear();
+                        postDateSuggestionsAdapter.notifyDataSetChanged();
+
+
                         AsyncHttpClient client = new AsyncHttpClient();
                         RequestParams params = new RequestParams();
 
@@ -241,12 +247,45 @@ public class ChooseActivityPostDate extends Fragment{
 
                                     @Override
                                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                        Log.i("--All", "Search Response: " + responseString);
                                         counterHolder=0;
                                         globalResponse = responseString;
                                         parseData();
                                     }
                                 });
+                    }
+                });
+
+                searchPlaceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        selectedPlace(dialog, position);
+                        /*
+                        photoURL = placesDetailsArrayList.get(position).getPhoto();
+                        place = placesDetailsArrayList.get(position).getName();
+                        city = placesDetailsArrayList.get(position).getCity();
+                        address = placesDetailsArrayList.get(position).getAddress();
+                        latitude = placesDetailsArrayList.get(position).getLatitude();
+                        longitude = placesDetailsArrayList.get(position).getLongitude();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("activitySelected", activity);
+                        bundle.putString("place", place);
+                        bundle.putString("city", city);
+                        bundle.putString("address", address);
+                        bundle.putDouble("latitude", latitude);
+                        bundle.putDouble("longitude", longitude);
+                        bundle.putString("activitySpecificName", activitySpecificName);
+                        if (posterPath.equals("")) {
+                            bundle.putString("photoURL", photoURL);
+                        } else {
+                            bundle.putString("photoURL", "https://image.tmdb.org/t/p/w500"+posterPath);
+                        }
+
+                        dialog.dismiss();
+
+                        ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", bundle);
+                        */
                     }
                 });
 
@@ -268,11 +307,11 @@ public class ChooseActivityPostDate extends Fragment{
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
 
-        activity = MyApplication.categories.get(position).getDisplayName();
+        activity = MyApplication.categories.get(positionOfLocation).getDisplayName();
 
         params.put("latitude", MyApplication.currentUser.getLatitude());
         params.put("longitude", MyApplication.currentUser.getLongitude());
-        params.put("categories", MyApplication.categoriesMap.get(MyApplication.categories.get(position).getDisplayName()).getCategory());
+        params.put("categories", MyApplication.categoriesMap.get(MyApplication.categories.get(positionOfLocation).getDisplayName()).getCategory());
         //params.put("limit", 8);
 
         client.addHeader("Authorization", "Bearer "+MyApplication.yelpToken);
@@ -297,6 +336,9 @@ public class ChooseActivityPostDate extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                selectedPlace(dialog, position);
+                /*
+
                 photoURL = placesDetailsArrayList.get(position).getPhoto();
                 place = placesDetailsArrayList.get(position).getName();
                 city = placesDetailsArrayList.get(position).getCity();
@@ -306,18 +348,51 @@ public class ChooseActivityPostDate extends Fragment{
 
                 Bundle bundle = new Bundle();
                 bundle.putString("activitySelected", activity);
-                bundle.putString("photoURL", photoURL);
                 bundle.putString("place", place);
                 bundle.putString("city", city);
                 bundle.putString("address", address);
                 bundle.putDouble("latitude", latitude);
                 bundle.putDouble("longitude", longitude);
                 bundle.putString("activitySpecificName", activitySpecificName);
+                if (posterPath.equals("")) {
+                    bundle.putString("photoURL", photoURL);
+                } else {
+                    bundle.putString("photoURL", "https://image.tmdb.org/t/p/w500"+posterPath);
+                }
 
                 dialog.dismiss();
 
                 ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", bundle);
+                */
             }
         });
+    }
+
+    public void selectedPlace(Dialog dialog, int position) {
+
+        photoURL = placesDetailsArrayList.get(position).getPhoto();
+        place = placesDetailsArrayList.get(position).getName();
+        city = placesDetailsArrayList.get(position).getCity();
+        address = placesDetailsArrayList.get(position).getAddress();
+        latitude = placesDetailsArrayList.get(position).getLatitude();
+        longitude = placesDetailsArrayList.get(position).getLongitude();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("activitySelected", activity);
+        bundle.putString("place", place);
+        bundle.putString("city", city);
+        bundle.putString("address", address);
+        bundle.putDouble("latitude", latitude);
+        bundle.putDouble("longitude", longitude);
+        bundle.putString("activitySpecificName", activitySpecificName);
+        if (posterPath.equals("")) {
+            bundle.putString("photoURL", photoURL);
+        } else {
+            bundle.putString("photoURL", "https://image.tmdb.org/t/p/w500"+posterPath);
+        }
+
+        dialog.dismiss();
+
+        ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", bundle);
     }
 }

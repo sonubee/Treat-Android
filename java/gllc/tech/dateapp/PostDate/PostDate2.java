@@ -177,9 +177,15 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
 
             RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null, false);
 
-            ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(listOfEvents.get(i).getActivity());
+            if (listOfEvents.get(i).getActivitySpecificName().equals("")) {
+                ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(listOfEvents.get(i).getActivity());
+            } else {
+                ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(listOfEvents.get(i).getActivity() + " - " +
+                        listOfEvents.get(i).getActivitySpecificName());
+            }
+
             ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getCity());
-            ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getActivity() + " at " + listOfEvents.get(i).getPlaceName());
+            ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(listOfEvents.get(i).getPlaceName() + " in " + listOfEvents.get(i).getCity());
             ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(listOfEvents.get(i).getBeginTime() + " - " + listOfEvents.get(i).getEndTime());
             if (!listOfEvents.get(i).getPhoto().equals("NA")) {
                 Picasso.with(getContext()).load(listOfEvents.get(i).getPhoto()).into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));

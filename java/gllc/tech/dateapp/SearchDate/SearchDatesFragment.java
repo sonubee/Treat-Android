@@ -224,12 +224,18 @@ public class SearchDatesFragment extends Fragment {
                                     //RelativeLayout tempRelativeLayout = new RelativeLayout(getContext());
                                     RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null, false);
 
-                                    ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
-                                            get(i).getActivity());
+                                    if (MyApplication.allDates.get(dateCounter).getEvents().get(i).getActivitySpecificName().equals("")) {
+                                        ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                                get(i).getActivity());
+                                    } else {
+                                        ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                                get(i).getActivity() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getActivitySpecificName());
+                                    }
+
                                     ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
                                             get(i).getCity());
                                     ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
-                                            get(i).getActivity() + " at " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getPlaceName());
+                                            get(i).getPlaceName() + " in " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getCity());
                                     ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
                                             get(i).getBeginTime() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getEndTime());
                                     Picasso.with(getContext()).load(MyApplication.allDates.get(dateCounter).getEvents().get(i).getPhoto()).
