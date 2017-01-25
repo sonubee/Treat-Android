@@ -25,6 +25,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class ChooseActivityPostDate extends Fragment{
     PostDateSuggestionsAdapter postDateSuggestionsAdapter;
     int counter=0, counterHolder=0;
     String globalResponse;
-    String photoURL, place, city,address, activity;
+    String photoURL, place, city,address, activity, activitySpecificName="";
     Double latitude, longitude;
 
     @Nullable
@@ -61,139 +62,80 @@ public class ChooseActivityPostDate extends Fragment{
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int activityPosition, long id) {
 
-                placesDetailsArrayList = new ArrayList<>();
-                postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
+                if (MyApplication.categories.get(activityPosition).getDisplayName().equals("Movie")) {
 
-                final Dialog dialog = new Dialog(getContext());
-                dialog.setContentView(R.layout.choose_location_dialog);
-                dialog.setTitle("Some Suggestions");
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    RequestParams params = new RequestParams();
 
-                dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
+                    params.put("api_key", "b26520fd19b1c1f349e2ffb81a3050ef");
+                    params.put("language", "en-US");
+                    params.put("sort_by", "popularity.desc");
+                    params.put("include_adult", "false");
+                    params.put("include_video", "false");
+                    params.put("page", "1");
 
-                FlatButton dialogButton = (FlatButton) dialog.findViewById(R.id.chooseOwnLocationButton);
-                // if button is clicked, close the custom dialog
-                dialogButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        placesDetailsArrayList.clear();
-                        postDateSuggestionsAdapter.notifyDataSetChanged();
-                        dialog.dismiss();
+                    client.get("https://api.themoviedb.org/3/discover/movie?", params,
+                            new TextHttpResponseHandler() {
 
-                        final Dialog dialog = new Dialog(getContext());
-                        dialog.setContentView(R.layout.choose_place);
-                        dialog.setTitle("Search Here");
-                        dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                    Log.i("--All", "Failure response TMD Query: " + responseString);
+                                }
 
-                        ListView searchPlaceListView = (ListView) dialog.findViewById(R.id.searchPlaceListView);
-                        searchPlaceListView.setAdapter(postDateSuggestionsAdapter);
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                    //Log.i("--All", "Search Response: " + responseString);
+                                    try {
+                                        JSONObject fullResponse = new JSONObject(responseString);
+                                        JSONArray movies = fullResponse.getJSONArray("results");
 
-                        FlatButton searchButton = (FlatButton) dialog.findViewById(R.id.searchPlaceButton);
-                        final EditText editText = (EditText)dialog.findViewById(R.id.searchPlaceEditText);
+                                        final ArrayList<String> movieNames = new ArrayList<String>();
 
-                        searchButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                AsyncHttpClient client = new AsyncHttpClient();
-                                RequestParams params = new RequestParams();
+                                        for (int i = 0; i < movies.length(); i++) {
+                                            JSONObject movie = movies.getJSONObject(i);
 
-                                params.put("term", editText.getText().toString());
-                                params.put("latitude", MyApplication.currentUser.getLatitude());
-                                params.put("longitude", MyApplication.currentUser.getLongitude());
-                                params.put("categories", MyApplication.categoriesMap.get(activity).getCategory());
+                                            movieNames.add(movie.getString("original_title"));
 
-                                client.addHeader("Authorization", "Bearer "+MyApplication.yelpToken);
+                                            Log.i("--All", "Title: " + movieNames.get(i));
+                                        }
 
-                                client.get("https://api.yelp.com/v3/businesses/search?", params,
-                                        new TextHttpResponseHandler() {
+                                        final Dialog dialog = new Dialog(getContext());
+                                        dialog.setContentView(R.layout.which_movie);
+                                        dialog.setTitle("Which Movie?");
 
+                                        dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
+
+                                        WhichMovieAdapter whichMovieAdapter = new WhichMovieAdapter(getContext(), movieNames);
+
+                                        ListView whichMovieListView = (ListView) dialog.findViewById(R.id.whichMovieListView);
+                                        whichMovieListView.setAdapter(whichMovieAdapter);
+
+                                        whichMovieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
-                                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                                Log.i("--All", "Failure response Yelp Query: " + responseString);
-                                            }
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                activitySpecificName = movieNames.get(position);
 
-                                            @Override
-                                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                                Log.i("--All", "Search Response: " + responseString);
-                                                counterHolder=0;
-                                                globalResponse = responseString;
-                                                parseData();
+                                                dialog.dismiss();
+                                                getLocation(activityPosition);
                                             }
                                         });
-                            }
-                        });
 
-                        dialog.show();
+                                        dialog.show();
 
-                    }
-                });
-                dialog.show();
+                                    } catch (JSONException e) {
+                                        Log.i("--All", "Error Parsing TMD Data: " + e.getMessage());
+                                    }
+                                }
+                            });
 
-                pleaseWait = new ProgressDialog(getContext());
-                pleaseWait.setMessage("Please Wait");
-                pleaseWait.setCancelable(false);
-                pleaseWait.setInverseBackgroundForced(false);
-                pleaseWait.show();
 
-                ListView suggestionsListView = (ListView) dialog.findViewById(R.id.suggestionsListView);
-                suggestionsListView.setAdapter(postDateSuggestionsAdapter);
+                } else {
+                    getLocation(activityPosition);
+                }
 
-                AsyncHttpClient client = new AsyncHttpClient();
-                RequestParams params = new RequestParams();
 
-                activity = MyApplication.categories.get(position).getDisplayName();
-
-                params.put("latitude", MyApplication.currentUser.getLatitude());
-                params.put("longitude", MyApplication.currentUser.getLongitude());
-                params.put("categories", MyApplication.categoriesMap.get(MyApplication.categories.get(position).getDisplayName()).getCategory());
-                //params.put("limit", 8);
-
-                client.addHeader("Authorization", "Bearer "+MyApplication.yelpToken);
-
-                Log.i("--All", "Token Create Event: " + MyApplication.yelpToken);
-
-                client.get("https://api.yelp.com/v3/businesses/search?", params,
-                        new TextHttpResponseHandler() {
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                Log.i("--All", "Failure response Yelp Query: " + responseString);
-                            }
-
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                counterHolder=0;
-                                globalResponse = responseString;
-                                parseData();
-                            }
-                        });
-
-                suggestionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        photoURL = placesDetailsArrayList.get(position).getPhoto();
-                        place = placesDetailsArrayList.get(position).getName();
-                        city = placesDetailsArrayList.get(position).getCity();
-                        address = placesDetailsArrayList.get(position).getAddress();
-                        latitude = placesDetailsArrayList.get(position).getLatitude();
-                        longitude = placesDetailsArrayList.get(position).getLongitude();
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("activitySelected", activity);
-                        bundle.putString("photoURL", photoURL);
-                        bundle.putString("place", place);
-                        bundle.putString("city", city);
-                        bundle.putString("address", address);
-                        bundle.putDouble("latitude", latitude);
-                        bundle.putDouble("longitude", longitude);
-
-                        dialog.dismiss();
-
-                        ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", bundle);
-                    }
-                });
             }
         });
 
@@ -242,5 +184,140 @@ public class ChooseActivityPostDate extends Fragment{
             parseData();
 
         }
+    }
+
+    public void getLocation(int position) {
+
+        placesDetailsArrayList = new ArrayList<>();
+        postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
+
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.choose_location_dialog);
+        dialog.setTitle("Some Suggestions");
+
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
+
+        FlatButton dialogButton = (FlatButton) dialog.findViewById(R.id.chooseOwnLocationButton);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                placesDetailsArrayList.clear();
+                postDateSuggestionsAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+
+                final Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.choose_place);
+                dialog.setTitle("Search Here");
+                dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
+
+                ListView searchPlaceListView = (ListView) dialog.findViewById(R.id.searchPlaceListView);
+                searchPlaceListView.setAdapter(postDateSuggestionsAdapter);
+
+                FlatButton searchButton = (FlatButton) dialog.findViewById(R.id.searchPlaceButton);
+                final EditText editText = (EditText)dialog.findViewById(R.id.searchPlaceEditText);
+
+                searchButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        RequestParams params = new RequestParams();
+
+                        params.put("term", editText.getText().toString());
+                        params.put("latitude", MyApplication.currentUser.getLatitude());
+                        params.put("longitude", MyApplication.currentUser.getLongitude());
+                        params.put("categories", MyApplication.categoriesMap.get(activity).getCategory());
+
+                        client.addHeader("Authorization", "Bearer "+MyApplication.yelpToken);
+
+                        client.get("https://api.yelp.com/v3/businesses/search?", params,
+                                new TextHttpResponseHandler() {
+
+                                    @Override
+                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                        Log.i("--All", "Failure response Yelp Query: " + responseString);
+                                    }
+
+                                    @Override
+                                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                        Log.i("--All", "Search Response: " + responseString);
+                                        counterHolder=0;
+                                        globalResponse = responseString;
+                                        parseData();
+                                    }
+                                });
+                    }
+                });
+
+                dialog.show();
+
+            }
+        });
+        dialog.show();
+
+        pleaseWait = new ProgressDialog(getContext());
+        pleaseWait.setMessage("Please Wait");
+        pleaseWait.setCancelable(false);
+        pleaseWait.setInverseBackgroundForced(false);
+        pleaseWait.show();
+
+        ListView suggestionsListView = (ListView) dialog.findViewById(R.id.suggestionsListView);
+        suggestionsListView.setAdapter(postDateSuggestionsAdapter);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+
+        activity = MyApplication.categories.get(position).getDisplayName();
+
+        params.put("latitude", MyApplication.currentUser.getLatitude());
+        params.put("longitude", MyApplication.currentUser.getLongitude());
+        params.put("categories", MyApplication.categoriesMap.get(MyApplication.categories.get(position).getDisplayName()).getCategory());
+        //params.put("limit", 8);
+
+        client.addHeader("Authorization", "Bearer "+MyApplication.yelpToken);
+
+        client.get("https://api.yelp.com/v3/businesses/search?", params,
+                new TextHttpResponseHandler() {
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("--All", "Failure response Yelp Query: " + responseString);
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        counterHolder=0;
+                        globalResponse = responseString;
+                        parseData();
+                    }
+                });
+
+        suggestionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                photoURL = placesDetailsArrayList.get(position).getPhoto();
+                place = placesDetailsArrayList.get(position).getName();
+                city = placesDetailsArrayList.get(position).getCity();
+                address = placesDetailsArrayList.get(position).getAddress();
+                latitude = placesDetailsArrayList.get(position).getLatitude();
+                longitude = placesDetailsArrayList.get(position).getLongitude();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("activitySelected", activity);
+                bundle.putString("photoURL", photoURL);
+                bundle.putString("place", place);
+                bundle.putString("city", city);
+                bundle.putString("address", address);
+                bundle.putDouble("latitude", latitude);
+                bundle.putDouble("longitude", longitude);
+                bundle.putString("activitySpecificName", activitySpecificName);
+
+                dialog.dismiss();
+
+                ((MainActivity)getActivity()).addFragments(CreateEvent3.class, R.id.container, "CreateEvent", bundle);
+            }
+        });
     }
 }
