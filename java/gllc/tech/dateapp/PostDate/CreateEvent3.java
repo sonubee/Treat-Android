@@ -13,14 +13,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.dd.processbutton.FlatButton;
-import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -29,7 +27,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -39,10 +36,6 @@ import gllc.tech.dateapp.Loading.MyApplication;
 import gllc.tech.dateapp.Objects.EventsOfDate;
 import gllc.tech.dateapp.Objects.PlacesDetails;
 import gllc.tech.dateapp.R;
-import gllc.tech.dateapp.Automation.YelpService;
-import okhttp3.Callback;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by bhangoo on 1/2/2017.
@@ -51,7 +44,7 @@ import okhttp3.Response;
 public class CreateEvent3 extends Fragment{
 
     FlatButton clickNext;
-    String prefix, main, suffix, address, startingTime, endingTime, fullEventTitle, photo, city;
+    String main, place, address, startingTime, endingTime, fullEventTitle, photo, city, activitySpecificName;
     double latitude, longitude;
     TextView eventTitle, placeAddress, startTime, endTime;
     CircleImageView activityImage;
@@ -69,9 +62,8 @@ public class CreateEvent3 extends Fragment{
         placesDetailsArrayList = new ArrayList<>();
         postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
 
-        prefix = "";
         main = "";
-        suffix = "";
+        place = "";
         address = "";
         startingTime = "";
         endingTime = "";
@@ -79,6 +71,7 @@ public class CreateEvent3 extends Fragment{
         latitude=0.0;
         photo = "NA";
         city = "";
+        activitySpecificName ="";
 
         eventTitle = (TextView) view.findViewById(R.id.eventTitle);
         placeAddress = (TextView) view.findViewById(R.id.placeAddress);
@@ -97,17 +90,21 @@ public class CreateEvent3 extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //setHasOptionsMenu(true);
-
         main = getArguments().getString("activitySelected");
         photo = getArguments().getString("photoURL");
-        suffix = getArguments().getString("place");
+        place = getArguments().getString("place");
         city = getArguments().getString("city");
         address = getArguments().getString("address");
         latitude = getArguments().getDouble("latitude");
         longitude = getArguments().getDouble("longitude");
+        activitySpecificName = getArguments().getString("activitySpecificName");
 
-        fullEventTitle = main + " at " + suffix;
+        if (activitySpecificName.equals("")) {
+            fullEventTitle = main + " at " + place;
+        } else {
+            fullEventTitle = activitySpecificName + " at\n" + place;
+        }
+
         eventTitle.setText(fullEventTitle);
         placeAddress.setText(address);
 
@@ -123,7 +120,7 @@ public class CreateEvent3 extends Fragment{
         clickNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PostDate2.listOfEvents.add(new EventsOfDate(suffix, main, address, startingTime, endingTime, suffix, latitude, longitude, photo, city));
+                PostDate2.listOfEvents.add(new EventsOfDate(place, main, address, startingTime, endingTime, place, latitude, longitude, photo, city));
                 ((MainActivity)getActivity()).popAllFragments();
             }
         });
@@ -182,9 +179,9 @@ public class CreateEvent3 extends Fragment{
                             address = address.replaceFirst(",", "\n");
                             placeAddress.setText(address);
 
-                            suffix = result.getString("name");
+                            place = result.getString("name");
 
-                            fullEventTitle = main + " at " + suffix;
+                            fullEventTitle = main + " at " + place;
                             eventTitle.setText(fullEventTitle);
 
                             JSONArray photoArray = result.getJSONArray("photos");
@@ -422,9 +419,9 @@ public class CreateEvent3 extends Fragment{
                 photo = placesDetailsArrayList.get(position).getPhoto();
                 Picasso.with(getContext()).load(photo).into(activityImage);
 
-                suffix = placesDetailsArrayList.get(position).getName();
+                place = placesDetailsArrayList.get(position).getName();
 
-                fullEventTitle = main + " at " + suffix;
+                fullEventTitle = main + " at " + place;
                 eventTitle.setText(fullEventTitle);
 
                 city = placesDetailsArrayList.get(position).getCity();
