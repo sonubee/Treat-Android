@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.Categories;
+import gllc.tech.dateapp.Objects.Restaurants;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
 
@@ -34,6 +35,7 @@ public class MyApplication extends Application {
     public static ArrayList<TheDate> pendingDates = new ArrayList<>();
     public static ArrayList<TheDate> combinedDates = new ArrayList<>();
     public static ArrayList<Categories> categories = new ArrayList<>();
+    public static ArrayList<Restaurants> restaurants = new ArrayList<>();
     public static HashMap<String, TheDate> dateHashMap = new HashMap<>();
     public static HashMap<String, TheDate> pendingDatesHashMap = new HashMap<>();
     public static HashMap<String, TheDate> fullMatchesAsCreatorHashMap = new HashMap<>();
@@ -41,6 +43,7 @@ public class MyApplication extends Application {
     public static HashMap<String, TheDate> combinesDatesHashMap = new HashMap<>();
     public static HashMap<String, Boolean> matchMap = new HashMap<>();
     public static HashMap<String, Categories> categoriesMap = new HashMap<>();
+    public static HashMap<String, Restaurants> restaurantsHashMap = new HashMap<>();
     public static TheDate dateSelected = new TheDate();
     public static User otherPerson = new User();
     public static String dateSelectedKey = "";

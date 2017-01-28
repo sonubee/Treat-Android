@@ -119,7 +119,7 @@ public class ChooseActivityPostDate extends Fragment{
                                                 posterPath = posterPathArrayList.get(position);
 
                                                 dialog.dismiss();
-                                                getLocation(activityPosition);
+                                                getLocation(activityPosition, -1);
                                             }
                                         });
 
@@ -132,8 +132,31 @@ public class ChooseActivityPostDate extends Fragment{
                             });
 
 
+                } else if (MyApplication.categories.get(activityPosition).getDisplayName().equals("Restaurants")) {
+                    final Dialog dialog = new Dialog(getContext());
+                    dialog.setContentView(R.layout.which_restaurant);
+                    dialog.setTitle("What Type of Food?");
+
+                    dialog.getWindow().setBackgroundDrawableResource(R.drawable.layout_bg);
+
+                    WhichRestaurantAdapter whichRestaurantAdapter = new WhichRestaurantAdapter(getContext());
+
+                    ListView whichRestaurantListView = (ListView) dialog.findViewById(R.id.whichRestaurantListView);
+                    whichRestaurantListView.setAdapter(whichRestaurantAdapter);
+
+                    whichRestaurantListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            dialog.dismiss();
+                            activitySpecificName = MyApplication.restaurants.get(position).getDisplayName();
+                            getLocation(activityPosition, position);
+                        }
+                    });
+
+                    dialog.show();
+
                 } else {
-                    getLocation(activityPosition);
+                    getLocation(activityPosition, -1);
                 }
 
 
@@ -187,7 +210,7 @@ public class ChooseActivityPostDate extends Fragment{
         }
     }
 
-    public void getLocation(int positionOfLocation) {
+    public void getLocation(int positionOfLocation, int restaurantLocation) {
 
         placesDetailsArrayList = new ArrayList<>();
         postDateSuggestionsAdapter = new PostDateSuggestionsAdapter(getContext(), placesDetailsArrayList);
@@ -311,7 +334,12 @@ public class ChooseActivityPostDate extends Fragment{
 
         params.put("latitude", MyApplication.currentUser.getLatitude());
         params.put("longitude", MyApplication.currentUser.getLongitude());
-        params.put("categories", MyApplication.categoriesMap.get(MyApplication.categories.get(positionOfLocation).getDisplayName()).getCategory());
+        if (restaurantLocation >= 0) {
+            params.put("categories", MyApplication.restaurantsHashMap.get(MyApplication.restaurants.get(restaurantLocation).getDisplayName()).getCategory());
+        } else {
+            params.put("categories", MyApplication.categoriesMap.get(MyApplication.categories.get(positionOfLocation).getDisplayName()).getCategory());
+        }
+
         //params.put("limit", 8);
 
         client.addHeader("Authorization", "Bearer "+MyApplication.yelpToken);
