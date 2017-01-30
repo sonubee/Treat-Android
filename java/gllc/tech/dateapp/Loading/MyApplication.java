@@ -74,7 +74,6 @@ public class MyApplication extends Application {
         pushToken = FirebaseInstanceId.getInstance().getToken();
         Log.i("--All", "Token: " + pushToken);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         try {
             PackageInfo info = getPackageManager().getPackageInfo(

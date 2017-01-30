@@ -63,12 +63,9 @@ import gllc.tech.dateapp.UpComingDates.DateReviewFragment;
 public class MainActivity extends NavigationLiveo implements OnItemClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
 
     private HelpLiveo mHelpLiveo;
-    User saveUser;
     private float x1,x2;
     static final int MIN_DISTANCE = 150;
     private GoogleApiClient mGoogleApiClient;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference;
 
 
     @Override
@@ -76,7 +73,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     {
         materialDesignSetup();
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        //FacebookSdk.sdkInitialize(getApplicationContext());
 
         Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mActionBarToolbar);
@@ -162,12 +159,13 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         switch (position) {
 
             case 0:
-                mFragment = new Login();
+                //mFragment = new Login();
+                mFragment = new ProfileViewPager();
                 break;
 
             case 1:
-                mFragment = new DisScrollView();
-                //mFragment = new PostDate2();
+                //mFragment = new DisScrollView();
+                mFragment = new PostDate2();
                 break;
 
             case 2:
@@ -184,11 +182,14 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
 
             case 5:
                 LoginManager.getInstance().logOut();
-                mFragment = new Login();
+                finish();
+                mFragment = new BlankFragment();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
                 break;
 
             default:
-                mFragment = new Login();
+                mFragment = new ProfileViewPager();
                 break;
         }
 
@@ -350,7 +351,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Login.callbackManager.onActivityResult(requestCode, resultCode, data);
+        //Login.callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == MyApplication.PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
