@@ -49,6 +49,7 @@ import br.liveo.model.HelpLiveo;
 import br.liveo.model.Navigation;
 import br.liveo.navigationliveo.NavigationLiveo;
 import cz.msebera.android.httpclient.Header;
+import gllc.tech.dateapp.DisScrollView;
 import gllc.tech.dateapp.UpComingDates.DisplayBothDates;
 import gllc.tech.dateapp.Messages.MessageAdapter;
 import gllc.tech.dateapp.Messages.ShowAllMessages;
@@ -142,8 +143,6 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         super.onStop();
     }
 
-
-
     @Override
     public void onItemClick(int position) {
         Fragment mFragment;
@@ -167,8 +166,8 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 break;
 
             case 1:
-                //mFragment = new ChooseActivityPostDate();
-                mFragment = new PostDate2();
+                mFragment = new DisScrollView();
+                //mFragment = new PostDate2();
                 break;
 
             case 2:
