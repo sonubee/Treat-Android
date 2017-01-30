@@ -60,11 +60,8 @@ public class Login extends Fragment {
 
     public static CallbackManager callbackManager;
     private LoginButton loginButton;
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    boolean doneDownloading=false;
     JSONObject facebookLoginResponseJSONObject;
     String refreshedToken;
     public static ProgressDialog dialog;
@@ -89,7 +86,6 @@ public class Login extends Fragment {
 
         callbackManager = CallbackManager.Factory.create();
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         mAuth = FirebaseAuth.getInstance();
 
     }
@@ -235,7 +231,6 @@ public class Login extends Fragment {
                 dialog.show();
 
                 // App code
-                editor = preferences.edit();
                 Toast.makeText(getContext(), "Successful Login", Toast.LENGTH_LONG).show();
                 final AccessToken accessToken = loginResult.getAccessToken();
                 Profile profile = Profile.getCurrentProfile();
@@ -542,7 +537,6 @@ public class Login extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.i("--All", "Done Downloading");
-                doneDownloading=true;
 
                 if (MyApplication.foundUser) {
                     ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile", null);
