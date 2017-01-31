@@ -13,12 +13,12 @@
         android:textSize="42sp"
         android:gravity="center"
         android:fontFamily="serif"
-        android:text="Tell Us Where You're Going"
+        android:text="Then Post It Up"
         android:id="@+id/textView3" />
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/chooseactivity"/>
+        android:src="@drawable/postdate"/>
 
 </LinearLayout>

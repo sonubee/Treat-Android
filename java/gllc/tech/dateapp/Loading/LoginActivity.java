@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -694,9 +695,17 @@ public class LoginActivity extends AppCompatActivity {
                 case 0:
                     return Login.newInstance();
                 case 1:
-                    return Settings.newInstance();
+                    return HowItWorks1.newInstance();
                 case 2:
-                    return Settings.newInstance();
+                    return HowItWorks2.newInstance();
+                case 3:
+                    return HowItWorks3.newInstance();
+                case 4:
+                    return HowItWorks4.newInstance();
+                case 5:
+                    return HowItWorks5.newInstance();
+                case 6:
+                    return HowItWorks6.newInstance();
                 default:
                     return Settings.newInstance();
             }
@@ -704,7 +713,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 7;
         }
 
         @Override
@@ -713,4 +722,106 @@ public class LoginActivity extends AppCompatActivity {
             return tabTitles[position];
         }
     }
+
+    public static class HowItWorks1 extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.how_it_works_1, container, false);
+
+            return view;
+        }
+
+        public static HowItWorks1 newInstance() {
+
+            HowItWorks1 f = new HowItWorks1();
+            return f;
+        }
+    }
+
+    public static class HowItWorks2 extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.how_it_works_2, container, false);
+
+            return view;
+        }
+
+        public static HowItWorks2 newInstance() {
+
+            HowItWorks2 f = new HowItWorks2();
+            return f;
+        }
+
+    }
+
+    public static class HowItWorks3 extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.how_it_works_3, container, false);
+
+            return view;
+        }
+
+        public static HowItWorks3 newInstance() {
+
+            HowItWorks3 f = new HowItWorks3();
+            return f;
+        }
+
+    }
+
+    public static class HowItWorks4 extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.how_it_works_4, container, false);
+
+            return view;
+        }
+
+        public static HowItWorks4 newInstance() {
+
+            HowItWorks4 f = new HowItWorks4();
+            return f;
+        }
+
+    }
+
+    public static class HowItWorks5 extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.how_it_works_5, container, false);
+
+            return view;
+        }
+
+        public static HowItWorks5 newInstance() {
+
+            HowItWorks5 f = new HowItWorks5();
+            return f;
+        }
+
+    }
+
+    public static class HowItWorks6 extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.how_it_works_6, container, false);
+
+            return view;
+        }
+
+        public static HowItWorks6 newInstance() {
+
+            HowItWorks6 f = new HowItWorks6();
+            return f;
+        }
+
+    }
+
 }
