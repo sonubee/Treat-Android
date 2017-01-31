@@ -6,8 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.*;
@@ -41,13 +51,14 @@ import gllc.tech.dateapp.Objects.Restaurants;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
 import gllc.tech.dateapp.R;
+import gllc.tech.dateapp.SearchDate.Filters;
 import gllc.tech.dateapp.UpComingDates.YourDatesFragment;
 
 /**
  * Created by bhangoo on 1/29/2017.
  */
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
 
     public static CallbackManager callbackManager;
     private LoginButton loginButton;
@@ -65,8 +76,11 @@ public class LoginActivity extends Activity {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        setContentView(R.layout.login);
+        setContentView(R.layout.loading_viewpager);
 
+        ViewPager viewPager = (ViewPager)findViewById(R.id.loadingPagerLogin);
+        viewPager.setAdapter(new LoginActivity.MyPagerAdapter(getSupportFragmentManager()));
+/*
         MyApplication.allDates.clear();
         MyApplication.combinedDates.clear();
         MyApplication.completedDates.clear();
@@ -140,6 +154,8 @@ public class LoginActivity extends Activity {
                 // ...
             }
         };
+
+        */
     }
 
     public void setupFacebookLogin(){
@@ -224,7 +240,7 @@ public class LoginActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        Login.callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void downloadUsers(final FirebaseUser firebaseUser){
@@ -650,14 +666,51 @@ public class LoginActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        //mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        /*
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
+        }
+        */
+    }
+
+    private class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+        private String tabTitles[] = new String[]{"Profile", "Filters", "Settings"};
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int pos) {
+            switch (pos) {
+
+                case 0:
+                    return Login.newInstance();
+                case 1:
+                    return Settings.newInstance();
+                case 2:
+                    return Settings.newInstance();
+                default:
+                    return Settings.newInstance();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            // Generate title based on item position
+            return tabTitles[position];
         }
     }
 }

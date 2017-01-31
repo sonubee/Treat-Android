@@ -405,7 +405,8 @@ public class Profile extends Fragment {
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
-                        LoginActivity.dialog.hide();
+                        //LoginActivity.dialog.hide();
+                        Login.dialog.hide();
                         Log.i("--All", "Response: " + response.toString());
                         JSONObject jsonObject = response.getJSONObject();
                         try {

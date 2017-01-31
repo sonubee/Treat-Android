@@ -22,6 +22,7 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -71,6 +72,9 @@ public class Login extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //LoginManager.getInstance().logOut();
+        //FirebaseAuth.getInstance().signOut();
 
         //MyApplication.agreedChats.clear();
         MyApplication.allDates.clear();
@@ -539,7 +543,10 @@ public class Login extends Fragment {
                 Log.i("--All", "Done Downloading");
 
                 if (MyApplication.foundUser) {
-                    ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile", null);
+                    //((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile", null);
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
 
                 } else {
                     try {
@@ -564,7 +571,10 @@ public class Login extends Fragment {
                         Log.i("--All", "Unable to Parse New Facebook User");
                     }
 
-                    ((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile", null);
+                    //((MainActivity) getActivity()).replaceFragments(ProfileViewPager.class, R.id.container, "Profile", null);
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
 
                 downloadDates();
@@ -682,6 +692,12 @@ public class Login extends Fragment {
 
             }
         });
+    }
+
+    public static Login newInstance() {
+
+        Login f = new Login();
+        return f;
     }
 
 }

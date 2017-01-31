@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import gllc.tech.dateapp.R;
 import gllc.tech.dateapp.SearchDate.Filters;
 
-import static gllc.tech.dateapp.R.id.loadingPagerProfile;
 
 /**
  * Created by bhangoo on 1/29/2017.
@@ -28,8 +27,8 @@ public class LoadingViewPager extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.loading_viewpager, container, false);
 
-        ViewPager pager = (ViewPager) view.findViewById(loadingPagerProfile);
-        pager.setAdapter(new LoadingViewPager.MyPagerAdapter(getChildFragmentManager()));
+        //ViewPager pager = (ViewPager) view.findViewById(loadingPagerProfile);
+        //pager.setAdapter(new LoadingViewPager.MyPagerAdapter(getChildFragmentManager()));
 
         return view;
     }
