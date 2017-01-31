@@ -29,10 +29,15 @@ public class User {
     String school;
     String work;
     boolean gaveFullBirthday;
+    boolean whoseTreatPosterTreat;
+    boolean whoseTreatDateTreat;
+    boolean whoseTreatSplitBill;
+    boolean whoseTreatDecideLater;
 
-    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3,
-                String photo4, int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax, int distance, double latitude,
-                double longitude, String birthdate, String school, String work, boolean gaveFullBirthday) {
+    public User(String name, String email, String id, String gender, String profilePic, String fid, String bio, String photo1, String photo2, String photo3, String photo4,
+                int karmaPoints, String pushToken, boolean showMen, boolean showWomen, int ageMin, int ageMax, int distance, double latitude, double longitude,
+                String birthdate, String school, String work, boolean gaveFullBirthday, boolean whoseTreatPosterTreat, boolean whoseTreatDateTreat,
+                boolean whoseTreatSplitBill, boolean whoseTreatDecideLater) {
         this.name = name;
         this.email = email;
         this.id = id;
@@ -57,6 +62,10 @@ public class User {
         this.school = school;
         this.work = work;
         this.gaveFullBirthday = gaveFullBirthday;
+        this.whoseTreatPosterTreat = whoseTreatPosterTreat;
+        this.whoseTreatDateTreat = whoseTreatDateTreat;
+        this.whoseTreatSplitBill = whoseTreatSplitBill;
+        this.whoseTreatDecideLater = whoseTreatDecideLater;
     }
 
     public User() {
@@ -254,4 +263,35 @@ public class User {
         this.gaveFullBirthday = gaveFullBirthday;
     }
 
+    public boolean isWhoseTreatPosterTreat() {
+        return whoseTreatPosterTreat;
+    }
+
+    public void setWhoseTreatPosterTreat(boolean whoseTreatPosterTreat) {
+        this.whoseTreatPosterTreat = whoseTreatPosterTreat;
+    }
+
+    public boolean isWhoseTreatDateTreat() {
+        return whoseTreatDateTreat;
+    }
+
+    public void setWhoseTreatDateTreat(boolean whoseTreatDateTreat) {
+        this.whoseTreatDateTreat = whoseTreatDateTreat;
+    }
+
+    public boolean isWhoseTreatSplitBill() {
+        return whoseTreatSplitBill;
+    }
+
+    public void setWhoseTreatSplitBill(boolean whoseTreatSplitBill) {
+        this.whoseTreatSplitBill = whoseTreatSplitBill;
+    }
+
+    public boolean isWhoseTreatDecideLater() {
+        return whoseTreatDecideLater;
+    }
+
+    public void setWhoseTreatDecideLater(boolean whoseTreatDecideLater) {
+        this.whoseTreatDecideLater = whoseTreatDecideLater;
+    }
 }

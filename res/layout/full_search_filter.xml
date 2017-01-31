@@ -120,6 +120,7 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/posterTreat"
                 android:layout_weight="1"
                 android:textColor="#FFF"
                 android:text="Poster"
@@ -127,6 +128,7 @@
                 android:layout_height="wrap_content" />
 
             <CheckBox
+                android:id="@+id/dateTreat"
                 android:layout_weight="1"
                 android:textColor="#FFF"
                 android:text="Mine"
@@ -135,6 +137,7 @@
                 android:layout_height="wrap_content" />
 
             <CheckBox
+                android:id="@+id/splitBill"
                 android:layout_weight="1"
                 android:textColor="#FFF"
                 android:text="Split Bill"
@@ -143,6 +146,7 @@
                 android:layout_alignParentEnd="true"/>
 
             <CheckBox
+                android:id="@+id/decideLater"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -242,7 +242,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
 
         arrayAdapter.add("My Treat");
-        arrayAdapter.add("Your Treat");
+        arrayAdapter.add("Date's Treat");
         arrayAdapter.add("Split Bill");
         arrayAdapter.add("Decide Later");
         arrayAdapter.add("What's this?");

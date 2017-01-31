@@ -145,191 +145,202 @@ public class SearchDatesFragment extends Fragment {
 
             User viewUser = MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster());
 
-            if (!MyApplication.matchMap.containsKey(MyApplication.allDates.get(dateCounter).getKey())) {
-                if ((SimpleCalculations.GetTheDistance(MyApplication.allDates.get(dateCounter).getEvents()) < MyApplication.currentUser.getDistance()) ||
-                        MyApplication.currentUser.getId().equals(MyApplication.myId)) {
-                    if ((MyApplication.currentUser.isShowMen() && viewUser.getGender().equals("male") || (MyApplication.currentUser.isShowWomen() &&
-                            viewUser.getGender().equals("female")))) {
-                        if (!viewUser.isGaveFullBirthday() || ((SimpleCalculations.getAge(viewUser) > MyApplication.currentUser.getAgeMin()) &&
-                                SimpleCalculations.getAge(viewUser) < MyApplication.currentUser.getAgeMax())) {
-                            if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())) {
+            //checking if treat matches
+            if ((MyApplication.currentUser.isWhoseTreatDateTreat() && MyApplication.allDates.get(dateCounter).getWhoseTreat().equals("Date's Treat")) ||
+                    (MyApplication.currentUser.isWhoseTreatPosterTreat() && MyApplication.allDates.get(dateCounter).getWhoseTreat().equals("My Treat")) ||
+                    (MyApplication.currentUser.isWhoseTreatSplitBill() && MyApplication.allDates.get(dateCounter).getWhoseTreat().equals("Split Bill")) ||
+                    (MyApplication.currentUser.isWhoseTreatDecideLater() && MyApplication.allDates.get(dateCounter).getWhoseTreat().equals("Decide Later"))) {
 
-                                final ArrayList<String> allImages = new ArrayList<>();
+                //checking if already tried a match
+                if (!MyApplication.matchMap.containsKey(MyApplication.allDates.get(dateCounter).getKey())) {
+                    //checking if within distance
+                    if ((SimpleCalculations.GetTheDistance(MyApplication.allDates.get(dateCounter).getEvents()) < MyApplication.currentUser.getDistance()) ||
+                            MyApplication.currentUser.getId().equals(MyApplication.myId)) {
+                        //gender check
+                        if ((MyApplication.currentUser.isShowMen() && viewUser.getGender().equals("male") || (MyApplication.currentUser.isShowWomen() &&
+                                viewUser.getGender().equals("female")))) {
+                            //age filter
+                            if (!viewUser.isGaveFullBirthday() || ((SimpleCalculations.getAge(viewUser) > MyApplication.currentUser.getAgeMin()) &&
+                                    SimpleCalculations.getAge(viewUser) < MyApplication.currentUser.getAgeMax())) {
+                                //checking if it's not posted from user
+                                if (!MyApplication.allDates.get(dateCounter).getPoster().equals(MyApplication.currentUser.getId())) {
 
-                                if (viewUser.getPhoto1().equals("NA")) {
-                                    allImages.add(viewUser.getProfilePic());
-                                } else {
-                                    allImages.add(viewUser.getPhoto1());
-                                }
+                                    final ArrayList<String> allImages = new ArrayList<>();
 
-                                if (!viewUser.getPhoto2().equals("NA")) {
-                                    allImages.add(viewUser.getPhoto2());
-                                }
-                                if (!viewUser.getPhoto3().equals("NA")) {
-                                    allImages.add(viewUser.getPhoto3());
-                                }
-                                if (!viewUser.getPhoto4().equals("NA")) {
-                                    allImages.add(viewUser.getPhoto4());
-                                }
-
-                                Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
-                                name.setText(viewUser.getName());
-                                if (viewUser.isGaveFullBirthday()) {
-                                    name.append(", " + SimpleCalculations.getAge(viewUser));
-                                }
-                                shortBioSearch.setText("Bio: " + viewUser.getBio());
-                                karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
-                                whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
-                                distance.setText(SimpleCalculations.GetTheDistance(MyApplication.allDates.get(dateCounter).getEvents()) + " Miles from You");
-                                dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
-
-                                imageView.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        final Dialog dialog = new Dialog(getContext());
-                                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                                        dialog.setContentView(R.layout.full_image_horizontal);
-
-                                        LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.fullImageLinear);
-
-                                        //use a GradientDrawable with only one color set, to make it a solid color
-                                        GradientDrawable border = new GradientDrawable();
-                                        border.setColor(0xFFFFFFFF); //white background
-                                        border.setStroke(1, 0xFF000000); //black border with full opacity
-
-                                        layout.setBackground(border);
-
-                                        for (int i = 0; i < allImages.size(); i++) {
-                                            ImageView imageView = new ImageView(getContext());
-                                            imageView.setPadding(10, 10, 10, 10);
-
-                                            Picasso.with(getContext()).load(allImages.get(i)).resize((MyApplication.screenWidth - 150),
-                                                    MyApplication.screenHeight - 250).centerCrop().into(imageView);
-
-                                            layout.addView(imageView);
-                                        }
-
-                                        dialog.show();
-                                    }
-                                });
-
-                                final LinearLayout bottomHalf = new LinearLayout(getContext());
-                                bottomHalf.setOrientation(LinearLayout.VERTICAL);
-
-                                ArrayList<EventsOfDate> events = MyApplication.allDates.get(dateCounter).getEvents();
-
-                                for (int i=0; i < events.size(); i++) {
-                                    //RelativeLayout tempRelativeLayout = new RelativeLayout(getContext());
-                                    RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null, false);
-
-                                    if (MyApplication.allDates.get(dateCounter).getEvents().get(i).getActivitySpecificName().equals("")) {
-                                        ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
-                                                get(i).getActivity());
+                                    if (viewUser.getPhoto1().equals("NA")) {
+                                        allImages.add(viewUser.getProfilePic());
                                     } else {
-                                        ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
-                                                get(i).getActivity() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getActivitySpecificName());
+                                        allImages.add(viewUser.getPhoto1());
                                     }
 
-                                    ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
-                                            get(i).getCity());
-                                    ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
-                                            get(i).getPlaceName() + " in " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getCity());
-                                    ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
-                                            get(i).getBeginTime() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getEndTime());
-                                    Picasso.with(getContext()).load(MyApplication.allDates.get(dateCounter).getEvents().get(i).getPhoto()).
-                                            into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));
+                                    if (!viewUser.getPhoto2().equals("NA")) {
+                                        allImages.add(viewUser.getPhoto2());
+                                    }
+                                    if (!viewUser.getPhoto3().equals("NA")) {
+                                        allImages.add(viewUser.getPhoto3());
+                                    }
+                                    if (!viewUser.getPhoto4().equals("NA")) {
+                                        allImages.add(viewUser.getPhoto4());
+                                    }
 
-                                    eventAdapterLayout.setOnClickListener(new View.OnClickListener() {
+                                    Picasso.with(getContext()).load(viewUser.getProfilePic()).into(imageView);
+                                    name.setText(viewUser.getName());
+                                    if (viewUser.isGaveFullBirthday()) {
+                                        name.append(", " + SimpleCalculations.getAge(viewUser));
+                                    }
+                                    shortBioSearch.setText("Bio: " + viewUser.getBio());
+                                    karmaPoints.setText("Karma Points: " + viewUser.getKarmaPoints());
+                                    whoseTreat.setText(MyApplication.allDates.get(dateCounter).getWhoseTreat());
+                                    distance.setText(SimpleCalculations.GetTheDistance(MyApplication.allDates.get(dateCounter).getEvents()) + " Miles from You");
+                                    dateTitle.setText(MyApplication.allDates.get(dateCounter).getDateTitle());
+
+                                    imageView.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            Intent intent = new Intent(getActivity(), MapsActivity.class);
-                                            intent.putExtra("cameFrom", "SearchDates");
-                                            startActivity(intent);
+
+                                            final Dialog dialog = new Dialog(getContext());
+                                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                                            dialog.setContentView(R.layout.full_image_horizontal);
+
+                                            LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.fullImageLinear);
+
+                                            //use a GradientDrawable with only one color set, to make it a solid color
+                                            GradientDrawable border = new GradientDrawable();
+                                            border.setColor(0xFFFFFFFF); //white background
+                                            border.setStroke(1, 0xFF000000); //black border with full opacity
+
+                                            layout.setBackground(border);
+
+                                            for (int i = 0; i < allImages.size(); i++) {
+                                                ImageView imageView = new ImageView(getContext());
+                                                imageView.setPadding(10, 10, 10, 10);
+
+                                                Picasso.with(getContext()).load(allImages.get(i)).resize((MyApplication.screenWidth - 150),
+                                                        MyApplication.screenHeight - 250).centerCrop().into(imageView);
+
+                                                layout.addView(imageView);
+                                            }
+
+                                            dialog.show();
                                         }
                                     });
 
-                                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
-                                    lp.setMargins(0, 0, 0, 10);
-                                    eventAdapterLayout.setLayoutParams(lp);
+                                    final LinearLayout bottomHalf = new LinearLayout(getContext());
+                                    bottomHalf.setOrientation(LinearLayout.VERTICAL);
 
-                                    bottomHalf.addView(eventAdapterLayout);
-                                }
+                                    ArrayList<EventsOfDate> events = MyApplication.allDates.get(dateCounter).getEvents();
 
-                                final RelativeLayout relativeLayout1 = new RelativeLayout(getContext());
-                                relativeLayout1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                    for (int i=0; i < events.size(); i++) {
+                                        //RelativeLayout tempRelativeLayout = new RelativeLayout(getContext());
+                                        RelativeLayout eventAdapterLayout = (RelativeLayout) getActivity().getLayoutInflater().inflate(R.layout.event_adapter3, null, false);
 
-                                ImageView yesButton = new ImageView(getContext());
-                                yesButton.setImageResource(R.drawable.yes);
-                                yesButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
-                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                            DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" +
-                                                    MyApplication.allDates.get(dateCounter).getKey());
-                                            myRef.setValue(true);
-
-                                            DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" +
-                                                    MyApplication.currentUser.getId());
-                                            myRef2.setValue(MyApplication.currentUser.getProfilePic());
-
-                                            new SendPush(MyApplication.currentUser.getName() + " has requested to be your date!",
-                                                    MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getPushToken(), "Date Request");
-
-                                            bottomHalf.removeAllViews();
-
-                                            dateCounter++;
-
-                                            showDate();
+                                        if (MyApplication.allDates.get(dateCounter).getEvents().get(i).getActivitySpecificName().equals("")) {
+                                            ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                                    get(i).getActivity());
+                                        } else {
+                                            ((TextView) eventAdapterLayout.findViewById(R.id.eventTitleEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                                    get(i).getActivity() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getActivitySpecificName());
                                         }
+
+                                        ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                                get(i).getCity());
+                                        ((TextView) eventAdapterLayout.findViewById(R.id.addressEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                                get(i).getPlaceName() + " in " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getCity());
+                                        ((TextView) eventAdapterLayout.findViewById(R.id.timeEventAdapter)).setText(MyApplication.allDates.get(dateCounter).getEvents().
+                                                get(i).getBeginTime() + " - " + MyApplication.allDates.get(dateCounter).getEvents().get(i).getEndTime());
+                                        Picasso.with(getContext()).load(MyApplication.allDates.get(dateCounter).getEvents().get(i).getPhoto()).
+                                                into(((ImageView) eventAdapterLayout.findViewById(R.id.imageEventAdapter)));
+
+                                        eventAdapterLayout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                                                intent.putExtra("cameFrom", "SearchDates");
+                                                startActivity(intent);
+                                            }
+                                        });
+
+                                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                                RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                        lp.setMargins(0, 0, 0, 10);
+                                        eventAdapterLayout.setLayoutParams(lp);
+
+                                        bottomHalf.addView(eventAdapterLayout);
                                     }
-                                });
 
+                                    final RelativeLayout relativeLayout1 = new RelativeLayout(getContext());
+                                    relativeLayout1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
+                                    ImageView yesButton = new ImageView(getContext());
+                                    yesButton.setImageResource(R.drawable.yes);
+                                    yesButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
+                                            if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
+                                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" +
+                                                        MyApplication.allDates.get(dateCounter).getKey());
+                                                myRef.setValue(true);
 
-                                ImageView noButton = new ImageView(getContext());
-                                noButton.setImageResource(R.drawable.no);
-                                noButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
-                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                            DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" +
-                                                    MyApplication.allDates.get(dateCounter).getKey());
-                                            myRef.setValue(false);
+                                                DatabaseReference myRef2 = database.getReference("Requests/" + MyApplication.allDates.get(dateCounter).getKey() + "/" +
+                                                        MyApplication.currentUser.getId());
+                                                myRef2.setValue(MyApplication.currentUser.getProfilePic());
 
-                                            bottomHalf.removeAllViews();
+                                                new SendPush(MyApplication.currentUser.getName() + " has requested to be your date!",
+                                                        MyApplication.userHashMap.get(MyApplication.allDates.get(dateCounter).getPoster()).getPushToken(), "Date Request");
 
+                                                bottomHalf.removeAllViews();
 
-                                            dateCounter++;
-                                            showDate();
+                                                dateCounter++;
+
+                                                showDate();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
 
-                                final float scale = getContext().getResources().getDisplayMetrics().density;
-                                int pixels = (int) (50 * scale + 0.5f);
 
-                                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pixels, pixels);
-                                lp.setMargins(200, 30, 0, 0);
-                                yesButton.setLayoutParams(lp);
 
-                                relativeLayout1.addView(yesButton);
 
-                                RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(pixels, pixels);
-                                lp2.addRule(RelativeLayout.ALIGN_PARENT_END);
-                                lp2.setMargins(0,30,200,0);
-                                noButton.setLayoutParams(lp2);
+                                    ImageView noButton = new ImageView(getContext());
+                                    noButton.setImageResource(R.drawable.no);
+                                    noButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (dateCounter < MyApplication.allDates.size() || dateCounter == 0) {
+                                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                DatabaseReference myRef = database.getReference("RequestedDate/" + MyApplication.currentUser.getId() + "/" +
+                                                        MyApplication.allDates.get(dateCounter).getKey());
+                                                myRef.setValue(false);
 
-                                relativeLayout1.addView(noButton);
-                                bottomHalf.addView(relativeLayout1);
+                                                bottomHalf.removeAllViews();
 
-                                searchDatesLinearLayout.addView(bottomHalf);
+
+                                                dateCounter++;
+                                                showDate();
+                                            }
+                                        }
+                                    });
+
+                                    final float scale = getContext().getResources().getDisplayMetrics().density;
+                                    int pixels = (int) (50 * scale + 0.5f);
+
+                                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pixels, pixels);
+                                    lp.setMargins(200, 30, 0, 0);
+                                    yesButton.setLayoutParams(lp);
+
+                                    relativeLayout1.addView(yesButton);
+
+                                    RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(pixels, pixels);
+                                    lp2.addRule(RelativeLayout.ALIGN_PARENT_END);
+                                    lp2.setMargins(0,30,200,0);
+                                    noButton.setLayoutParams(lp2);
+
+                                    relativeLayout1.addView(noButton);
+                                    bottomHalf.addView(relativeLayout1);
+
+                                    searchDatesLinearLayout.addView(bottomHalf);
 /*
                                 adapter = new EventAdapter(getContext(),MyApplication.allDates.get(dateCounter).getEvents());
 
@@ -346,12 +357,16 @@ public class SearchDatesFragment extends Fragment {
                                 });
 
                                 */
-                            } else {
+                                } else {
+                                    dateCounter++;
+                                    showDate();
+                                }
+                            }
+                            else {
                                 dateCounter++;
                                 showDate();
                             }
-                        }
-                        else {
+                        } else {
                             dateCounter++;
                             showDate();
                         }
@@ -359,11 +374,11 @@ public class SearchDatesFragment extends Fragment {
                         dateCounter++;
                         showDate();
                     }
+
                 } else {
                     dateCounter++;
                     showDate();
                 }
-
             } else {
                 dateCounter++;
                 showDate();

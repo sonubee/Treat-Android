@@ -24,8 +24,10 @@ import gllc.tech.dateapp.R;
 
 public class Filters extends Fragment {
 
-    CheckBox showMen, showWomen;
+    CheckBox showMen, showWomen, posterTreat, dateTreat, splitBill, decideLater;
     RangeSeekBar<Integer> distanceSeekBar, ageSeekBar;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
 
     @Nullable
     @Override
@@ -37,6 +39,10 @@ public class Filters extends Fragment {
         ageSeekBar = (RangeSeekBar)view.findViewById(R.id.ageSeekBar);
         showMen = (CheckBox)view.findViewById(R.id.menCheckBox);
         showWomen = (CheckBox)view.findViewById(R.id.womenCheckBox);
+        posterTreat = (CheckBox)view.findViewById(R.id.posterTreat);
+        dateTreat = (CheckBox)view.findViewById(R.id.dateTreat);
+        splitBill = (CheckBox)view.findViewById(R.id.splitBill);
+        decideLater = (CheckBox)view.findViewById(R.id.decideLater);
 
         return view;
     }
@@ -48,13 +54,17 @@ public class Filters extends Fragment {
 
         showMen.setChecked(MyApplication.currentUser.isShowMen());
         showWomen.setChecked(MyApplication.currentUser.isShowWomen());
+        posterTreat.setChecked(MyApplication.currentUser.isWhoseTreatPosterTreat());
+        dateTreat.setChecked(MyApplication.currentUser.isWhoseTreatDateTreat());
+        splitBill.setChecked(MyApplication.currentUser.isWhoseTreatSplitBill());
+        decideLater.setChecked(MyApplication.currentUser.isWhoseTreatDecideLater());
+
 
         showMen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MyApplication.currentUser.setShowMen(isChecked);
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showMen");
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showMen");
                 databaseReference.setValue(isChecked);
             }
         });
@@ -63,8 +73,43 @@ public class Filters extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 MyApplication.currentUser.setShowWomen(isChecked);
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showWomen");
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/showWomen");
+                databaseReference.setValue(isChecked);
+            }
+        });
+
+        posterTreat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MyApplication.currentUser.setWhoseTreatPosterTreat(isChecked);
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/whoseTreatPosterTreat");
+                databaseReference.setValue(isChecked);
+            }
+        });
+
+        dateTreat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MyApplication.currentUser.setWhoseTreatDateTreat(isChecked);
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/whoseTreatDateTreat");
+                databaseReference.setValue(isChecked);
+            }
+        });
+
+        splitBill.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MyApplication.currentUser.setWhoseTreatSplitBill(isChecked);
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/whoseTreatSplitBill");
+                databaseReference.setValue(isChecked);
+            }
+        });
+
+        decideLater.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MyApplication.currentUser.setWhoseTreatDecideLater(isChecked);
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/whoseTreatDecideLater");
                 databaseReference.setValue(isChecked);
             }
         });
@@ -78,8 +123,7 @@ public class Filters extends Fragment {
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
                 MyApplication.currentUser.setDistance(maxValue);
 
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/distance");
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/distance");
                 databaseReference.setValue(maxValue);
             }
         });
@@ -90,8 +134,7 @@ public class Filters extends Fragment {
                 MyApplication.currentUser.setAgeMin(minValue);
                 MyApplication.currentUser.setAgeMax(maxValue);
 
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/ageMax");
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/ageMax");
                 databaseReference.setValue(maxValue);
 
                 databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/ageMin");

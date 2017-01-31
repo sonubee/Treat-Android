@@ -297,6 +297,8 @@ public class DateReviewFragment extends Fragment{
 
                     MyApplication.otherPerson = null;
                     populateRequests();
+                    getActivity().invalidateOptionsMenu();
+
                 }
 
                 else{((MainActivity)getActivity()).popBackStack();}

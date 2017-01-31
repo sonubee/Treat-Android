@@ -276,7 +276,7 @@ public class LoginActivity extends AppCompatActivity {
                                 firebaseUser.getUid(), facebookLoginResponseJSONObject.getString("gender"), "https://graph.facebook.com/" +
                                 facebookLoginResponseJSONObject.getString("id") + "/picture?type=large", facebookLoginResponseJSONObject.getString("id"),
                                 "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55, 100, 0.0, 0.0,
-                                facebookLoginResponseJSONObject.getString("birthday"), "NA", "NA", gaveFullbirthday);
+                                facebookLoginResponseJSONObject.getString("birthday"), "NA", "NA", gaveFullbirthday, true, true, true, true);
 
                         databaseReference = firebaseDatabase.getReference("Users/" +MyApplication.currentUser.getId());
                         databaseReference.setValue(MyApplication.currentUser);

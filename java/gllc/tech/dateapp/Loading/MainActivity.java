@@ -2,6 +2,7 @@ package gllc.tech.dateapp.Loading;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -471,5 +473,25 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                     }
                 });
     }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() == 0) {
+            new AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to exit?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MainActivity.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } else {
+            MainActivity.super.onBackPressed();
+        }
+    }
+
 }
 

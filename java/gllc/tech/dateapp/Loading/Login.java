@@ -562,7 +562,7 @@ public class Login extends Fragment {
                                 firebaseUser.getUid(), facebookLoginResponseJSONObject.getString("gender"), "https://graph.facebook.com/" +
                                 facebookLoginResponseJSONObject.getString("id") + "/picture?type=large", facebookLoginResponseJSONObject.getString("id"),
                                 "Enter Bio Here", "NA", "NA", "NA", "NA", 0, refreshedToken, false, false, 18, 55, 100, 0.0, 0.0,
-                                facebookLoginResponseJSONObject.getString("birthday"), "NA", "NA", gaveFullbirthday);
+                                facebookLoginResponseJSONObject.getString("birthday"), "NA", "NA", gaveFullbirthday, true, true, true, true);
 
                         databaseReference = firebaseDatabase.getReference("Users/" +MyApplication.currentUser.getId());
                         databaseReference.setValue(MyApplication.currentUser);
@@ -593,6 +593,7 @@ public class Login extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User downloadUser = dataSnapshot.getValue(User.class);
+
                 MyApplication.userHashMap.put(downloadUser.getId(), downloadUser);
                 if (downloadUser.getId().equals(firebaseUser.getUid())) {
                     MyApplication.currentUser = downloadUser;
