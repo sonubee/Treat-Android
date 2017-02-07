@@ -46,6 +46,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import gllc.tech.dateapp.Objects.Categories;
 import gllc.tech.dateapp.Objects.Restaurants;
@@ -86,7 +87,7 @@ public class Login extends Fragment {
         MyApplication.categories.clear();
 
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.i("--All", "Token: " + refreshedToken);
+        Log.i("--All", "Firebase Token: " + refreshedToken);
 
         callbackManager = CallbackManager.Factory.create();
 

@@ -35,6 +35,14 @@
                 android:layout_alignEnd="@+id/userPicture"
                 android:id="@+id/editButtonPhoto1" />
 
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@color/colorAccent"
+                android:layout_alignTop="@+id/userPicture"
+                android:layout_alignStart="@+id/userPicture"
+                android:id="@+id/deleteButtonPhoto1" />
+
         </RelativeLayout>
 
         <LinearLayout
@@ -65,6 +73,14 @@
                     android:layout_alignEnd="@+id/supportImage1"
                     android:id="@+id/editButtonPhoto2" />
 
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@color/colorAccent"
+                    android:layout_alignTop="@+id/supportImage1"
+                    android:layout_alignStart="@+id/supportImage1"
+                    android:id="@+id/deleteButtonPhoto2" />
+
             </RelativeLayout>
 
 
@@ -90,6 +106,14 @@
                     android:layout_alignEnd="@+id/supportImage2"
                     android:id="@+id/editButtonPhoto3" />
 
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@color/colorAccent"
+                    android:layout_alignTop="@+id/supportImage2"
+                    android:layout_alignStart="@+id/supportImage2"
+                    android:id="@+id/deleteButtonPhoto3" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -113,6 +137,14 @@
                     android:layout_alignTop="@+id/supportImage3"
                     android:layout_alignEnd="@+id/supportImage3"
                     android:id="@+id/editButtonPhoto4" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@color/colorAccent"
+                    android:layout_alignTop="@+id/supportImage3"
+                    android:layout_alignStart="@+id/supportImage3"
+                    android:id="@+id/deleteButtonPhoto4" />
 
             </RelativeLayout>
 

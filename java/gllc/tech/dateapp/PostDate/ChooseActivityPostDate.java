@@ -82,6 +82,7 @@ public class ChooseActivityPostDate extends Fragment{
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                     Log.i("--All", "Failure response TMD Query: " + responseString);
+                                    //FirebaseCrash.report(new Exception("Failure response TMD Query: " + responseString));
                                 }
 
                                 @Override
@@ -265,7 +266,8 @@ public class ChooseActivityPostDate extends Fragment{
 
                                     @Override
                                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                        Log.i("--All", "Failure response Yelp Query: " + responseString);
+                                        Log.i("--All", "Failure response Yelp Query1: " + responseString);
+                                        //FirebaseCrash.report(new Exception("Failure response Yelp Query1: " + responseString));
                                     }
 
                                     @Override
@@ -349,7 +351,8 @@ public class ChooseActivityPostDate extends Fragment{
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.i("--All", "Failure response Yelp Query: " + responseString);
+                        Log.i("--All", "Failure response Yelp Query2: " + responseString);
+                        //FirebaseCrash.report(new Exception("Failure response Yelp Query2: " + responseString));
                     }
 
                     @Override

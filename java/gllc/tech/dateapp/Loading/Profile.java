@@ -50,6 +50,7 @@ public class Profile extends Fragment {
     CircleImageView profileImage;
     ImageView photo2, photo3, photo4;
     ImageView editPhoto1, editPhoto2, editPhoto3, editPhoto4;
+    ImageView deletePhoto1, deletePhoto2, deletePhoto3, deletePhoto4;
     TextView name, bio, karmaPoints, ageRange, gender, school;
     EditText enterBio;
     RelativeLayout chooseSchool;
@@ -87,6 +88,10 @@ public class Profile extends Fragment {
         photo2 = (ImageView) view.findViewById(R.id.supportImage1);
         photo3 = (ImageView) view.findViewById(R.id.supportImage2);
         photo4 = (ImageView) view.findViewById(R.id.supportImage3);
+        deletePhoto1 = (ImageView) view.findViewById(R.id.deleteButtonPhoto1);
+        deletePhoto2 = (ImageView) view.findViewById(R.id.deleteButtonPhoto2);
+        deletePhoto3 = (ImageView) view.findViewById(R.id.deleteButtonPhoto3);
+        deletePhoto4 = (ImageView) view.findViewById(R.id.deleteButtonPhoto4);
         karmaPoints = (TextView) view.findViewById(R.id.profileKarmaPoints);
         ageRange = (TextView) view.findViewById(R.id.ageTangeTextView);
         school = (TextView) view.findViewById(R.id.schoolProfile);
@@ -120,6 +125,11 @@ public class Profile extends Fragment {
         editPhoto2.setImageResource(R.drawable.edit);
         editPhoto3.setImageResource(R.drawable.edit);
         editPhoto4.setImageResource(R.drawable.edit);
+        deletePhoto1.setImageResource(R.drawable.no);
+        deletePhoto2.setImageResource(R.drawable.no);
+        deletePhoto3.setImageResource(R.drawable.no);
+        deletePhoto4.setImageResource(R.drawable.no);
+
 
         enterBio.setText(MyApplication.currentUser.getBio());
 
