@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -63,6 +64,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
     LinearLayout enterInfoLayout;
+    FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
         listOfPlaces = new ArrayList<>();
         listOfEvents = new ArrayList<>();
 
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
 
         dateFormatter = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
@@ -103,6 +105,7 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
         coordinatorLayout = (CoordinatorLayout)view.findViewById(R.id.coordinatorLayout);
         enterInfoLayout = (LinearLayout)view.findViewById(R.id.postDateTopLayout);
         postDate = (FlatButton)view.findViewById(R.id.postDateButton);
+        fab = (FloatingActionButton)view.findViewById(R.id.fab);
         enterDate.setOnClickListener(this);
 
         return view;
@@ -161,6 +164,13 @@ public class PostDate2 extends Fragment implements View.OnClickListener{
                 } else {
                     askTreat();
                 }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).addFragments(ChooseActivityPostDate.class, R.id.container, "ChooseActivity", null);
             }
         });
     }

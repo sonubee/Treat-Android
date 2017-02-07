@@ -2,17 +2,20 @@
 <android.support.design.widget.CoordinatorLayout
     android:background="#000"
     android:id="@+id/coordinatorLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/postDateScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ScrollView
-            android:id="@+id/postDateScrollView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_marginBottom="30dp"
@@ -53,17 +56,32 @@
 
             </LinearLayout>
 
-        </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <com.dd.processbutton.FlatButton
-            android:visibility="invisible"
-            android:id="@+id/postDateButton"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/postDateScrollView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Post it Up!"/>
+                <com.dd.processbutton.FlatButton
+                    android:visibility="invisible"
+                    android:id="@+id/postDateButton"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/postDateScrollView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Post it Up!"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
-    </RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add_white_36dp"
+        android:elevation="20dp"
+        />
 
 </android.support.design.widget.CoordinatorLayout>
