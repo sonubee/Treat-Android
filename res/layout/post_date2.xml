@@ -82,6 +82,7 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add_white_36dp"
         android:elevation="20dp"
+        app:backgroundTint="#0831b6"
         />
 
 </android.support.design.widget.CoordinatorLayout>
