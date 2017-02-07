@@ -86,7 +86,7 @@ public class ChooseFBPhoto extends Fragment {
                 }
 
                 ((MainActivity)getActivity()).popAllFragments();
-                ((MainActivity)getActivity()).changePhotos();
+                //((MainActivity)getActivity()).changePhotos();
             }
         });
     }

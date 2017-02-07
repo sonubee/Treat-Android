@@ -177,6 +177,46 @@ public class Profile extends Fragment {
             }
         });
 
+        deletePhoto1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileImage.setImageResource(R.drawable.placeholder);
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/photo1");
+                databaseReference.setValue("NA");
+                MyApplication.currentUser.setPhoto1("NA");
+            }
+        });
+
+        deletePhoto2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                photo2.setImageResource(R.drawable.placeholder);
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/photo2");
+                databaseReference.setValue("NA");
+                MyApplication.currentUser.setPhoto2("NA");
+            }
+        });
+
+        deletePhoto3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                photo3.setImageResource(R.drawable.placeholder);
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/photo3");
+                databaseReference.setValue("NA");
+                MyApplication.currentUser.setPhoto3("NA");
+            }
+        });
+
+        deletePhoto4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                photo4.setImageResource(R.drawable.placeholder);
+                databaseReference = firebaseDatabase.getReference("Users/"+MyApplication.currentUser.getId()+"/photo4");
+                databaseReference.setValue("NA");
+                MyApplication.currentUser.setPhoto4("NA");
+            }
+        });
+
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,12 +226,15 @@ public class Profile extends Fragment {
                 dialog.setContentView(R.layout.full_image);
 
                 ImageView imageView = (ImageView) dialog.findViewById(R.id.popupFullImage);
-                if (MyApplication.currentUser.getPhoto1().equals("NA")) {
+                if (MyApplication.currentUser.getPhoto1().equals("None")) {
                     Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApplication.currentUser.getFid() + "/picture?type=large").into(imageView);
-                } else {
+                } else if (MyApplication.currentUser.getPhoto1().equals("NA")){
+                    getAlbums();
+                    photoToReplace = 1;
+                }else {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto1()).into(imageView);
+                    dialog.show();
                 }
-                dialog.show();
             }
         });
 
@@ -209,8 +252,9 @@ public class Profile extends Fragment {
                     photoToReplace = 2;
                 } else {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto2()).into(imageView);
+                    dialog.show();
                 }
-                dialog.show();
+
             }
         });
 
@@ -228,8 +272,9 @@ public class Profile extends Fragment {
                     photoToReplace = 3;
                 } else {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto3()).into(imageView);
+                    dialog.show();
                 }
-                dialog.show();
+
             }
         });
 
@@ -247,8 +292,9 @@ public class Profile extends Fragment {
                     photoToReplace = 4;
                 } else {
                     Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto4()).into(imageView);
+                    dialog.show();
                 }
-                dialog.show();
+
             }
         });
 
@@ -269,9 +315,11 @@ public class Profile extends Fragment {
     }
 
     public void loadImages() {
-        if (MyApplication.currentUser.getPhoto1().equals("NA")) {
+        if (MyApplication.currentUser.getPhoto1().equals("None")) {
             Picasso.with(getContext()).load("https://graph.facebook.com/" + MyApplication.currentUser.getFid() + "/picture?type=large").into(profileImage);
-        } else {
+        } else if (MyApplication.currentUser.getPhoto1().equals("NA")){
+            profileImage.setImageResource(R.drawable.placeholder);
+        }else {
             Picasso.with(getContext()).load(MyApplication.currentUser.getPhoto1()).into(profileImage);
         }
 
