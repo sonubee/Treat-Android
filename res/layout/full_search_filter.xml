@@ -78,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/distanceSeekBar"
                 app:singleThumb="true"
+                app:absoluteMaxValue="10000"
                 />
         </LinearLayout>
 
@@ -163,18 +164,11 @@
             android:textColor="#FFF"/>
 
         <LinearLayout
+            android:id="@+id/categoryLayout"
+            android:orientation="vertical"
             android:background="#31413f"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/showCategories"
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Showing All - Click to Specify"
-                android:textColor="#FFF"/>
-
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

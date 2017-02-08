@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import gllc.tech.dateapp.Objects.AgreedChats;
 import gllc.tech.dateapp.Objects.Categories;
+import gllc.tech.dateapp.Objects.CategoryPreferences;
 import gllc.tech.dateapp.Objects.Restaurants;
 import gllc.tech.dateapp.Objects.TheDate;
 import gllc.tech.dateapp.Objects.User;
@@ -44,12 +45,14 @@ public class MyApplication extends Application {
     public static HashMap<String, Boolean> matchMap = new HashMap<>();
     public static HashMap<String, Categories> categoriesMap = new HashMap<>();
     public static HashMap<String, Restaurants> restaurantsHashMap = new HashMap<>();
+    public static HashMap<String, Boolean> categoryPreferencesValue = new HashMap<>();
     public static TheDate dateSelected = new TheDate();
     public static User otherPerson = new User();
     public static String dateSelectedKey = "";
     public static boolean visitedMessages=false;
     public static HashMap<String, User> userHashMap = new HashMap<>();
     public static Place placeChosen;
+    //public static CategoryPreferences categoryPreferences;
     public static String selectedImageUrl = "";
     public static ArrayList<TheDate> completedDates = new ArrayList<>();
     public static HashMap<String, Boolean> karmaAccounted = new HashMap<>();
